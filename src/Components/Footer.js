@@ -5,7 +5,7 @@ export const Footer = () => {
   return (
     <nav className='footer_nav'>
       <Link to='/team'>Meet the Team</Link>
-      <p>©Copyright p:xlr MMXXII</p>
+      <p>©Copyright p:xlrt MMXXII</p>
     </nav>
   );
 };
