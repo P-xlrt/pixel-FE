@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-// // import { Canvas } from "./Components/Canvas";
-// // import { Footer } from "./Components/Footer";
-// // import { Gallery } from "./Components/Gallery";
-// // import { Landing } from "./Components/Landing";
-// import { Login } from "./Components/Login";
-// // import { Profile } from "./Components/Profile";
-// // import { Settings } from "./Components/Settings";
+import "../styling/navbar.css";
 export const Navbar = () => {
-  return;
-  <nav></nav>;
+  return (
+    <nav className='main_nav'>
+      <Link to='/logo'>
+        <img src='' alt='logo' />
+      </Link>
+      <Link to='/settings'>Settings</Link>
+      <Link to='/login'>Login</Link>
+      <Link to='/gallery'>Gallery</Link>
+      <Link to='/create'>Create</Link>
+      <Link to='/profile'>Profile</Link>
+      <Link to='/settings'>Settings</Link>
+    </nav>
+  );
 };

@@ -11,17 +11,21 @@ import { Settings } from "./Components/Settings";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='login' element={Login} />
-        <Route path='settings' element={Settings} />
-        <Route path='gallery' element={Gallery} />
-        <Route path='canvas' element={Canvas} />
-        <Route path='profile' element={Profile} />
-        <Route path='landing' element={Landing} />
-        <Route path='*' element={<p>404 Not Found</p>} />
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path='/login' element={<Login />} />
+          <Route path='/settings' element={<Settings />} />
+          <Route path='/gallery' element={<Gallery />} />
+          <Route path='/create' element={<Canvas />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/landing' element={<Landing />} />
+          <Route path='*' element={<p>404 Not Found</p>} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </div>
   );
 };
 
