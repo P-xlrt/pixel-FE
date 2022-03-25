@@ -1,6 +1,6 @@
 export const Toolbox = () => {
     return (
-        <div className="tool_box">
+        <div id="tool_box">
             {/*  Import functionality */}
             <button id="import_button">Import</button>
 

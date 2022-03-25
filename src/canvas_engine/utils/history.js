@@ -1,4 +1,4 @@
-import Drawing from "./drawing.js";
+import { setPixel } from "./drawing.js";
 
 let historyPosition = 0;
 let oldHistory = [];
@@ -9,26 +9,26 @@ let operationHistory = [];
 const applyHistory = (array) => { // Looks through the 2D array (If no changes were made, no entries were recorded)
     array[historyPosition].forEach((yArray, x) => {
         yArray.forEach((colour, y) => {
-            Drawing.setPixel(x, y, colour);
+            setPixel(x, y, colour);
         })
     });
 }
 
-const undo = () => {
+export const undo = () => {
     if(historyPosition > 0) {
         historyPosition--;
         applyHistory(oldHistory);
     }
     
 }
-const redo = () => {
+export const redo = () => {
     if(historyPosition < operationHistory.length) {
         applyHistory(operationHistory);
         historyPosition++;
     } 
 }
 
-const addHistory = (old, operation) => {
+export const addHistory = (old, operation) => {
     oldHistory.length = historyPosition; // Removes everything after the current position in the array
     oldHistory.push(old); // Adds the entry to the history
 
@@ -38,10 +38,8 @@ const addHistory = (old, operation) => {
     historyPosition = oldHistory.length; // Moves the history position towards the end (should be same as "historyPosition++");
 }
 
-const setupNewHistory = () => {
+export const setupNewHistory = () => {
     oldHistory.length = 0;
     operationHistory.length = 0;
     historyPosition = 0;
 }
-
-export default { addHistory, undo, redo, setupNewHistory };

@@ -1,8 +1,9 @@
 import Colour from "./colour.js";
 import Pencil from "../tools/pencil.js"
 import Flood_Fill from "../tools/flood_fill.js"
-import History from "./history.js";
-import View from "./view.js";
+import { setupNewHistory , addHistory } from "./history.js";
+import { applyResize } from "./view.js";
+
 
 const canvas_drawing = document.getElementById("canvas_interaction");
 const drawingCtx = canvas_drawing.getContext("2d");
@@ -16,7 +17,7 @@ const gridCtx = canvas_grid.getContext("2d");
 let imageSizeX = 16;
 let imageSizeY = 16;
 
-const getImageSize = () => {
+export const getImageSize = () => {
     return [imageSizeX, imageSizeY];
 }
 
@@ -24,6 +25,9 @@ const getImageSize = () => {
 let primaryColour = new Colour(255, 0, 0, 0.5);
 let secondaryColour = new Colour(0, 255, 0, 1);
 let overwriteColours = false;
+export const getToolColour = (mouseButton) => {
+    return mouseButton == 0 ? primaryColour : secondaryColour;
+}
 
 // =========================================================== //
 //      IMAGE
@@ -33,14 +37,14 @@ const isInBounds = (x, y) => {
     return x >= 0 && x < imageSizeX && y >= 0 && y < imageSizeY;
 }
 
-const getPixel = (x, y) => {
+export const getPixel = (x, y) => {
     if(!isInBounds(x, y)) return null;
     const pixel = drawingCtx.getImageData(x, y, 1, 1).data;
     return new Colour(pixel[0], pixel[1], pixel[2], pixel[3] / 255);
 }
 
 // Changes the colour of a pixel by overlaying the colour
-const setPixel = (x, y, colour, overwrite = false, usingPreviewCtx = false) => {
+export const setPixel = (x, y, colour, overwrite = false, usingPreviewCtx = false) => {
     if(!isInBounds(x, y)) return;
 
     const canvas = usingPreviewCtx ? previewCtx : drawingCtx;
@@ -51,7 +55,7 @@ const setPixel = (x, y, colour, overwrite = false, usingPreviewCtx = false) => {
 }
 
 // Read the pixel array and apply every change.
-const applyChanges = (pixelArray) => {
+export const applyChanges = (pixelArray) => {
     
     let historyEntry = [];
     let operationEntry = [];
@@ -74,7 +78,7 @@ const applyChanges = (pixelArray) => {
     }
 
     if(historyEntry.length > 0) {
-        History.addHistory(historyEntry, operationEntry);
+        addHistory(historyEntry, operationEntry);
     }
 
     // Clear the preview ctx
@@ -83,7 +87,7 @@ const applyChanges = (pixelArray) => {
 
 
 // Called when a new canvas is being created or when the window is being resized.
-const newImage = (xSize = 16, ySize = 16) => {
+export const newImage = (xSize = 16, ySize = 16) => {
     imageSizeX = xSize;
     imageSizeY = ySize;
 
@@ -98,8 +102,6 @@ const newImage = (xSize = 16, ySize = 16) => {
     drawingCtx.globalAlpha = 1;
     drawingCtx.fillRect(0, 0, canvas_drawing.width, canvas_drawing.height);
 
-    History.setupNewHistory();
-    View.applyResize();
+    setupNewHistory();
+    applyResize();
 }
-
-export default { applyChanges, setPixel, getPixel, getImageSize, newImage, primaryColour, secondaryColour};
