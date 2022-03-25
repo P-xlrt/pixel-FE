@@ -9,17 +9,18 @@ import { Login } from "./Components/Login";
 import { Profile } from "./Components/Profile";
 import { Settings } from "./Components/Settings";
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fab } from "@fortawesome/free-brands-svg-icons";
-import { faCheckSquare, faCoffee } from "@fortawesome/free-solid-svg-icons";
+// import { library } from "@fortawesome/fontawesome-svg-core";
+// import { fab } from "@fortawesome/free-brands-svg-icons";
+// import { faCheckSquare, faCoffee } from "@fortawesome/free-solid-svg-icons";
 
 const App = () => {
-  library.add(fab, faCheckSquare, faCoffee);
+  // library.add(fab, faCheckSquare, faCoffee);
   return (
-    <div>
-      <FontAwesomeIcon icon={faGear} />
+    <div className="app">
+      {/* <FontAwesomeIcon icon={faGear} /> */}
       <BrowserRouter>
-        <Navbar />
+        <Navbar/>
+
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/settings' element={<Settings />} />
@@ -28,10 +29,11 @@ const App = () => {
           <Route path='/profile' element={<Profile />} />
           <Route path='/landing' element={<Landing />} />
           <Route path='*' element={<p>404 Not Found</p>} />
-        </Routes>
-        <Footer />
-        <FontAwesomeIcon icon='check-square' />
-        Your <FontAwesomeIcon icon='coffee' /> is hot and ready!
+        </Routes>  
+        
+        <Footer/>
+        {/* <FontAwesomeIcon icon='check-square' />
+        Your <FontAwesomeIcon icon='coffee' /> is hot and ready! */}
       </BrowserRouter>
     </div>
   );
