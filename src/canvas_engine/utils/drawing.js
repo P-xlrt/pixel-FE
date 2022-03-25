@@ -5,28 +5,40 @@ import { setupNewHistory , addHistory } from "./history.js";
 import { applyResize } from "./view.js";
 
 
-const canvas_drawing = document.getElementById("canvas_interaction");
-const drawingCtx = canvas_drawing.getContext("2d");
-const canvas_preview = document.getElementById("canvas_preview");
-const previewCtx = canvas_preview.getContext("2d");
-const canvas_grid = document.getElementById("canvas_grid");
-const gridCtx = canvas_grid.getContext("2d");
-
+// Stores references to the HTML elements
+let canvas_container, canvas_drawing, drawingCtx, canvas_preview, previewCtx, canvas_grid, gridCtx;
 
 // Image drawing variables
 let imageSizeX = 16;
 let imageSizeY = 16;
+
+export const setupDrawing = () => {
+    canvas_container = document.getElementById("canvas_container");
+    canvas_drawing = document.getElementById("canvas_interaction");
+    drawingCtx = canvas_drawing.getContext("2d");
+    canvas_preview = document.getElementById("canvas_preview");
+    previewCtx = canvas_preview.getContext("2d");
+    canvas_grid = document.getElementById("canvas_grid");
+    gridCtx = canvas_grid.getContext("2d");
+}
 
 export const getImageSize = () => {
     return [imageSizeX, imageSizeY];
 }
 
 // Tool variables
-let primaryColour = new Colour(255, 0, 0, 0.5);
+let primaryColour = new Colour(0, 0, 0, 1);
 let secondaryColour = new Colour(0, 255, 0, 1);
 let overwriteColours = false;
+export const setOverwriteColours = bool => overwriteColours = bool;
+
 export const getToolColour = (mouseButton) => {
     return mouseButton == 0 ? primaryColour : secondaryColour;
+}
+
+export const setToolColour = (mouseButton, colour) => {
+    if(mouseButton == 0) primaryColour = colour;
+    else if(mouseButton == 2) secondaryColour = colour;
 }
 
 // =========================================================== //
@@ -72,7 +84,7 @@ export const applyChanges = (pixelArray) => {
                 operationEntry[x][y] = pixelArray[x][y];
 
                 // Changes the pixel on the canvas
-                setPixel(x, y, pixelArray[x][y]);
+                setPixel(x, y, pixelArray[x][y], overwriteColours);
             } 
         }
     }
