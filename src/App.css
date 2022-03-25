@@ -1,18 +1,30 @@
 * {
   box-sizing: border-box;
   font-size: 16px;
+  /* color: #2f2f2f; */
+  color: white;
+  background-color: #363636;
 }
 
-.tool_box{
+.tool_box {
   width: 10%;
   height: 100%;
   background-color: rgba(255, 0, 0);
 }
 
-.app{
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+/* .app{
   width: 100vw;
   height: 100vh;
-}
+} */
+
+/*=================== Universal Styles ===================*/
+/*========================================================*/
 
 /* .App {
   text-align: center;
