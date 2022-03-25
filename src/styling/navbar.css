@@ -1,7 +1,11 @@
 .main_nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   width: 80vw;
   margin: 0 auto;
+}
+
+.main_nav a {
+  margin-left: 1em;
 }

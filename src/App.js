@@ -9,9 +9,15 @@ import { Login } from "./Components/Login";
 import { Profile } from "./Components/Profile";
 import { Settings } from "./Components/Settings";
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { faCheckSquare, faCoffee } from "@fortawesome/free-solid-svg-icons";
+
 const App = () => {
+  library.add(fab, faCheckSquare, faCoffee);
   return (
     <div>
+      <FontAwesomeIcon icon={faGear} />
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -24,6 +30,8 @@ const App = () => {
           <Route path='*' element={<p>404 Not Found</p>} />
         </Routes>
         <Footer />
+        <FontAwesomeIcon icon='check-square' />
+        Your <FontAwesomeIcon icon='coffee' /> is hot and ready!
       </BrowserRouter>
     </div>
   );
