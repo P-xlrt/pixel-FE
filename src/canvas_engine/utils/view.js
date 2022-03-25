@@ -1,4 +1,4 @@
-import Drawing from "./drawing.js";
+import { getImageSize } from "./drawing.js";
 import Colour from "./colour.js";
 
 const canvas_container = document.getElementById("canvas_container");
@@ -35,7 +35,7 @@ let canvasOriginalSizeY = 0;
 let pixelSize = 50;
 
 // Converts the position of the client to a pixel coordinate on the canvas
-const clientToCanvasCoordinate = (clientX, clientY) => {
+export const clientToCanvasCoordinate = (clientX, clientY) => {
     const canvas_position = canvas_drawing.getBoundingClientRect();
     return [Math.floor((clientX - canvas_position.left) / pixelSize / zoom), Math.floor((clientY - canvas_position.top) / pixelSize / zoom)];
 }
@@ -58,7 +58,7 @@ const applyPosition = () => {
     redrawGrid();
 }
 
-const offsetPosition = (cameraOffsetX, cameraOffsetY) => {
+export const offsetPosition = (cameraOffsetX, cameraOffsetY) => {
     cameraX += cameraOffsetX / zoom;
     cameraY += cameraOffsetY / zoom;
     applyPosition();
@@ -80,7 +80,7 @@ const applyZoom = (x, y) => {
     redrawGrid();
 }
 
-const changeZoom = (delta, clientX = screenHalfX, clientY = screenHalfY) => {
+export const changeZoom = (delta, clientX = screenHalfX, clientY = screenHalfY) => {
     zoom -= (delta / 250); // Zoom speed depends on the image size?
 
     if(delta > 0){
@@ -116,10 +116,9 @@ const changeZoom = (delta, clientX = screenHalfX, clientY = screenHalfY) => {
 // Set up grid's line drawing styling
 gridCtx.fillStyle = "black";
 gridCtx.lineWidth = 2;
-
 gridCtx.setLineDash([]);
 
-const redrawGrid = () => {
+export const redrawGrid = () => {
 
     // Reset the grid's image and size
     const spacing = pixelSize * zoom;
@@ -143,7 +142,7 @@ const redrawGrid = () => {
     }
 
     const yDif = (gridPos.top - canvasPos.top) % spacing;
-    for(let y = gridPos.top; y < gridPos.bottom + 200; y += spacing){ // The 200 is needed. Don't ask why.
+    for(let y = gridPos.top; y < gridPos.bottom; y += spacing){ // for(let y = gridPos.top; y < gridPos.bottom + 200; y += spacing){ 
         if(y > canvasPos.top && y < canvasPos.bottom){
             gridCtx.fillRect(canvasPos.left - gridPos.left, y - yDif - gridPos.top - 1, canvasPos.width, 2);
         }
@@ -216,20 +215,14 @@ const redrawGrid = () => {
     //         gridCtx.fillRect(0, (y - canvasPos.top) / zoom - 1, canvas_grid.width, 2)
     //     }
     // }
-
-
-    
-    
-    
-
 }
 
-const applyResize = () => {
+export const applyResize = () => {
     zoom = 1;
     screenHalfX = canvas_container.getBoundingClientRect().left + canvas_container.clientWidth / 2;
     screenHalfY = canvas_container.getBoundingClientRect().top + canvas_container.clientHeight / 2;
 
-    const [imageSizeX, imageSizeY] = Drawing.getImageSize();
+    const [imageSizeX, imageSizeY] = getImageSize();
     const canvasWHRatio = imageSizeX / imageSizeY;
     const viewportX = canvas_container.clientWidth / 1.5;
     const viewportY = canvas_container.clientHeight / 1.5;
@@ -264,5 +257,3 @@ const applyResize = () => {
     resetCameraLocation();
     redrawGrid();
 }
-
-export default {offsetPosition, changeZoom, applyResize, clientToCanvasCoordinate, redrawGrid};
