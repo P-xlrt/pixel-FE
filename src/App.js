@@ -15,14 +15,19 @@ import { Settings } from "./Components/Settings";
 
 const App = () => {
   // library.add(fab, faCheckSquare, faCoffee);
+  // const [isShowLogin, setIsShowLogin] = useState(true);
   return (
-    <div className="app">
+    <div className='app'>
       {/* <FontAwesomeIcon icon={faGear} /> */}
       <BrowserRouter>
-        <Navbar/>
-
+        <Navbar />
+        <div className='main_wrap'>
+          {/* Components should be placed within the main tag  */}
+          <Landing />
+          <Gallery />
+          <Profile />
+        </div>
         <Routes>
-          {/* <Route path='/' element={<App />} /> */}
           <Route path='/login' element={<Login />} />
           <Route path='/settings' element={<Settings />} />
           <Route path='/gallery' element={<Gallery />} />
@@ -30,9 +35,9 @@ const App = () => {
           <Route path='/profile' element={<Profile />} />
           <Route path='/landing' element={<Landing />} />
           <Route path='*' element={<p>404 Not Found</p>} />
-        </Routes>  
-        
-        <Footer/>
+        </Routes>
+
+        <Footer />
         {/* <FontAwesomeIcon icon='check-square' />
         Your <FontAwesomeIcon icon='coffee' /> is hot and ready! */}
       </BrowserRouter>
