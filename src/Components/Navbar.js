@@ -25,7 +25,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className='main-nav'>
+      <nav className='navbar'>
         <Link to='/gallery' className='navbar-logo'>WebsiteLogo</Link>
         <div className='menu-icon' onClick={handleClick}>
           <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
@@ -43,10 +43,12 @@ export const Navbar = () => {
           </li>
           <li className='nav-item'
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}>
-            <Link to='/' className='nav-links' onClick={closeMobileMenu}>
-              Menu
-              </Link>
+            onMouseLeave={onMouseLeave}
+            onClick={closeMobileMenu}
+            id="nav-links">
+            {/* <Link to='/' className='nav-links' onClick={closeMobileMenu}> */}
+              Menu <i className='fas fa-caret-down' />
+              {/* </Link> */}
               {dropdown && <Dropdown />}
           </li>
 
