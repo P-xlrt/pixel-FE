@@ -1,34 +1,45 @@
-#tool_box{
-    width: 10%;
-    height: 100%;
-    background-color: rgba(255, 0, 0);
-}  
+body{
+    overflow: hidden;
+}
+
+#canvas_page_body {
+    background-color: blue;
+    width: 100%;
+    height: 800px;
+    margin: 0;
+    z-index: -1;
+    overflow: hidden;
+}
 
 .flex_container {
     display: flex;
     width: 100%;
     height: 100%;
+    z-index: 1;
+    
 }
 
+#tool_box{
+    width: 10%;
+    height: 100%;
+    background-color: #FFFFFF;
+    z-index: 1;
+}  
+
 #canvas_container {
-    background-color: green;
-    width: 80%;
+    background-color: #333333;
+    width: 100%;
     height: 100%;
 }
+
+
 
 #canvas_preview{
     background-color: rgba(0, 0, 0, 0);
     position: absolute;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
-}
-
-#canvas_grid{
-    background-color: rgba(0, 0, 0, 0);
-    width: 100%;
-    height: 100%;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
+    z-index: 1;
 }
 
 #canvas_interaction {
@@ -39,3 +50,13 @@
     image-rendering: crisp-edges;
     z-index: initial;
 } 
+
+#canvas_grid{
+    background-color: rgba(0, 0, 0, 0);
+    width: inherit;
+    height: inherit;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    position: absolute;
+    z-index: 3;
+}

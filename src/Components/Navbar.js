@@ -26,9 +26,7 @@ export const Navbar = () => {
   return (
     <>
       <nav className='navbar'>
-        <Link to='/gallery' className='navbar-logo'>
-          WebsiteLogo
-        </Link>
+        <Link to='/gallery' className='navbar-logo'>WebsiteLogo</Link>
         <div className='menu-icon' onClick={handleClick}>
           <i className={click ? "fas fa-times" : "fas fa-bars"} />
         </div>
@@ -50,9 +48,9 @@ export const Navbar = () => {
             onClick={closeMobileMenu}
             id='nav-links'
           >
-            {/* <Link to='/' className='nav-links' onClick={closeMobileMenu}> */}
+            
             Menu <i className='fas fa-caret-down' />
-            {/* </Link> */}
+           
             {dropdown && <Dropdown />}
           </li>
         </ul>

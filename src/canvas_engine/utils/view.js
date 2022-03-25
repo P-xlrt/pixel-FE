@@ -1,17 +1,31 @@
 import { getImageSize } from "./drawing.js";
 import Colour from "./colour.js";
 
-const canvas_container = document.getElementById("canvas_container");
-const canvas_drawing = document.getElementById("canvas_interaction");
-const drawingCtx = canvas_drawing.getContext("2d");
-const canvas_preview = document.getElementById("canvas_preview");
-const previewCtx = canvas_preview.getContext("2d");
-const canvas_grid = document.getElementById("canvas_grid");
-const gridCtx = canvas_grid.getContext("2d");
+// Stores references to the HTML elements
+let canvas_container, canvas_drawing, drawingCtx, canvas_preview, previewCtx, canvas_grid, gridCtx;
 
 // Get the screen coordinates of the middle of the canvas' container
-let screenHalfX = canvas_container.getBoundingClientRect().left + canvas_container.clientWidth / 2;
-let screenHalfY = canvas_container.getBoundingClientRect().top + canvas_container.clientHeight / 2;
+let screenHalfX = 0;
+let screenHalfY = 0;
+
+export const setupView = () => {
+    
+    canvas_container = document.getElementById("canvas_container");
+    canvas_drawing = document.getElementById("canvas_interaction");
+    drawingCtx = canvas_drawing.getContext("2d");
+    canvas_preview = document.getElementById("canvas_preview");
+    previewCtx = canvas_preview.getContext("2d");
+    canvas_grid = document.getElementById("canvas_grid");
+    gridCtx = canvas_grid.getContext("2d");
+
+    screenHalfX = canvas_container.getBoundingClientRect().left + canvas_container.clientWidth / 2;
+    screenHalfY = canvas_container.getBoundingClientRect().top + canvas_container.clientHeight / 2;
+
+    // Set up grid's line drawing styling
+    gridCtx.fillStyle = "black";
+    gridCtx.lineWidth = 2;
+    gridCtx.setLineDash([]);
+}
 
 // Tracks the current Canvas element's size
 let canvasCurrentSizeX = 0;
@@ -113,10 +127,7 @@ export const changeZoom = (delta, clientX = screenHalfX, clientY = screenHalfY) 
     applyZoom(canvasOriginalSizeX * zoom, canvasOriginalSizeY * zoom);
 }
 
-// Set up grid's line drawing styling
-gridCtx.fillStyle = "black";
-gridCtx.lineWidth = 2;
-gridCtx.setLineDash([]);
+
 
 export const redrawGrid = () => {
 

@@ -1,5 +1,5 @@
-import Colour from "../utils/colour.js";
-import Tool from "../utils/tool.js";
+import Colour from "../utils/colour";
+import Tool from "../utils/tool";
 
 class Pencil extends Tool {
     tool_started(canvasX, canvasY){

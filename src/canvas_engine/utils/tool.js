@@ -12,6 +12,7 @@ class Tool {
         this._currentY = 0;
     }
     getPixel(x, y){
+        const [imageSizeX, imageSizeY] = this.imageSize; // Gets the image size
         if(x < 0 || x >= imageSizeX || y < 0 || y >= imageSizeY) return null; // Makes sure the pixel coordinates are within the bounds of the image
         return getPixel(x, y); // Returns a Colour class representing the colour of the chosen pixel on the drawing canvas
     }
@@ -65,7 +66,8 @@ class Tool {
     get imageSize(){
         return getImageSize(); // Returns the image size
     }
-
+    tool_selected() {} // OVERRIDE THIS IN EXTENDED CLASSES
+    tool_unselected() {} // OVERRIDE THIS IN EXTENDED CLASSES
     tool_started() {} // OVERRIDE THIS IN EXTENDED CLASSES
     tool_moved() {} // OVERRIDE THIS IN EXTENDED CLASSES
     tool_ended() {} // OVERRIDE THIS IN EXTENDED CLASSES
