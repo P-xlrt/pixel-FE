@@ -1,0 +1,40 @@
+#canvas_component {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 1);
+    z-index: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#canvas_container {
+    background-color: green;
+    width: 90%;
+    height: 95%;
+}
+
+#canvas_preview{
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+#canvas_grid{
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    width: 100%;
+    height: 100%;
+}
+
+#canvas_interaction {
+    background-image: url("./images/empty.png");
+    background-repeat: repeat;
+    position: absolute;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    z-index: initial;
+} 
