@@ -13,22 +13,22 @@ export const Footer = () => {
         <ul>
           <li>
             <a href='#'>
-              <i class='fab fa-facebook fa-lg'></i>
+              <i className='fab fa-facebook fa-lg'></i>
             </a>
           </li>
           <li>
             <a href='#'>
-              <i class='fab fa-instagram fa-lg'></i>
+              <i className='fab fa-instagram fa-lg'></i>
             </a>
           </li>
           <li>
             <a href='#'>
-              <i class='fab fa-twitter fa-lg'></i>
+              <i className='fab fa-twitter fa-lg'></i>
             </a>
           </li>
           <li>
             <a href='#'>
-              <i class='fab fa-pinterest fa-lg'></i>
+              <i className='fab fa-pinterest fa-lg'></i>
             </a>
           </li>
         </ul>
