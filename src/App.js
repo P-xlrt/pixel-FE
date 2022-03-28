@@ -21,12 +21,7 @@ const App = () => {
       {/* <FontAwesomeIcon icon={faGear} /> */}
       <BrowserRouter>
         <Navbar />
-        <div className='main_wrap'>
-          {/* Components should be placed within the main tag  */}
-          <Landing />
-          <Gallery />
-          <Profile />
-        </div>
+
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/settings' element={<Settings />} />

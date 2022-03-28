@@ -1,33 +1,116 @@
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+/* ============================================================= */
+/* ================ Universal Styles =========================== */
+/* ============================================================= */
 * {
   box-sizing: border-box;
   font-size: 16px;
-  /* color: #2f2f2f; */
-  color: white;
-  background-color: #363636;
-  margin: 0;
-  padding: 0;
-
+  font-family: "Work Sans", sans-serif;
+  background-color: #fdfdfd;
 }
 
-.tool_box {
-  width: 10%;
-  height: 100%;
-  background-color: rgba(255, 0, 0);
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
-
-/* .app{
+.app {
   width: 100vw;
   height: 100vh;
-} */
+}
+a {
+  text-decoration: none;
+  color: #2f2f2f;
+}
 
-/*=================== Universal Styles ===================*/
-/*========================================================*/
+button {
+  border-radius: 4px;
+  border: 1px solid hsl(0deg 0% 83% / 50%);
+  font-size: 0.9em;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+/* ============================================================= */
+/* ========================= Navbar ============================ */
+/* ============================================================= */
+
+.navbar ul li a {
+  color: #838383;
+  font-weight: 300;
+  font-size: 1em;
+}
+
+.navbar ul li a:hover {
+  color: #58a4b0;
+  transition: all 300ms ease-in;
+}
+
+.navbar-logo h1 {
+  font-family: "Pacifico", cursive;
+  font-size: 1.2em;
+  margin-right: 1em;
+}
+
+.navbar-logo h1 span {
+  color: #ff49a4;
+  font-size: 0.9em;
+  margin-left: 0.03em;
+  font-family: "Pacifico", cursive;
+}
+
+ul.nav_menu {
+  width: 80vw;
+}
+/* ============================================================= */
+/* ========================= Canvas ============================ */
+/* ============================================================= */
+#canvas_page_body {
+  background-color: #fdfdfd;
+}
+
+#canvas_container {
+  background-color: #494949;
+}
+
+#tool_box {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1em;
+}
+
+#undo_button,
+#redo_button,
+#grid_button,
+#import_button,
+#export_button,
+#export_button,
+#tool_pencil,
+#tool_eraser,
+#tool_colour_picker {
+  margin-bottom: 0.25em;
+}
+
+#undo_button:active,
+#redo_button:active,
+#grid_button:active,
+#import_button:active,
+#export_button:active,
+#export_button:active {
+  background-color: gray;
+  transition: all 300ms linear;
+}
+/* ============================================================= */
+/* ========================== Login ============================ */
+/* ============================================================= */
+
+/*=== Login Button === */
+
+.login_signin {
+  background-color: #2f2f2f;
+  border-radius: 3px;
+}
 
 /* .App {
   text-align: center;

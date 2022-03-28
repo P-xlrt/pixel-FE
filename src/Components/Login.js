@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { createUser, login, tokenLogin } from "../utils";
-import "../styling/login-style.css";
+import "../styling/login.css";
 
 export const Login = ({ user, setUser }) => {
   //set variables
@@ -10,6 +10,9 @@ export const Login = ({ user, setUser }) => {
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
   const [bool, setBool] = useState(false);
+  const [loginMsg, setLoginMsg] = useState(
+    "Already have an account? (Sign-in)"
+  );
 
   useEffect(() => {
     if (localStorage.key("myToken")) {
@@ -52,11 +55,17 @@ export const Login = ({ user, setUser }) => {
           placeholder='Password'
           type='password'
         />
-        <button className='login_btn' type='submit'>
+        <button className='login_btn' type='sign-up'>
           Submit
         </button>
-        <button className='signin_btn' onClick={() => setBool(!bool)}>
-          Log-in or Sign-up
+        <button
+          className='signin_btn'
+          onClick={() => {
+            setBool(!bool);
+            setLoginMsg("Create an Account Instead");
+          }}
+        >
+          {loginMsg} <i className='fas fa-sign-in-alt'></i>
         </button>
       </form>
     </>

@@ -1,0 +1,51 @@
+.form_wrap {
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+  margin: 0 auto;
+  background-color: hsl(0, 0%, 98%);
+  padding: 0.5em;
+  border-radius: 5px;
+  border: 1px solid hsl(0, 0%, 94%);
+  /* position: fixed;
+  top: 10em;
+  right: 35vw;
+  z-index: 2; */
+}
+.form_item {
+  font-family: "Work Sans", sans-serif;
+  font-weight: 300;
+  font-size: 0.85em;
+  margin-bottom: 0.55em;
+  height: 2em;
+  background-color: #efefef;
+  border: 1px solid hsl(0, 0%, 94%);
+  border-radius: 3px;
+  padding: 0.3em;
+}
+
+.login_btn {
+  background-color: #ff49a4;
+  color: #fdfdfd;
+  margin-bottom: 0.5em;
+  height: 3em;
+}
+
+.signin_btn {
+  /* background-color: #b02d49; */
+  height: 3em;
+  /* color: #58a4b0; */
+  font-weight: 200;
+}
+
+.signin_btn:hover,
+.login_btn:hover {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .form_wrap {
+    width: 90vw;
+    margin: 0 auto;
+  }
+}
