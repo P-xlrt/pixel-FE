@@ -12,13 +12,11 @@ export const Canvas = () => {
 
 	return (
 		<div id="canvas_page_body">
-			<div className="flex_container">
-				<Toolbox/>
-				<div id="canvas_container">
-					<canvas id="canvas_grid" width="800" height="800"></canvas>
-					<canvas id="canvas_interaction" width="800" height="800"></canvas>
-					<canvas id="canvas_preview" width="800" height="800"></canvas>
-				</div>
+			<Toolbox/>
+			<div id="canvas_container">
+				<canvas id="canvas_grid" width="800" height="800"></canvas>
+				<canvas id="canvas_interaction" width="800" height="800"></canvas>
+				<canvas id="canvas_preview" width="800" height="800"></canvas>
 			</div>
 		</div>
 	);

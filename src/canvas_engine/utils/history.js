@@ -9,7 +9,7 @@ let operationHistory = [];
 const applyHistory = (array) => { // Looks through the 2D array (If no changes were made, no entries were recorded)
     array[historyPosition].forEach((yArray, x) => {
         yArray.forEach((colour, y) => {
-            setPixel(x, y, colour);
+            setPixel(x, y, colour, true);
         })
     });
 }
@@ -19,8 +19,8 @@ export const undo = () => {
         historyPosition--;
         applyHistory(oldHistory);
     }
-    
 }
+
 export const redo = () => {
     if(historyPosition < operationHistory.length) {
         applyHistory(operationHistory);
