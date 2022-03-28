@@ -1,6 +1,6 @@
 //  Footer -
 import { Link } from "react-router-dom";
-import "../styling/footer-style.css";
+import "../styling/footer.css";
 export const Footer = () => {
   return (
     <section className='footer_wrap'>
