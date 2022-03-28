@@ -3,8 +3,12 @@ import Tool from "../utils/tool.js"; // Imports the tool
 
 class TEMPLATE_TOOL extends Tool { // Must extend the imported tool
 
-    // DO NOT ADD A CONSTRUCTOR
-    // The Tool class' constructor does everything this tool needs to run
+    // The Tool class' constructor does everything this tool needs to run, and thus a constructor for your tool is optional.
+    // If you wish to create a constructor for your tool, make sure the first line inside the constructor is "super()".
+    // constructor(){
+    //     super(); // DO NOT TOUCH THIS LINE
+    //     // CONSTRUCTOR CODE GOES HERE
+    // }
 
     // The function that runs when the mouse buttons are pressed down
     // canvasX and canvasY are the coordinates of where the mouse is on the canvas
@@ -70,4 +74,4 @@ class TEMPLATE_TOOL extends Tool { // Must extend the imported tool
     }
 }
 
-export default Pencil;
+export default TEMPLATE_TOOL;

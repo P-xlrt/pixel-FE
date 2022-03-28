@@ -3,19 +3,12 @@ body {
 }
 
 #canvas_page_body {
-  background-color: blue;
   width: 100%;
-  height: 800px;
+  height: calc(100% - 50px);
   margin: 0;
-  z-index: -1;
   overflow: hidden;
-}
-
-.flex_container {
+  position: absolute; /* DO NOT CHANGE THIS */
   display: flex;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
 }
 
 #tool_box {
@@ -23,6 +16,7 @@ body {
   height: 100%;
   background-color: #ffffff;
   z-index: 1;
+  margin: 0;
 }
 
 #canvas_container {
@@ -56,4 +50,129 @@ body {
   image-rendering: crisp-edges;
   position: absolute;
   z-index: 3;
+}
+
+#toggles, #one-off, #tools{
+  margin-bottom: 10px;
+}
+
+#colour_picker {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+#selectPrimarySecondary{
+  height: 20%;
+  width: 100%;
+  display: flex;
+}
+
+#selectPrimarySecondary_select{
+  display: initial;
+  height: 100%;
+  width: 30%;
+  position: relative;
+}
+
+#primaryColourBox, #secondaryColourBox{
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  background-image: url("./images/empty.png");
+  border: 1px solid #777777;
+}
+
+#primaryColourBox {
+  left: 5px;
+  top: 5px;
+  z-index: 1;
+}
+
+#secondaryColourBox {
+  bottom: 5px;
+  right: 5px;
+  z-index: 0;
+}
+
+#swapColourBox{
+  position: absolute;
+  bottom: 1px;
+  left: 1px;
+  width: 12px;
+  height: 12px;
+  background-color: black;
+}
+
+#selectPrimarySecondary_text{
+  height: 100%;
+  width: 70%;
+  align-items: center;
+}
+
+#selectPrimarySecondary_text p {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 150%;
+}
+
+#sliders{
+  width: 100%;
+  height: 80px;
+}
+
+.sliderContainer{
+  position: relative;
+  width: 65%;
+  height: 100%;
+}
+
+#number_red, #number_green, #number_blue, #number_alpha{
+  width: 35%;
+}
+
+#background_red, #background_green, #background_blue, #background_alpha, #slider_red, #slider_blue, #slider_green, #slider_alpha{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: 0;
+}
+
+.slider{
+  outline: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.settingsContainer{
+  width: 90%;
+  height: 20px;
+  margin: 5px auto 5px auto;
+  position: relative;
+  display: flex;
+}
+
+#background_red{
+  background-color: red;
+}
+
+#background_green{
+  background-color: green;
+}
+
+#background_blue {
+  background-color: blue;
+}
+
+#background_alpha{
+  background-image: url("./images/empty.png");
+}
+
+
+#hex_input{
+  width: 100%;
 }
