@@ -1,5 +1,8 @@
+//@ts-check
 
 
+// requires a token on the browser side
+// should the arguments be an object?
 export const saveImage = async (imgDataUrl, publicBool, title) => {
     try {
         const response = await fetch(`${process.env.REACT_APP_REST_API}image`, {
@@ -19,12 +22,12 @@ export const saveImage = async (imgDataUrl, publicBool, title) => {
 };
 
 // requires useStates to keep track of amount of items per page and page number
-// returns an imagePack object that is grabbed with the setImages useState
-// then you get images.count, used to calculate the number of pages the user can click on
-// and images.rows[] where element is an image object with the following values: "id","title":"titled","public":true,"img":"this would be the dataURL for that image","createdAt":"2022-03-24T23:50:44.000Z","updatedAt":"2022-03-24T23:50:44.000Z","UserId":7
-// to get the image dataUrl: images.rows[0].img 
-// or for its id that should probably be its key:
+// returns an array that is grabbed with the setImages useState
+// then you get images[] where each element is an image object with the following properties: "id", "title", "public" (a boolean), "img" (the dataURL as a string), "createdAt", "updatedAt", and the "UserId":7
+// so get the image dataUrl with: images[0].img
+// or for the id that should probably be used its key:
 // images.rows[0].id
+// time format for createdAt and updatedAt: "2022-03-24T23:50:44.000Z"
 export const grabImages = async (setImages, setTotalImgQty, itemsPerPage, pageNumber, targetUser) => {
 
     let target = "all";
@@ -44,8 +47,16 @@ export const grabImages = async (setImages, setTotalImgQty, itemsPerPage, pageNu
     }
 };
 
-// curl -X GET  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNjQ4MjU2MTI2fQ.-Mw8HX3Yj-clm7yXLhTubAnmHkU0N9SjPieNUpyogPk" -H 'Content-Type: application/json' http://localhost:5000/mygallery/2/1
-export const grabAllImages = async (setImages, setTotalImgQty, itemsPerPage, pageNumber) => {
+// requires useStates to keep track of amount of items per page and page number
+// requires a token on the browser side
+// requires useStates to keep track of amount of items per page and page number
+// returns an array that is grabbed with the setImages useState
+// then you get images[] where each element is an image object with the following properties: "id", "title", "public" (a boolean), "img" (the dataURL as a string), "createdAt", "updatedAt", and the "UserId":7
+// so get the image dataUrl with: images[0].img
+// or for the id that should probably be used its key:
+// images.rows[0].id
+// time format for createdAt and updatedAt: "2022-03-24T23:50:44.000Z"
+export const grabAllMyImages = async (setImages, setTotalImgQty, itemsPerPage, pageNumber) => {
 
     try {
         const response = await fetch(`${process.env.REACT_APP_REST_API}mygallery/${itemsPerPage}/${pageNumber}`, {
@@ -60,3 +71,36 @@ export const grabAllImages = async (setImages, setTotalImgQty, itemsPerPage, pag
     }
 };
 
+// requires a token on the browser side
+// updateObj should provide {imgId, imgDataUrl, title, publicBool}
+export const updateImage = async (updateObj) => {
+
+    try {
+        if (!updateObj.title) {
+            delete updateObj.title;
+        }
+
+        const response = await fetch(`${process.env.REACT_APP_REST_API}image`, {
+            method: "PATCH",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("myToken")}` },
+          body: JSON.stringify(updateObj),
+    });
+    const data = await response.json();
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// requires a token on the browser side
+export const deleteImage = async (imgId) => {
+
+    try {
+        const response = await fetch(`${process.env.REACT_APP_REST_API}image/${imgId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("myToken")}` },
+    });
+    const data = await response.json();
+    } catch (error) {
+        console.log(error);
+    }
+};
