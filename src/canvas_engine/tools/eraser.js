@@ -1,6 +1,6 @@
 import Colour from "../utils/colour";
 import Tool from "../utils/tool";
-import { setPixel, setOverwriteColours } from "../utils/drawing"
+import { setPixel, setOverwriteColours, getOverwriteColours} from "../utils/drawing"
 
 const eraserColour = new Colour(0, 0, 0, 0);
 const overlayColour = new Colour(0, 0, 0, 0.5);
@@ -19,10 +19,11 @@ class Eraser extends Tool {
         this.setPixel(canvasX, canvasY);
     }
     tool_selected(){
+        this._overwriteSettings = getOverwriteColours();
         setOverwriteColours(true);
     }
     tool_unselected(){
-        setOverwriteColours(false);
+        setOverwriteColours(this._overwriteSettings);
     }
 }
 

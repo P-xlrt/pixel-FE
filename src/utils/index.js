@@ -47,3 +47,41 @@ export const tokenLogin = async (setter) => {
     console.log(error);
   }
 };
+
+
+export const deleteUser = async (user) => {
+  try {
+      const response = await fetch(`${process.env.REACT_APP_REST_API}user/username/${user}`, {
+          method: "DELETE",
+          headers: {"Authorization": `Bearer ${localStorage.getItem("myToken")}`}, });
+          localStorage.clear();
+          window.location.reload(false);
+       await response.json();
+  } catch (error) {
+      console.log(error);
+  }
+};
+
+
+
+export const updateOne = async (username, passUpdate) => {
+  try {
+      const response = await fetch(`${process.env.REACT_APP_REST_API}user`,{
+          method: "PATCH",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("myToken")}`,
+      },
+          body: JSON.stringify({
+              username: username,
+             password: passUpdate
+              })
+          });
+      const data = await response.JSON()
+      if (!data.msg) {
+          throw new Error(data.err)
+      }
+  } catch (error) {
+      console.log()
+  }
+};

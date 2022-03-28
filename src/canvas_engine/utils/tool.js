@@ -1,5 +1,5 @@
 import Colour from "./colour.js";
-import { getToolColour, getImageSize, getPixel, setPixel, applyChanges } from "./drawing.js" // Drawing = { applyChanges, setPixel, getPixel, getImageSize }
+import { getToolColour, getImageSize, getPixel, setPixel, applyChanges, clearPreviewCanvas } from "./drawing.js";
 import { clientToCanvasCoordinate } from "./view.js";
 
 const emptyColour = new Colour(0, 0, 0, 0);
@@ -10,6 +10,7 @@ class Tool {
         this._modifiedPixels = [];
         this._currentX = 0;
         this._currentY = 0;
+        this._removePreviewOnEnd = true;
     }
     getPixel(x, y){
         const [imageSizeX, imageSizeY] = this.imageSize; // Gets the image size
@@ -45,7 +46,7 @@ class Tool {
         if(mouseButton !== this.started) return; // Don't end if the mouse button isn't the same as the currently used one
         const [x, y] = clientToCanvasCoordinate(clientX, clientY); // Get the pixel coordinates under the mouse
         this.tool_ended(x, y); // Run the tool_ended function
-        applyChanges(this._modifiedPixels); // Sends the operation over to the canvas drawing code
+        applyChanges(this._modifiedPixels, this._removePreviewOnEnd); // Sends the operation over to the canvas drawing code
         this._started = null; // Reset the tool
     }
     mouseMove(clientX, clientY){
@@ -57,6 +58,9 @@ class Tool {
             this.tool_moved(x, y); // Run the tool_moved function
         }
     }
+    clearPreview(){
+        clearPreviewCanvas();
+    }
     get started(){
         return this._started; // Get the mouse button used to start the tool. null if the tool has yet to be started.
     }
@@ -65,6 +69,9 @@ class Tool {
     }
     get imageSize(){
         return getImageSize(); // Returns the image size
+    }
+    specialType(){
+        return null;
     }
     tool_selected() {} // OVERRIDE THIS IN EXTENDED CLASSES
     tool_unselected() {} // OVERRIDE THIS IN EXTENDED CLASSES
