@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { changeHex, changeSlider, setOverwriteColours, getOverwriteColours, getDataURL, swapColours, updateModifyingColour } from "../canvas_engine/utils/drawing";
-import { commenceUndo, commenceRedo, exportImage, setTool, copy, paste, startMove, changeSelection, toggleGrid } from "../canvas_engine/utils/canvas_client";
+import { commenceUndo, commenceRedo, exportImage, setTool, copy, paste, startMove, changeSelection, toggleGrid, cut } from "../canvas_engine/utils/canvas_client";
 import { saveImage, updateImage } from "../utils/imageRequests"; 
 import Pencil from "../canvas_engine/tools/pencil";
 import Eraser from "../canvas_engine/tools/eraser";
@@ -59,6 +59,7 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
                 <button id="import_button" onClick={tryImport}>Import</button>
                 <button id="export_button" onClick={exportImage}>Export</button>
                 <button id="copy_button" onClick={copy}>Copy</button>
+                <button id="cut_button" onClick={cut}>Cut</button>
                 <button id="paste_button" onClick={paste}>Paste</button>
                 <button id="undo_button" onClick={commenceUndo}>Undo</button>
                 <button id="redo_button" onClick={commenceRedo}>Redo</button>
@@ -73,7 +74,6 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
                 <button id="tool_square" onClick={() => setTool(new Square_Tool())}>Square</button>
                 <button id="tool_circle" onClick={() => setTool(new Circle_Tool())}>Circle</button>
             </div>
-
             <div id="colour_picker">
                 <div id="selectPrimarySecondary">
                     <div id="selectPrimarySecondary_select">

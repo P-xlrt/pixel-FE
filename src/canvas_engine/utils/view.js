@@ -151,8 +151,8 @@ export const redrawGrid = () => {
 
 export const applyResize = () => {
     zoom = 1;
-    screenHalfX = canvas_container.getBoundingClientRect().left + canvas_container.clientWidth / 2;
-    screenHalfY = canvas_container.getBoundingClientRect().top + canvas_container.clientHeight / 2;
+    screenHalfX = canvas_container.clientWidth / 2;
+    screenHalfY = canvas_container.clientHeight / 2;
 
     const [imageSizeX, imageSizeY] = getImageSize();
     const canvasWHRatio = imageSizeX / imageSizeY;

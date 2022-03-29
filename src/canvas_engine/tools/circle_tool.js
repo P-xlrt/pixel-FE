@@ -23,7 +23,6 @@ class Circle_Tool extends Tool { // Must extend the imported tool
                 if(Math.abs(this.calculateMagnitude(this._originX - x, this._originY - y) - radius) < 1) this.setPixel(x, y, this.toolColour);
             }
         }
-   
     }
 
     tool_started(canvasX, canvasY){ 
