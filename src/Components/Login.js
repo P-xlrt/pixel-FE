@@ -10,9 +10,9 @@ export const Login = ({ user, setUser }) => {
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
   const [bool, setBool] = useState(false);
-  const [loginMsg, setLoginMsg] = useState(
-    "Already have an account? (Sign-in)"
-  );
+  // const [loginMsg, setLoginMsg] = useState(
+  //   "Already have an account? (Sign-in)"
+  // );
 
   useEffect(() => {
     if (localStorage.key("myToken")) {
@@ -62,10 +62,13 @@ export const Login = ({ user, setUser }) => {
           className='signin_btn'
           onClick={() => {
             setBool(!bool);
-            setLoginMsg("Create an Account Instead");
+            // setLoginMsg("Create an Account Instead");
           }}
         >
-          {loginMsg} <i className='fas fa-sign-in-alt'></i>
+          {!bool
+            ? "Already have an account? (Sign-in)"
+            : "Create an Account Instead"}
+          <i className='fas fa-sign-in-alt'></i>
         </button>
       </form>
     </>
