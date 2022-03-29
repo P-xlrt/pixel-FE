@@ -1,0 +1,41 @@
+.profileContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.profileContainer h1 {
+    width: 100%;
+}
+
+.profileData {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 15vh;
+    padding: 10px;
+}
+
+.profileData img {
+    max-width: 200;
+    max-height: 200;
+}
+
+.userGallery {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.userGallery h2 {
+    width: 100%;
+}
+
+.userImages {
+    width: 30%;
+}
