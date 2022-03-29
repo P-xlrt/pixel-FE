@@ -12,7 +12,7 @@ body {
 }
 
 #tool_box {
-  width: 10%;
+  min-width: 175px;
   height: 100%;
   background-color: #ffffff;
   z-index: 1;
@@ -52,8 +52,8 @@ body {
   z-index: 3;
 }
 
-#toggles, #one-off, #tools{
-  margin-bottom: 10px;
+#toggles, #one-off, #tools, #colour_picker{
+  margin-top: 10px;
 }
 
 #colour_picker {
@@ -144,12 +144,31 @@ body {
 }
 
 .slider{
-  outline: none;
-  background-color: rgba(0, 0, 0, 0);
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(0, 0, 0, 0);
 }
 
-.settingsContainer{
-  width: 90%;
+/* Edge */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 3px;
+  height: 25px;
+  background: rgba(0, 0, 0, 1);
+  border: 1px solid white;
+}
+
+/* Firefox */
+.slider::-moz-range-thumb {
+  width: 1px;
+  height: 100%;
+  background: rgba(0, 0, 0, 1);
+  border: 1px solid white;
+}
+
+.toolboxSettingsContainer{
+  width: 95%;
   height: 20px;
   margin: 5px auto 5px auto;
   position: relative;
