@@ -25,9 +25,10 @@ export const Gallery = () => {
   return (
     <div className="galleryContainer">
       <h1>Gallery</h1>
-      <div className="galleryImage">
+      <div id="galleryImage">
         {images.map((imgObj, index) => {
           return (
+            // <img src={imgObj.img}></img>
             <ImgContainer key={imgObj.id} imgObj={imgObj}/>
           );
         })}
