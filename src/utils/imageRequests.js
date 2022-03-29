@@ -62,7 +62,7 @@ export const grabAllMyImages = async (setImages, setTotalImgQty, itemsPerPage, p
     try {
         const response = await fetch(`${process.env.REACT_APP_REST_API}mygallery/${itemsPerPage}/${pageNumber}`, {
           method: "GET",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("myToken")}` },
+          headers: { Authorization: `Bearer ${localStorage.getItem("myToken")}` },
         });
         const data = await response.json();
         setImages(data.imagePack.rows);
@@ -97,8 +97,8 @@ export const deleteImage = async (imgId) => {
 
     try {
         const response = await fetch(`${process.env.REACT_APP_REST_API}image/${imgId}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("myToken")}` },
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${localStorage.getItem("myToken")}` },
     });
     const data = await response.json();
     } catch (error) {
