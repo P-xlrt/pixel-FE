@@ -7,6 +7,7 @@ import Eraser from "../tools/eraser";
 import Colour_Picker from "../tools/colour_picker";
 import Selection_Tool from "../tools/selection_tool";
 import Move_Tool from "../tools/move_tool";
+import Flood_Fill from "../tools/flood_fill";
 
 let canvas_container, canvas_drawing, drawingCtx, canvas_preview, previewCtx, canvas_grid, gridCtx;
 
@@ -82,7 +83,7 @@ export const windowKeyDown = (e) => {
                 keyDebounce = e.code;
                 paste();
             }
-            else if(e.code == "KeyA"){
+            else if(e.code == "KeyA"){ // Select all
                 keyDebounce = e.code;
                 selX1 = 0; selX2 = canvas_drawing.width - 1;
                 selY1 = 0; selY2 = canvas_drawing.height - 1;
@@ -108,6 +109,10 @@ export const windowKeyDown = (e) => {
         else if(e.code == "KeyP"){
             keyDebounce = e.code;
             setTool(new Pencil());
+        }
+        else if(e.code == "KeyF"){
+            keyDebounce = e.code;
+            setTool(new Flood_Fill());
         }
     }
 }
