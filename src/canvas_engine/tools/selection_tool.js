@@ -2,7 +2,8 @@ import Colour from "../utils/colour.js";
 import Tool from "../utils/tool.js"; // Imports the tool
 import { setPixel } from "../utils/drawing";
 
-const overlayColour = new Colour(0, 0, 0, 0.5);
+const overlayColour1 = new Colour(0, 0, 0, 0.2);
+const overlayColour2 = new Colour(255, 255, 255, 0.2);
 const emptyColour = new Colour(0, 0, 0, 0);
 
 class Selection_Tool extends Tool { // Must extend the imported tool
@@ -33,7 +34,7 @@ class Selection_Tool extends Tool { // Must extend the imported tool
         // Add new overlay
         for(let x = Math.min(this._startPosX, this._endPosX); x <= Math.max(this._startPosX, this._endPosX); x++){
             for(let y = Math.min(this._startPosY, this._endPosY); y <= Math.max(this._startPosY, this._endPosY); y++){
-                this.setPixel(x, y, overlayColour);
+                this.setPixel(x, y, (x + y) % 2 == 0 ? overlayColour1 : overlayColour2);
             }
         }
     }
@@ -59,7 +60,6 @@ class Selection_Tool extends Tool { // Must extend the imported tool
     }
 
     tool_moved(canvasX, canvasY){ 
-
         this.removeOverlay();
 
         // Change positions

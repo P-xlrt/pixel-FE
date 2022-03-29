@@ -6,6 +6,9 @@ import Pencil from "../canvas_engine/tools/pencil";
 import Eraser from "../canvas_engine/tools/eraser";
 import Colour_Picker from "../canvas_engine/tools/colour_picker";
 import Selection_Tool from "../canvas_engine/tools/selection_tool";
+import Flood_Fill from "../canvas_engine/tools/flood_fill";
+import Square_Tool from "../canvas_engine/tools/square_tool";
+import Circle_Tool from "../canvas_engine/tools/circle_tool";
 
 export const Toolbox = ({imageID, imageIDSetter}) => {
 
@@ -67,6 +70,9 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
                 <button id="tool_colour_picker" onClick={() => setTool(new Colour_Picker())}>Picker</button>
                 <button id="tool_selection" onClick={() => setTool(new Selection_Tool(changeSelection))}>Select</button>
                 <button id="tool_move" onClick={startMove}>Move</button>
+                <button id="tool_fill" onClick={() => setTool(new Flood_Fill())}>Fill</button>
+                <button id="tool_square" onClick={() => setTool(new Square_Tool())}>Square</button>
+                <button id="tool_circle" onClick={() => setTool(new Circle_Tool())}>Circle</button>
             </div>
 
             <div id="colour_picker">
