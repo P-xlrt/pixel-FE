@@ -6,7 +6,7 @@ export const createUser = async (username, email, pass, setter) => {
       body: JSON.stringify({
         username: username,
         email: email,
-        password: pass,
+        pass: pass,
       }),
     });
     const data = await response.json();
@@ -24,7 +24,7 @@ export const login = async (username, pass, setter) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         username: username,
-        password: pass,
+        pass: pass,
       }),
     });
     const data = await response.json();
@@ -48,40 +48,41 @@ export const tokenLogin = async (setter) => {
   }
 };
 
-
 export const deleteUser = async (user) => {
   try {
-      const response = await fetch(`${process.env.REACT_APP_REST_API}user/username/${user}`, {
-          method: "DELETE",
-          headers: {"Authorization": `Bearer ${localStorage.getItem("myToken")}`}, });
-          localStorage.clear();
-          window.location.reload(false);
-       await response.json();
+    const response = await fetch(
+      `${process.env.REACT_APP_REST_API}user/username/${user}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${localStorage.getItem("myToken")}` },
+      }
+    );
+    localStorage.clear();
+    window.location.reload(false);
+    await response.json();
   } catch (error) {
-      console.log(error);
+    console.log(error);
   }
 };
 
-
-
-export const updateOne = async (username, passUpdate) => {
+export const updateUser = async (username, passUpdate) => {
   try {
-      const response = await fetch(`${process.env.REACT_APP_REST_API}user`,{
-          method: "PATCH",
-          headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${localStorage.getItem("myToken")}`,
+    const response = await fetch(`${process.env.REACT_APP_REST_API}user`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("myToken")}`,
       },
-          body: JSON.stringify({
-              username: username,
-             password: passUpdate
-              })
-          });
-      const data = await response.JSON()
-      if (!data.msg) {
-          throw new Error(data.err)
-      }
+      body: JSON.stringify({
+        username: username,
+        pass: passUpdate,
+      }),
+    });
+    const data = await response.JSON();
+    if (!data.msg) {
+      throw new Error(data.err);
+    }
   } catch (error) {
-      console.log()
+    console.log();
   }
 };

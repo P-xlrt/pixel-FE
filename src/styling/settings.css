@@ -1,4 +1,4 @@
-.settingsContainer {
+/* .settingsContainer {
     display: flex;
     flex-direction: row;
     padding-right: 20%;
@@ -45,4 +45,56 @@
 
 #deleteAccount {
     color: red;
+} */
+
+/* ========== NKXX ===========*/
+
+.settings_wrap article {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 60vw;
+  margin: 0 auto;
+  padding: 1em;
+  /* border: 1px #d3d3d3 solid; */
+  border-radius: 3px;
+}
+.settings_wrap label {
+  font-weight: 400;
+  text-transform: capitalize;
+}
+
+.settings_wrap figure {
+  margin-bottom: em;
+}
+
+.settings_wrap form {
+  margin-top: 2em;
+}
+
+.settings_wrap input {
+  font-family: "Work Sans", sans-serif;
+  font-weight: 300;
+  font-size: 0.85em;
+  margin-bottom: 0.55em;
+  height: 2em;
+  background-color: #efefef;
+  border: 1px solid hsl(0, 0%, 94%);
+  border-radius: 3px;
+  padding: 0.3em;
+}
+
+.settings_wrap button {
+  background-color: #ff49a4;
+  font-weight: 300;
+  font-size: 0.85em;
+  color: #fdfdfd;
+  margin-bottom: 0.5em;
+  height: 2em;
+}
+
+.settings_wrap figcaption {
+  font-family: "Work Sans", sans-serif;
+  font-weight: 300;
+  font-size: 0.7em;
 }

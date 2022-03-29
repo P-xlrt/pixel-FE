@@ -32,7 +32,7 @@ export const Login = ({ user, setUser }) => {
   };
   return (
     <>
-      {user && <Navigate to='/home' />}
+      {user && <Navigate to='/landing' />}
       <form className='form_wrap' onSubmit={submitHandler}>
         <input
           className='form_item'
@@ -62,12 +62,11 @@ export const Login = ({ user, setUser }) => {
           className='signin_btn'
           onClick={() => {
             setBool(!bool);
-            // setLoginMsg("Create an Account Instead");
           }}
         >
           {!bool
             ? "Already have an account? (Sign-in)"
-            : "Create an Account Instead"}
+            : "Create an Account Instead"}{" "}
           <i className='fas fa-sign-in-alt'></i>
         </button>
       </form>
