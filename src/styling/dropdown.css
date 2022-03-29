@@ -2,9 +2,11 @@
     /* background: red; */
     width: 200px;
     position: absolute;
-    top: 60px;
-    list-style: none;
+    top: 90px;
+    right: 4px;
     text-align: start;
+    list-style: none;
+    z-index: 100;
   }
   
   .dropdown-menu li {
