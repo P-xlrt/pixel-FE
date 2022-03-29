@@ -15,11 +15,14 @@ let imageSizeY = 16;
 
 // Tool variables
 const emptyColour = new Colour(0, 0, 0, 0);
-let primaryColour = new Colour(255, 0, 0, 1);
-let secondaryColour = new Colour(0, 0, 255, 1);
+let primaryColour = new Colour(0, 0, 0, 1);
+let secondaryColour = new Colour(255, 255, 255, 1);
 let overwriteColours = false;
 export const setOverwriteColours = bool => overwriteColours = bool;
-export const getOverwriteColours = () => { return overwriteColours; }
+
+export const getOverwriteColours = () => { 
+    return overwriteColours; 
+}
 
 export const getToolColour = (mouseButton) => {
     return mouseButton == 0 ? primaryColour : secondaryColour;
@@ -51,26 +54,6 @@ export const setupDrawing = () => {
     refreshPrimary();
     refreshSecondary();
 
-    document.getElementById("swapColourBox").addEventListener("click", (e) => {
-        e.preventDefault();
-        const temp = primaryColour;
-        primaryColour = secondaryColour;
-        secondaryColour = temp;
-        refreshPrimary();
-        refreshSecondary();
-        updateModifyingColour(modifyingPrimary);
-    });
-
-    primaryColourBox.addEventListener("click", (e) => {
-        e.preventDefault();
-        updateModifyingColour(true);
-    })
-
-    secondaryColourBox.addEventListener("click", (e) => {
-        e.preventDefault();
-        updateModifyingColour(false);
-    })
-
     // Automatically colours the slider backgrounds
     const red = document.getElementById("background_red").getContext("2d");
     const green = document.getElementById("background_green").getContext("2d");
@@ -88,20 +71,17 @@ export const setupDrawing = () => {
         alpha.fillRect(x, 0, 1, 1);
     }
 
-    rNum.onchange = (e) => {
-        changeSlider(0, e.target.value);
-    }
-    gNum.onchange = (e) => {
-        changeSlider(1, e.target.value);
-    }
-    bNum.onchange = (e) => {
-        changeSlider(2, e.target.value);
-    }
-    aNum.onchange = (e) => {
-        changeSlider(3, e.target.value);
-    }
-
     updateModifyingColour(true);
+}
+
+export const swapColours = (e) => {
+    e.preventDefault();
+    const temp = primaryColour;
+    primaryColour = secondaryColour;
+    secondaryColour = temp;
+    refreshPrimary();
+    refreshSecondary();
+    updateModifyingColour(modifyingPrimary);
 }
 
 // 0 = Red, 1 = Blue, 2 = Green, 3 = Alpha
@@ -150,9 +130,8 @@ export const getImageSize = () => {
     return [imageSizeX, imageSizeY];
 }
 
-
 let modifyingPrimary = true; // True for primary, false for secondary
-const updateModifyingColour = (newModifying) => {
+export const updateModifyingColour = (newModifying) => {
     modifyingPrimary = newModifying;
     modifyingText.innerHTML = "Modifying " + (modifyingPrimary ? "Primary" : "Secondary");
     if(modifyingPrimary){
@@ -177,13 +156,6 @@ const updateSliders = () => {
     aNum.value = aSlider.value;
     hexInput.value = modifyingPrimary ? primaryColour.hex : secondaryColour.hex;
 }
-
-/*
-document.getElementById("MyElement").classList.add('MyClass');
-document.getElementById("MyElement").classList.remove('MyClass');
-if ( document.getElementById("MyElement").classList.contains('MyClass') )
-document.getElementById("MyElement").classList.toggle('MyClass');
-*/
 
 const refreshPrimary = () => {
     primaryCtx.fillStyle = primaryColour.rgb;
@@ -318,4 +290,8 @@ export const deleteSelection = (selX1, selY1, selX2, selY2) => {
     setOverwriteColours(true);
     applyChanges(modifiedPixels, true); // Apply changes
     setOverwriteColours(overwriteSettings); // Put the settings back
+}
+
+export const getDataURL = () => {
+    return canvas_drawing.toDataURL();
 }

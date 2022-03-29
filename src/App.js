@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useState } from "react";
 import { Navbar } from "./Components/Navbar";
 import { Canvas } from "./Components/Canvas";
 import { Footer } from "./Components/Footer";
@@ -16,6 +17,10 @@ import { Settings } from "./Components/Settings";
 const App = () => {
   // library.add(fab, faCheckSquare, faCoffee);
   // const [isShowLogin, setIsShowLogin] = useState(true);
+
+  const [canvasImageURL, setCanvasImageURL] = useState(null);
+  const [canvasImageID, setCanvasImageID] = useState(null);
+
   return (
     <div className='app'>
       {/* <FontAwesomeIcon icon={faGear} /> */}
@@ -25,8 +30,8 @@ const App = () => {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/settings' element={<Settings />} />
-          <Route path='/gallery' element={<Gallery />} />
-          <Route path='/create' element={<Canvas />} />
+          <Route path='/gallery' element={<Gallery imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID}/>} />  {/* export const Gallery = ({imageURLSetter, imageIDSetter}) => { */}
+          <Route path='/create' element={<Canvas imageURL={canvasImageURL} imageURLSetter={setCanvasImageURL} imageID={canvasImageID} imageIDSetter={setCanvasImageID}/>} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/landing' element={<Landing />} />
           <Route path='*' element={<p>404 Not Found</p>} />

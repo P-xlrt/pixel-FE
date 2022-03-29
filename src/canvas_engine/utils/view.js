@@ -1,5 +1,4 @@
 import { getImageSize } from "./drawing.js";
-import Colour from "./colour.js";
 
 // Stores references to the HTML elements
 let canvas_container, canvas_drawing, drawingCtx, canvas_preview, previewCtx, canvas_grid, gridCtx;
@@ -9,7 +8,6 @@ let screenHalfX = 0;
 let screenHalfY = 0;
 
 export const setupView = () => {
-    
     canvas_container = document.getElementById("canvas_container");
     canvas_drawing = document.getElementById("canvas_interaction");
     drawingCtx = canvas_drawing.getContext("2d");
@@ -55,12 +53,10 @@ export const clientToCanvasCoordinate = (clientX, clientY) => {
 }
 
 const applyPosition = () => {
-    // Styling needs "px" at the end because it's CSS
-
     let x = Math.round(screenHalfX - (cameraX * zoom));
     let y = Math.round(screenHalfY - (cameraY * zoom));
     
-    // Set canvas position
+    // Set canvas position // Styling needs "px" at the end because it's CSS
     canvas_drawing.style.left = Math.round(x - canvasCurrentSizeX / 2) + "px";
     canvas_drawing.style.top = Math.round(y - canvasCurrentSizeY / 2) + "px";
 
@@ -85,11 +81,9 @@ const applyZoom = (x, y) => {
     canvas_drawing.style.width = canvasCurrentSizeX + "px";
     canvas_drawing.style.height = canvasCurrentSizeY + "px";
 
-    // Copy other two canvas sizes
+    // Copy other canvas size
     canvas_preview.style.width = canvas_drawing.style.width;
     canvas_preview.style.height = canvas_drawing.style.height;
-    // canvas_grid.style.width = canvas_drawing.style.width;
-    // canvas_grid.style.height = canvas_drawing.style.height;
     applyPosition();
     redrawGrid();
 }
@@ -127,10 +121,7 @@ export const changeZoom = (delta, clientX = screenHalfX, clientY = screenHalfY) 
     applyZoom(canvasOriginalSizeX * zoom, canvasOriginalSizeY * zoom);
 }
 
-
-
 export const redrawGrid = () => {
-
     // Reset the grid's image and size
     const spacing = pixelSize * zoom;
     const gridPos = canvas_grid.getBoundingClientRect();
@@ -138,8 +129,6 @@ export const redrawGrid = () => {
     canvas_grid.height = gridPos.height;
     
     // If the pixel size is too small or the grid is hidden, don't draw lines
-
-
     if(canvas_grid.style.visibility == "hidden" || spacing < 10) return; // Different line size depending on smaller spacing?
     const canvasPos = canvas_drawing.getBoundingClientRect();
     gridCtx.imageSmoothingEnabled = false;
@@ -153,79 +142,11 @@ export const redrawGrid = () => {
     }
 
     const yDif = (gridPos.top - canvasPos.top) % spacing;
-    for(let y = gridPos.top; y < gridPos.bottom; y += spacing){ // for(let y = gridPos.top; y < gridPos.bottom + 200; y += spacing){ 
+    for(let y = gridPos.top; y < gridPos.bottom + 500; y += spacing){ // The +500 is needed. I do not know why.
         if(y > canvasPos.top && y < canvasPos.bottom){
             gridCtx.fillRect(canvasPos.left - gridPos.left, y - yDif - gridPos.top - 1, canvasPos.width, 2);
         }
     }
-
-    // for(let x = (canvasPos.left % spacing); x < gridPos.right; x += spacing){
-    //     if(x > canvasPos.left && x < canvasPos.right){
-    //         count++;
-    //         console.log(count, x)
-    //         gridCtx.fillStyle = Colour.generateRGB(count * 10, 0, 0);
-    //         gridCtx.fillRect(x - (gridPos.left / zoom) - 1, canvasPos.top - gridPos.top + ((count-1) * 5), 2, canvasPos.height);
-    //     }
-    // }
-    // const [imageSizeX, imageSizeY] = Drawing.getImageSize();
-    // canvas_grid.width = imageSizeX * pixelSize;// imageSizeX * spacing; // Old implementations 1 & 2 use imageSizeX * pixelSize
-    // canvas_grid.height = imageSizeY * pixelSize;// * spacing;
-
-
-
-    // Old implementation, would draw every line on the grid (1024x1024 grids were very slow to draw)
-    // for(let x = 1; x < imageSizeX; x++){
-    //     const posX = Math.round(x * spacing);
-    //     gridCtx.beginPath();
-    //     gridCtx.moveTo(posX, 0);
-    //     gridCtx.lineTo(posX, canvas_grid.height);
-    //     gridCtx.stroke();
-    // }
-    // for(let y = 1; y < imageSizeY; y++){
-    //     const posY = Math.round(y * spacing);
-    //     gridCtx.beginPath();
-    //     gridCtx.moveTo(0, posY);
-    //     gridCtx.lineTo(canvas_grid.width, posY);
-    //     gridCtx.stroke();
-    // }
-    
-
-    // Old implementation 2, grid stops drawing when zoomed in too much (max size breached)
-    // const canvasPos = canvas_grid.getBoundingClientRect()
-    // for(let x = canvasPos.left % spacing; x < window.innerWidth; x += spacing){
-    //     if(x > canvasPos.left && x < canvasPos.right){
-    //         const posX = x - canvasPos.left;
-    //         gridCtx.fillRect(posX - 1, 0, 2, canvas_grid.height);
-    //         // gridCtx.beginPath();
-    //         // gridCtx.moveTo(posX, 0);
-    //         // gridCtx.lineTo(posX, canvas_grid.height);
-    //         // gridCtx.stroke();
-    //     }
-    // }
-    // for(let y = canvasPos.top % spacing; y < window.innerHeight; y += spacing){
-    //     if(y > canvasPos.top && y < canvasPos.bottom){
-    //         const posY = y - canvasPos.top
-    //         gridCtx.fillRect(0, posY - 1, canvas_grid.width, 2)
-    //         // gridCtx.beginPath();
-    //         // gridCtx.moveTo(0, posY);
-    //         // gridCtx.lineTo(canvas_grid.width, posY);
-    //         // gridCtx.stroke();
-    //     }
-    // }
-
-
-
-    // Old implementation 3, grid lines are too thick because grid image isn't scaled up
-    // for(let x = canvasPos.left % spacing; x < window.innerWidth; x += spacing){
-    //     if(x > canvasPos.left + 1 && x < canvasPos.right - 1){
-    //         gridCtx.fillRect((x - canvasPos.left) / zoom - 1, 0, 2, canvas_grid.height);
-    //     }
-    // }
-    // for(let y = canvasPos.top % spacing; y < window.innerHeight; y += spacing){
-    //     if(y > canvasPos.top && y < canvasPos.bottom){
-    //         gridCtx.fillRect(0, (y - canvasPos.top) / zoom - 1, canvas_grid.width, 2)
-    //     }
-    // }
 }
 
 export const applyResize = () => {

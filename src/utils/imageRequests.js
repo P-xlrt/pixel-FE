@@ -14,8 +14,8 @@ export const saveImage = async (imgDataUrl, publicBool, title) => {
                 title: title,
           }),
         });
-        // do we need the following line?
-        const data = await response.json();
+        // do we need the following line? Yes we do.
+        return await response.json();
     } catch (error) {
         console.log(error);
     }
@@ -86,7 +86,7 @@ export const updateImage = async (updateObj) => {
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("myToken")}` },
           body: JSON.stringify(updateObj),
     });
-    const data = await response.json();
+    return await response.json();
     } catch (error) {
         console.log(error);
     }
