@@ -17,6 +17,7 @@ import { Settings } from "./Components/Settings";
 const App = () => {
   // library.add(fab, faCheckSquare, faCoffee);
   // const [isShowLogin, setIsShowLogin] = useState(true);
+  const [user, setUser] = useState();
 
   const [canvasImageURL, setCanvasImageURL] = useState(null);
   const [canvasImageID, setCanvasImageID] = useState(null);
@@ -28,10 +29,32 @@ const App = () => {
         <Navbar />
 
         <Routes>
-          <Route path='/login' element={<Login />} />
+          <Route
+            path='/login'
+            element={<Login user={user} setUser={setUser} />}
+          />
           <Route path='/settings' element={<Settings />} />
-          <Route path='/gallery' element={<Gallery imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID}/>} />  {/* export const Gallery = ({imageURLSetter, imageIDSetter}) => { */}
-          <Route path='/create' element={<Canvas imageURL={canvasImageURL} imageURLSetter={setCanvasImageURL} imageID={canvasImageID} imageIDSetter={setCanvasImageID}/>} />
+          <Route
+            path='/gallery'
+            element={
+              <Gallery
+                imageURLSetter={setCanvasImageURL}
+                imageIDSetter={setCanvasImageID}
+              />
+            }
+          />{" "}
+          {/* export const Gallery = ({imageURLSetter, imageIDSetter}) => { */}
+          <Route
+            path='/create'
+            element={
+              <Canvas
+                imageURL={canvasImageURL}
+                imageURLSetter={setCanvasImageURL}
+                imageID={canvasImageID}
+                imageIDSetter={setCanvasImageID}
+              />
+            }
+          />
           <Route path='/profile' element={<Profile />} />
           <Route path='/landing' element={<Landing />} />
           {/* <Route path='*' element={<p>404 Not Found</p>} /> */}

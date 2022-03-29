@@ -5,10 +5,9 @@ import { deleteUser, updateUser } from "../utils";
 export const Settings = () => {
   return (
     <div className='settingsContainer'>
-      <div className='settingsTitle'>
-        <h1>Settings</h1>
-      </div>
-      <div className='settingsOther'>
+      <h1 className='settingsTitle'>Settings</h1>
+
+      {/* <div className='settingsOther'>
         <div className='settings'>
           <h2>Set lading page</h2>
           <input />
@@ -28,7 +27,9 @@ export const Settings = () => {
       <div className='settingsPic'>
         <img src='' alt='user profile image' id='userProfileImage' />
         <h2>Change profile image</h2>
-      </div>
+      </div> */}
+
+      <form></form>
     </div>
   );
 };
