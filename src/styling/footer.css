@@ -1,5 +1,9 @@
 .footer_wrap {
   margin-top: 2em;
+  position:absolute;
+  left:0;
+  bottom:0;
+  right:0;
   /* background-color: #2f2f2f; */
 }
 .footer_wrap h2 {
