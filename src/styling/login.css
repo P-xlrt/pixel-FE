@@ -7,6 +7,8 @@
   padding: 0.5em;
   border-radius: 5px;
   border: 1px solid hsl(0, 0%, 94%);
+  position: relative;
+  top: 10px;
   /* position: fixed;
   top: 10em;
   right: 35vw;
