@@ -105,3 +105,14 @@ export const deleteImage = async (imgId) => {
         console.log(error);
     }
 };
+
+export const getOneImg = async (setCurrentImg, target) => {
+
+    try {
+        const response = await fetch(`${process.env.REACT_APP_REST_API}image/${target}`, { method: "GET"});
+        const imgObj = await response.json();
+        setCurrentImg(imgObj);
+    } catch (error) {
+        console.log(error);
+    }
+};

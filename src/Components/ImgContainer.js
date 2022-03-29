@@ -3,12 +3,11 @@
 
 // Gallery - Comprising both public and private galleries. Grid of images displayed to users
 import "../styling/gallery.css";
-import {  } from "../utils/imageRequests";
-import { useEffect, useState } from "react";
+import { getOneImg } from "../utils/imageRequests";
+import { useState } from "react";
 
 
 // {/* <Route path='/gallery' element={<Gallery imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID}/>} />   */}
-// {/* export const Gallery = ({imageURLSetter, imageIDSetter}) => { */}
 
 
 
@@ -20,31 +19,21 @@ export const ImgContainer = (props) => {
 
   // {"id":7,"title":"Such Wonder","public":true,"img":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAOklEQVRYR+3QuREAMBACMei/aH9NXGCREO6Mus7a5lwmvsltz8RflwABAgQIECBAgAABAgQIEPheYAMDciArUlVDXQAAAABJRU5ErkJggg==","createdAt":"2022-03-28T22:10:32.000Z","updatedAt":"2022-03-28T22:10:32.000Z","UserId":"damien"}
 
-  useEffect(() => {
-    grabImages(setImages, setTotalImgQty, 20, 1, "all");
-  }, []);
   
-  // var myCanvas = document.getElementById('my_canvas_id');
-  // var ctx = myCanvas.getContext('2d');
-  // var img = new Image;
-  // img.onload = function(){
-  //   ctx.drawImage(img,0,0); // Or at whatever offset you like
-  // };
-  // img.src = strDataURI;
+  let localCanvas = document.getElementById('gallery_canvas');
+  var ctx = localCanvas.getContext('2d');
+  var renderedImg = new Image;
+  renderedImg.onload = function(){
+    ctx.drawImage(renderedImg,0,0); // Or at whatever offset you like
+  };
+  renderedImg.src = props.imgObj.img;
   
 
 
   return (
     <div className="ImgContainer">
-        {images.map((imgObj, index) => {
-          return (
-            <div key={index}>
-              <p>{imgObj.title}</p>
-              <img src={imgObj.img} alt="hey"/>
-              <canvas id="${}"></canvas>
-            </div>
-          );
-        })}
+        <h2>{props.imgObj.title}</h2>
+        <canvas id="gallery_canvas"></canvas>
     </div>
   );
 };
