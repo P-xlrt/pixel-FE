@@ -4,6 +4,10 @@
   left:0;
   bottom:0;
   right:0;
+  height: 50px;
+  display: flex;
+  margin: 0;
+  z-index: 2;
   /* background-color: #2f2f2f; */
 }
 .footer_wrap h2 {

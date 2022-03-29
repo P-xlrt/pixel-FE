@@ -4,7 +4,7 @@ body {
 
 #canvas_page_body {
   width: 100%;
-  height: calc(100% - 50px);
+  height: calc(100% - 100px);
   margin: 0;
   overflow: hidden;
   position: absolute; /* DO NOT CHANGE THIS */
