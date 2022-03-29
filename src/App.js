@@ -34,7 +34,7 @@ const App = () => {
           <Route path='/create' element={<Canvas imageURL={canvasImageURL} imageURLSetter={setCanvasImageURL} imageID={canvasImageID} imageIDSetter={setCanvasImageID}/>} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/landing' element={<Landing />} />
-          <Route path='*' element={<p>404 Not Found</p>} />
+          {/* <Route path='*' element={<p>404 Not Found</p>} /> */}
         </Routes>
 
         <Footer />
