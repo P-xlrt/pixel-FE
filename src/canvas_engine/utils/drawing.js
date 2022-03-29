@@ -215,22 +215,26 @@ export const applyChanges = (pixelArray, clearPreview = true) => {
     
     let historyEntry = [];
 
+    console.log("Starting changes");
     pixelArray.forEach((yArray, x) => {
         yArray.forEach((colour, y) => {
-            if(!historyEntry[x]) historyEntry[x] = [];
-            historyEntry[x][y] = getPixel(x, y);
+            // if(!historyEntry[x]) historyEntry[x] = [];
+            // historyEntry[x][y] = getPixel(x, y);
 
             // Changes the pixel on the canvas
             setPixel(x, y, colour, overwriteColours);
         })
     });
+    console.log("Changes done");
 
     if(historyEntry.length > 0) {
         addHistory(historyEntry, pixelArray);
     }
 
     // Clear the preview ctx
-    if(clearPreview) clearPreviewCanvas();
+    if(clearPreview) {
+        clearPreviewCanvas();
+    }
 }
 
 export const applyChangesMove = (pixelArray, history) => {
@@ -273,23 +277,24 @@ const validateSelection = (x1, x2, y1, y2) => {
     return x1 !== null || x2 !== null || y1 !== null || y2 !== null
 }
 
+export const deleteCanvasArea = (selX, selY, sizeX, sizeY, previewCanvas = true) => {
+    if(previewCanvas) previewCtx.clearRect(selX, selY, sizeX, sizeY);
+    else drawingCtx.clearRect(selX, selY, sizeX, sizeY);
+}
+
+export const setCanvasArea = (selX, selY, sizeX, sizeY, colour, previewCanvas = true) => {
+    const ctx = previewCanvas ? previewCtx : drawingCtx;
+    ctx.fillStyle = colour.rgb;
+    ctx.globalAlpha = colour.a;
+    ctx.fillRect(selX, selY, sizeX, sizeY);
+}
+
 // Deletes everything that has been selected
 export const deleteSelection = (selX1, selY1, selX2, selY2) => {
     if(!validateSelection(selX1, selX2, selY1, selY2)) return;
 
-    let modifiedPixels = [];
-    for(let x = selX1; x <= selX2; x++){
-        modifiedPixels[x] = [];
-        for(let y = selY1; y <= selY2; y++){
-            modifiedPixels[x][y] = emptyColour;
-        }
-    }
-
-    // Temporarily override the overwrite-colours setting
-    const overwriteSettings = getOverwriteColours();
-    setOverwriteColours(true);
-    applyChanges(modifiedPixels, true); // Apply changes
-    setOverwriteColours(overwriteSettings); // Put the settings back
+    deleteCanvasArea(selX1, selY1, selX2 - selX1 + 1, selY2 - selY1 + 1, true);
+    deleteCanvasArea(selX1, selY1, selX2 - selX1 + 1, selY2 - selY1 + 1, false);
 }
 
 export const getDataURL = () => {

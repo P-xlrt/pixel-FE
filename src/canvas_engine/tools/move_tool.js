@@ -1,6 +1,6 @@
 import Colour from "../utils/colour.js";
 import Tool from "../utils/tool.js"; // Imports the tool
-import { setPixel, applyChangesMove } from "../utils/drawing";
+import { setPixel, applyChangesMove, setCanvasArea } from "../utils/drawing";
 
 const overlayColour = new Colour(0, 0, 0, 0.5);
 const emptyColour = new Colour(0, 0, 0, 0);
@@ -15,24 +15,25 @@ class Move_Tool extends Tool { // Must extend the imported tool
         this._history = history;
     }
 
-    setPixel(x, y, colour){ // Override the default setPixel behaviour
+    setPixel(x, y, colour = emptyColour){ // Override the default setPixel behaviour
         const [imageSizeX, imageSizeY] = this.imageSize; // Gets the image size
         if(x < 0 || x >= imageSizeX || y < 0 || y >= imageSizeY) return; // Makes sure the pixel coordinates are within the bounds of the image
         setPixel(x, y, colour, true, true); // The preview canvas (not the main one) is updated to reflect what changes are being made
-        setPixel(x, y, overlayColour, false, true); // The preview canvas (not the main one) is updated to reflect what changes are being made
     }
 
     redrawImage(canvasX, canvasY){
         this._positionX = canvasX;
         this._positionY = canvasY;
 
-        this.clearPreview();
+        this.clearPreview(); // Reset the preview image
 
         this._movingImage.forEach((yArray, x) => {
             yArray.forEach((colour, y) => {
                 this.setPixel(this._positionX + x, this._positionY + y, colour);
             })
         });
+
+        setCanvasArea(this._positionX, this._positionY, this._movingImage.length, this._movingImage[0].length, overlayColour);
     }
 
     tool_moved(canvasX, canvasY){ 

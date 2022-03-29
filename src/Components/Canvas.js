@@ -1,22 +1,24 @@
 import { Toolbox } from "./Toolbox";
 import "../styling/canvas.css";
-import { setupClient, canvasMouseDown, canvasWheel, windowMouseUp, windowMouseMove, windowKeyDown, windowKeyUp } from "../canvas_engine/utils/canvas_client";
+import { setupClient, canvasMouseDown, canvasWheel, windowMouseUp, windowMouseMove, windowKeyDown, windowKeyUp, loadImage } from "../canvas_engine/utils/canvas_client";
 import { applyResize } from "../canvas_engine/utils/view";
 import { getDataURL } from "../canvas_engine/utils/drawing";
 import { useEffect, useState } from "react";
 
 export const Canvas = ({imageURL, imageURLSetter, imageID, imageIDSetter}) => {
-
 	// When the canvas component is mounted
 	useEffect(() => { 
-		// Set up canvas code and window event handlers for the canvas page
 		setupClient(imageURL);
+		// Set up canvas code and window event handlers for the canvas page
 		window.addEventListener("mouseup", windowMouseUp);
 		window.addEventListener("mousemove", windowMouseMove);
 		window.addEventListener("keydown", windowKeyDown);
 		window.addEventListener("keyup", windowKeyUp);
 		window.addEventListener("resize", applyResize);
 		window.addEventListener("wheel", canvasWheel, {passive: false}) // Non-passive is needed to stop whole window from zooming on Ctrl+MouseWheel
+		document.getElementById("import_file").addEventListener("change", function() {
+			loadImage(URL.createObjectURL(this.files[0]));
+		});
 
 		// When the component is unmounted
 		return () => {

@@ -241,12 +241,12 @@ export const copy = async () => {
     const ctx = tempCanvas.getContext("2d");
 
     // Copy the selected pixels onto the temporary canvas
+    const imageData = drawingCtx.getImageData(selX1, selY1, tempCanvas.width, tempCanvas.height).data;
     for(let x = 0; x < tempCanvas.width; x++){
         for(let y = 0; y <= tempCanvas.height; y++){
-            const pixel = drawingCtx.getImageData(selX1 + x, selY1 + y, 1, 1).data;
-            //return new Colour(pixel[0], pixel[1], pixel[2], pixel[3] / 255);
-            ctx.globalAlpha = pixel[3] / 255;
-            ctx.fillStyle = Colour.generateRGB(pixel[0], pixel[1], pixel[2]);
+            const pixel = ((y * tempCanvas.width) + x) * 4;
+            ctx.globalAlpha = imageData[pixel + 3] / 255;
+            ctx.fillStyle = Colour.generateRGB(imageData[pixel], imageData[pixel+1], imageData[pixel+2]);
             ctx.fillRect(x, y, 1, 1);
         }
     }
@@ -275,13 +275,15 @@ const startPaste = (dataURL) => {
         ctx.drawImage(img, 0, 0);
 
         let modifiedPixels = [];
+        const imageData = ctx.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data;
 
-        for(let x = 0; x < tempCanvas.width; x++){
-            modifiedPixels[x] = [];
-            for(let y = 0; y < tempCanvas.height; y++){
-                const pixel = ctx.getImageData(x, y, 1, 1).data;
-                modifiedPixels[x][y] = new Colour(pixel[0], pixel[1], pixel[2], pixel[3] / 255);
-            }
+        // imageData.length === img.width * img.height * 4
+        // 4 inputs per pixel, therefore iterating through whole image data length / 4 === iterating through img.width * img.height
+        for(let i = 0; i < imageData.length / 4; i++){  
+            const x = Math.floor(i % tempCanvas.width);
+            if(!modifiedPixels[x]) modifiedPixels[x] = [];
+            const pixel = i * 4;
+            modifiedPixels[x][Math.floor(i / tempCanvas.width)] = new Colour(imageData[pixel], imageData[pixel+1], imageData[pixel+2], imageData[pixel+3] / 255);
         }
 
         setTool(new Move_Tool(modifiedPixels, 0, 0, []));
@@ -306,11 +308,9 @@ export const paste = async () => {
     try {
         // Tries to read from the clipboard first
         const clipboardItem = (await navigator.clipboard.read())[0];
-        console.log(clipboardItem);
         if(clipboardItem.types.includes("image/png")){ // Pasting an image
             console.log("Pasting an image");
             const dataURL = await clipboardItem.getType("image/png");
-            console.log(URL.createObjectURL(dataURL));
             startPaste(URL.createObjectURL(dataURL));
         }
         else if(clipboardItem.types.includes("text/plain")){
