@@ -34,6 +34,12 @@ export const Gallery = (props) => {
     setRefreshNeeded(!refreshNeeded);
   }
 
+  
+  const setPageAndRefresh = (newValue) => {
+    setCurrentPage(newValue);
+    setRefreshNeeded(!refreshNeeded);
+  }
+
 
   // export const grabImages = async (setImages, setTotalImgQty, itemsPerPage, pageNumber, targetUser) => {
 
@@ -47,6 +53,18 @@ export const Gallery = (props) => {
     grabImages(setImages, setTotalImgQty, itemsNeeded, currentPage, "all");
   }, [refreshNeeded]);
 
+  // let pagesArray = (pages) => {
+
+  //   let theArray = [1 , 2 , 3];
+  //   // for (let i = 0; i > pages; i++) {
+  //   //   theArray[i] = i - 1;
+  //   //   console.log(theArray);
+      
+
+  //   // }
+  //   return theArray;
+  // }
+
 
 
 
@@ -55,12 +73,24 @@ export const Gallery = (props) => {
     <div className="galleryContainer">
       <h1>Gallery</h1>
       <label>Images per page: 
-        <select id="imgPerPage" name="pages" value={itemsNeeded} onChange={(e) => setImgNeededAndRefresh(e.target.value)}>
+      <select id="amountSelector" name="amountSelector" value={itemsNeeded} onChange={(e) => setImgNeededAndRefresh(e.target.value)}>
           <option value="9">9</option>
           <option value="12">12</option>
           <option value="18">18</option>
           <option value="60">60</option>
         </select></label>
+
+        {/* <label>Page: 
+        <select id="pageSelector" name="pages" value={itemsNeeded} onChange={(e) => setPageAndRefresh(e.target.value)}>
+          {pagesArray(pages).map((aPage) => {
+            return (
+              <>
+              <option value={aPage} key={aPage}>{aPage}</option>
+              </>
+            )
+          })
+          }
+        </select></label> */}
 
 
         {images.map((imgObj) => {
