@@ -9,6 +9,7 @@ import { Landing } from "./Components/Landing";
 import { Login } from "./Components/Login";
 import { Profile } from "./Components/Profile";
 import { Settings } from "./Components/Settings";
+import { Team } from "./Components/Team";
 
 // import { library } from "@fortawesome/fontawesome-svg-core";
 // import { fab } from "@fortawesome/free-brands-svg-icons";
@@ -57,6 +58,7 @@ const App = () => {
           />
           <Route path='/profile' element={<Profile />} />
           <Route path='/landing' element={<Landing />} />
+          <Route path='/team' element={<Team />} />
           {/* <Route path='*' element={<p>404 Not Found</p>} /> */}
         </Routes>
 
