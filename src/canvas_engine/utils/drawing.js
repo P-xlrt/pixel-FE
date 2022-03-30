@@ -194,7 +194,7 @@ export const getPixel = (x, y) => {
     if(!isInBounds(x, y)) return null;
 
     const pixelInt = ((y * imageSizeX) + x) * 4;
-    return new Colour(currentImage.data[pixelInt], currentImage.data[pixelInt + 1], currentImage.data[pixelInt + 2], currentImage.data[pixelInt + 3] / 256);
+    return new Colour(currentImage.data[pixelInt], currentImage.data[pixelInt + 1], currentImage.data[pixelInt + 2], currentImage.data[pixelInt + 3] / 255);
 }
 
 // Changes the colour of a pixel by overlaying the colour
@@ -225,28 +225,36 @@ export const applyImageData = (data) => {
 const applyPixelData = (pixelArray) => {
     const pixelData = setupPixelData();
     let yPosition = 0, position = 0;;
+    let additional = [];
 
     for(let y = 0; y < imageSizeY; y++){
         yPosition = y * imageSizeX;
         for(let x = 0; x < imageSizeX; x++){
             position = (yPosition + x) * 4;
             if(pixelArray[x][y]){
-                pixelData[position] = pixelArray[x][y].r;
-                pixelData[position + 1] = pixelArray[x][y].g;
-                pixelData[position + 2] = pixelArray[x][y].b;
-                pixelData[position + 3] = pixelArray[x][y].a * 256;
+                if(pixelArray[x][y].a === 1){
+                    pixelData[position] = pixelArray[x][y].r;
+                    pixelData[position + 1] = pixelArray[x][y].g;
+                    pixelData[position + 2] = pixelArray[x][y].b;
+                    pixelData[position + 3] = pixelArray[x][y].a * 255;
+                }
+                else{
+                    additional.push({X: x, Y: y, colour: pixelArray[x][y]});
+                }
             }
         }
     }
-    return new ImageData(Uint8ClampedArray.from(pixelData), imageSizeX);
+    return [new ImageData(Uint8ClampedArray.from(pixelData), imageSizeX), additional];
 }
 
 // Read the pixel array and apply every change.
 export const applyChanges = (pixelArray, clearPreview = true) => {
-    const data = applyPixelData(pixelArray);
+    const [data, furtherOperations] = applyPixelData(pixelArray);
     drawingCtx.putImageData(data, 0, 0);
-    addHistory(data);
-
+    for(let i = 0; i < furtherOperations.length; i++){
+        setPixel(furtherOperations[i].X, furtherOperations[i].Y, furtherOperations[i].colour, overwriteColours);
+    }
+    addHistory(drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY));
     // Clear the preview ctx
     if(clearPreview) {
         clearPreviewCanvas();
@@ -282,9 +290,10 @@ export const newImage = (xSize = 16, ySize = 16, resetHistory = true) => {
     drawingCtx.globalAlpha = 1;
     drawingCtx.fillRect(0, 0, canvas_drawing.width, canvas_drawing.height);
 
-    if(resetHistory) setupNewHistory(drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY));
     applyResize();
-    currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
+    const data = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY)
+    if(resetHistory) setupNewHistory(data);
+    currentImage = data;
 }
 
 // xSize = true when changing X, xSize = false when changing Y
@@ -324,11 +333,14 @@ export const deleteSelection = (selX1, selY1, selX2, selY2) => {
     const xSize = selX2 - selX1 + 1;
     const ySize = selY2 - selY1 + 1;
 
-    // Add pixel data to history
-    addHistory(drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY));
     // Delete!
     deleteCanvasArea(selX1, selY1, xSize, ySize, true);
     deleteCanvasArea(selX1, selY1, xSize, ySize, false);
+
+    // Add pixel data to history
+    const data = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
+    addHistory(data);
+    currentImage = data;
 }
 
 export const getDataURL = () => {

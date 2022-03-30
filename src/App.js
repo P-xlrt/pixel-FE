@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Navbar } from "./Components/Navbar";
 import { Canvas } from "./Components/Canvas";
 import { Footer } from "./Components/Footer";
@@ -22,16 +22,6 @@ const App = () => {
 
   const [canvasImageURL, setCanvasImageURL] = useState(null);
   const [canvasImageID, setCanvasImageID] = useState(null);
-
-  useEffect(() => {
-    setCanvasImageURL(localStorage.getItem("canvasImageURL"));
-    console.log("Loaded");
-  }, [])
-  
-  window.onunload = () => {
-    localStorage.setItem("canvasImageURL", canvasImageURL);
-    console.log("Saved");
-  }
 
   return (
     <div className='app'>

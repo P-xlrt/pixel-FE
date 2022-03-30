@@ -9,19 +9,6 @@ export const Canvas = ({imageURL, imageURLSetter, imageID, imageIDSetter}) => {
 	// When the canvas component is mounted
 	useEffect(() => {
 
-		if(!imageURL){
-			console.log("Setting up token image");
-			const url = localStorage.getItem("canvasImageURL");
-			imageURLSetter(url);
-			setupClient(url);
-			console.log("Loaded", imageID, url);
-		}
-		else{
-			console.log("Setting up state image");
-			setupClient(imageURL);
-			console.log("Loaded", imageID, imageURL);
-		}
-
 		setupClient(imageURL);
 		// Set up canvas code and window event handlers for the canvas page
 		window.addEventListener("mouseup", windowMouseUp);

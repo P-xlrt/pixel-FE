@@ -14,7 +14,8 @@ class Flood_Fill extends Tool {
 
     tool_ended(canvasX, canvasY){
         const [imgSizeX, imgSizeY] = this.imageSize;
-        const searchingColour = this.getPixel(canvasX, canvasY)
+        const searchingColour = this.getPixel(canvasX, canvasY);
+        console.log(searchingColour);
         this.setPixel(canvasX, canvasY, this.toolColour); // Initial set
 
         let currentSearch = [];

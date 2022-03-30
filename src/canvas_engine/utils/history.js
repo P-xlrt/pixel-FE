@@ -8,23 +8,29 @@ const applyHistory = () => {
 }
 
 export const undo = () => {
+    console.log("Old", historyPosition, history.length)
     if(historyPosition > 0) {
         historyPosition--;
         applyHistory();
     }
+    console.log("New", historyPosition, history.length)
 }
 
 export const redo = () => {
+    console.log("Old", historyPosition, history.length)
     if(historyPosition < history.length - 1) {
         historyPosition++;
         applyHistory();  
     }
+    console.log("New", historyPosition, history.length)
 }
 
 export const addHistory = (newCanvasData) => {
+    console.log("Old", historyPosition, history.length)
     history.length = historyPosition + 1;
     history.push(newCanvasData);
     historyPosition++;
+    console.log("New", historyPosition, history.length)
 }
 
 export const editCurrentHistory = (newCanvasData) => {
