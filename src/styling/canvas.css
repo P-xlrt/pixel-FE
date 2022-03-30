@@ -191,7 +191,33 @@ body {
   background-image: url("./images/empty.png");
 }
 
-
 #hex_input{
   width: 100%;
+}
+
+#image_resizer{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.resizeSettingsContainer{
+  width: 100%;
+  display: flex;
+}
+
+.resizeSettingsContainer input {
+  width: 80%;
+  height: 100%
+}
+
+.resizeSettingsContainer div{
+  width: 20%;
+  height: 100%;
+}
+
+.resizeSettingsContainer p{
+  margin: 0;
+  text-align: right;
+  line-height: 150%;
 }

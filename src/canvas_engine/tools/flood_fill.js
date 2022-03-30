@@ -20,10 +20,9 @@ class Flood_Fill extends Tool {
         let currentSearch = [];
         currentSearch.push({x: canvasX, y: canvasY});
         let nextSearch = [];
-       
+
         const check = (newX, newY) => {  
             if(newX < 0 || newX >= imgSizeX || newY < 0 || newY >= imgSizeY) return; // Check to see if the coordinate is within bounds
-
             // If the pixel has not yet been modified AND it's the same colour as the starting pixel
             if(!this._modifiedPixels[newX][newY] && this.compare(searchingColour, this.getPixel(newX, newY))){ 
                 nextSearch.push({x: newX, y: newY}); // Push it to the next searching array
@@ -32,7 +31,7 @@ class Flood_Fill extends Tool {
         }
 
         // Iterate through all the locations to be checked
-        while(currentSearch.length > 0){
+        while(currentSearch.length > 0){       
             for(let i = 0; i < currentSearch.length; i++){
                 check(currentSearch[i].x + 1, currentSearch[i].y);
                 check(currentSearch[i].x - 1, currentSearch[i].y);

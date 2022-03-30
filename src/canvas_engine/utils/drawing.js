@@ -1,15 +1,16 @@
 import Colour from "./colour.js";
-import { setupNewHistory , addHistory, editCurrentHistory } from "./history.js";
+import { setupNewHistory , addHistory, editCurrentHistory, backupHistory, restoreHistory } from "./history.js";
 import { applyResize } from "./view.js";
 
 
 // Stores references to the HTML elements
 let canvas_container, canvas_drawing, drawingCtx, canvas_preview, previewCtx, canvas_grid, gridCtx;
-let primaryColourBox, secondaryColourBox, primaryCtx, secondaryCtx, hexInput, modifyingText, rSlider, gSlider, bSlider, aSlider, rNum, gNum, bNum, aNum;
+let primaryColourBox, secondaryColourBox, primaryCtx, secondaryCtx, hexInput, modifyingText, rSlider, gSlider, bSlider, aSlider, rNum, gNum, bNum, aNum, xResize, yResize;
 
 // Image drawing variables
 let imageSizeX = 16;
 let imageSizeY = 16;
+let currentImage = [];
 
 // Tool variables
 const emptyColour = new Colour(0, 0, 0, 0);
@@ -49,6 +50,8 @@ export const setupDrawing = () => {
     gNum = document.getElementById("number_green");
     bNum = document.getElementById("number_blue");
     aNum = document.getElementById("number_alpha");
+    xResize = document.getElementById("resize_x");
+    yResize = document.getElementById("resize_y");
     refreshPrimary();
     refreshSecondary();
 
@@ -90,7 +93,7 @@ export const changeSlider = (slider, value) => {
         slider == 0 ? value : current.r,
         slider == 1 ? value : current.g,
         slider == 2 ? value : current.b,
-        slider == 3 ? value / 255 : current.a
+        slider == 3 ? value / 256 : current.a
     )
 
     if(modifyingPrimary){
@@ -147,7 +150,7 @@ const updateSliders = () => {
     rSlider.value = modifyingPrimary ? primaryColour.r : secondaryColour.r;
     gSlider.value = modifyingPrimary ? primaryColour.g : secondaryColour.g;
     bSlider.value = modifyingPrimary ? primaryColour.b : secondaryColour.b;
-    aSlider.value = modifyingPrimary ? primaryColour.a * 255 : secondaryColour.a * 255;
+    aSlider.value = modifyingPrimary ? primaryColour.a * 256 : secondaryColour.a * 256;
     rNum.value = rSlider.value;
     gNum.value = gSlider.value;
     bNum.value = bSlider.value;
@@ -189,8 +192,9 @@ const isInBounds = (x, y) => {
 
 export const getPixel = (x, y) => {
     if(!isInBounds(x, y)) return null;
-    const pixel = drawingCtx.getImageData(x, y, 1, 1).data;
-    return new Colour(pixel[0], pixel[1], pixel[2], pixel[3] / 256);
+
+    const pixelInt = ((y * imageSizeX) + x) * 4;
+    return new Colour(currentImage.data[pixelInt], currentImage.data[pixelInt + 1], currentImage.data[pixelInt + 2], currentImage.data[pixelInt + 3] / 256);
 }
 
 // Changes the colour of a pixel by overlaying the colour
@@ -202,6 +206,7 @@ export const setPixel = (x, y, colour, overwrite = false, usingPreviewCtx = fals
     canvas.fillStyle = colour.rgb;
     if(overwrite) canvas.clearRect(x, y, 1, 1); // Clears the pixel for completely overwriting pixel
     canvas.fillRect(x, y, 1, 1);
+    currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
 }
 
 export const clearPreviewCanvas = () => {
@@ -214,6 +219,7 @@ const setupPixelData = () => {
 
 export const applyImageData = (data) => {
     drawingCtx.putImageData(data, 0, 0);
+    currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
 }
 
 const applyPixelData = (pixelArray) => {
@@ -228,11 +234,10 @@ const applyPixelData = (pixelArray) => {
                 pixelData[position] = pixelArray[x][y].r;
                 pixelData[position + 1] = pixelArray[x][y].g;
                 pixelData[position + 2] = pixelArray[x][y].b;
-                pixelData[position + 3] = pixelArray[x][y].a * 255;
+                pixelData[position + 3] = pixelArray[x][y].a * 256;
             }
         }
     }
-
     return new ImageData(Uint8ClampedArray.from(pixelData), imageSizeX);
 }
 
@@ -246,22 +251,29 @@ export const applyChanges = (pixelArray, clearPreview = true) => {
     if(clearPreview) {
         clearPreviewCanvas();
     }
+    currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
 }
 
 export const applyChangesMove = (data, xPos, yPos) => {
     drawingCtx.putImageData(data, xPos, yPos);
     editCurrentHistory(drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY));
     clearPreviewCanvas();
+    currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
 }
 
 // Called when a new canvas is being created or when the window is being resized.
-export const newImage = (xSize = 16, ySize = 16) => {
+export const newImage = (xSize = 16, ySize = 16, resetHistory = true) => {
+    xSize = Math.min(xSize, 1024);
+    ySize = Math.min(ySize, 1024);
+    xSize = Math.max(xSize, 1);
+    ySize = Math.max(ySize, 1);
     imageSizeX = xSize;
     imageSizeY = ySize;
 
+    xResize.value = imageSizeX;
+    yResize.value = imageSizeY;
     canvas_drawing.width = imageSizeX;
     canvas_drawing.height = imageSizeY;
-
     canvas_preview.width = imageSizeX;
     canvas_preview.height = imageSizeY;
 
@@ -270,8 +282,24 @@ export const newImage = (xSize = 16, ySize = 16) => {
     drawingCtx.globalAlpha = 1;
     drawingCtx.fillRect(0, 0, canvas_drawing.width, canvas_drawing.height);
 
-    setupNewHistory(drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY));
+    if(resetHistory) setupNewHistory(drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY));
     applyResize();
+    currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
+}
+
+// xSize = true when changing X, xSize = false when changing Y
+export const changeImageSizeValue = (newSize, xSize) => {
+    // Copy image
+    const currentDrawingData = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
+    if(xSize){
+        newImage(newSize, imageSizeY, false);
+    }
+    else{
+        newImage(imageSizeX, newSize, false);
+    } 
+    // Paste
+    drawingCtx.putImageData(currentDrawingData, 0, 0);
+    currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
 }
 
 const validateSelection = (x1, x2, y1, y2) => {
