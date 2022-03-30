@@ -11,7 +11,11 @@ import {
 export const Settings = () => {
   // Define Update Handler
   const [username, setUsername] = useState();
-  const submitHandler = (e) => {
+  const [pass, setPass] = useState();
+  const [bool, setBool] = useState(false);
+
+  // ========== Event Handler
+  const passNameHandler = (e) => {
     e.preventDefault();
 
     if (bool) {
@@ -19,7 +23,16 @@ export const Settings = () => {
     }
   };
 
-  // Preview Profile image thumbnail
+  // ========== Event Handler
+  const submitImageHandler = (e) => {
+    e.preventDefault();
+
+    if (bool) {
+      updateImageProfile(img, userID);
+    }
+  };
+
+  //============ Preview Profile image thumbnail ==========
   const previewFile = () => {
     let preview = document.querySelector("img");
     let file = document.querySelector("input[type=file]").files[0];
@@ -37,10 +50,82 @@ export const Settings = () => {
   };
 
   return (
-    <section className='settings_wrap'>
-      <h1 className='settingsTitle'>Settings</h1>
+    <>
+      <section className='settings_wrap'>
+        <h1 className='settingsTitle'>Settings</h1>
+        <p>{username}</p>
 
-      {/* <div className='settingsOther'>
+        {/* ========== User can upload profile image here ========= */}
+        <article>
+          <form onSubmit={submitImageHandler}>
+            <label>Profile image</label>
+            <figure>
+              <img src='' height='80' alt='Image preview...' />
+              <figcaption>
+                Images should be square e.g. 150px X 150px
+              </figcaption>
+              {/* Display the image here */}
+            </figure>
+
+            <input
+              className=''
+              type='file'
+              name='user-image'
+              onChange={(event) => {
+                previewFile();
+              }}
+            />
+            <button onClick={() => {}}>Upload</button>
+          </form>
+
+          {/* ========== Update User display name here  ========= */}
+          <form className='change_pass' onChange={passNameHandler}>
+            <input
+              onChange={(event) => {
+                setUsername(event.target.value);
+              }}
+              name='UpdateDisplayName'
+              type='text'
+              placeholder='Enter display name'
+              className='username'
+            />
+            <button
+              onClick={() => {
+                setBool(!bool);
+              }}
+            >
+              Change Display Name
+            </button>
+          </form>
+
+          {/* ========== Update User Password Here ========= */}
+          <form action='' onChange={passNameHandler}>
+            <input
+              name='updateUserPass'
+              onChange={(event) => setPass(event.target.value)}
+              type='password'
+              placeholder='Enter new password'
+              className='form_item-control'
+            />
+            <button onClick={() => {}}>Update Password</button>
+          </form>
+
+          {/* ========== Delete User  Here ========= */}
+          <div>
+            <p>
+              Are you sure you want to delete your profile? This action is NOT
+              reversible!
+            </p>
+            <button click={() => {}}>Delete Profile</button>
+          </div>
+        </article>
+      </section>
+    </>
+  );
+};
+
+{
+  /* <div className='settingsOther'>
         <div className='settings'>
           <h2>Set lading page</h2>
           <input />
@@ -60,67 +145,5 @@ export const Settings = () => {
       <div className='settingsPic'>
         <img src='' alt='user profile image' id='userProfileImage' />
         <h2>Change profile image</h2>
-      </div> */}
-
-      {/* ========== User can upload profile image here ========= */}
-      <article>
-        <form>
-          <label>Profile image</label>
-          <figure>
-            <img src='' height='80' alt='Image preview...' />
-            <figcaption>Images should be square e.g. 150px X 150px</figcaption>
-            {/* Display the image here */}
-          </figure>
-
-          <input
-            type='file'
-            name='user-image'
-            onChange={(event) => {
-              previewFile();
-              setUsername(event.target.value);
-            }}
-          />
-          <button onClick={() => {}}>Upload</button>
-        </form>
-
-        {/* ========== Update User display name here  ========= */}
-        <form className='change_pass'>
-          <input
-            name='UpdateDisplayName'
-            type='text'
-            placeholder='Enter display name'
-            className=''
-          />
-          <button
-            onClick={() => {
-              setBool(!bool);
-            }}
-          >
-            Change Display Name
-          </button>
-        </form>
-
-        {/* ========== Update User Password Here ========= */}
-        <form action=''>
-          <input
-            name='updateUserPass'
-            onChange={(event) => setPass(event.target.value)}
-            type='password'
-            placeholder='Enter new password'
-            className='form_item-control'
-          />
-          <button onClick={() => {}}>Update Password</button>
-        </form>
-
-        {/* ========== Delete User  Here ========= */}
-        <div>
-          <p>
-            Are you sure you want to delete your profile? This action is NOT
-            reversible!
-          </p>
-          <button click={() => {}}>Delete Profile</button>
-        </div>
-      </article>
-    </section>
-  );
-};
+      </div> */
+}
