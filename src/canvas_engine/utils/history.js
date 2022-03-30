@@ -1,9 +1,10 @@
-import { applyImageData } from "./drawing.js";
+import { applyImageData, deleteCanvas } from "./drawing.js";
 
 let history = [];
 let historyPosition = 0;
 
 const applyHistory = () => {
+    deleteCanvas();
     applyImageData(history[historyPosition]);
 }
 
@@ -43,6 +44,5 @@ export const restoreHistory = ([backup, pos]) => {
 }
 
 export const backupHistory = () => {
-    console.log(history);
     return [[...history], historyPosition];
 }

@@ -2,6 +2,11 @@ import Tool from "../utils/tool.js"; // Imports the tool
 
 class Square_Tool extends Tool { // Must extend the imported tool
 
+    constructor(){
+        super(); // DO NOT TOUCH THIS LINE
+        this._buttonID = "tool_square";
+    }
+
     redraw(currentX, currentY) {
         this.clearPreview(); // Clears current preview
         this.setupPixelRecording(); // Resets the changed pixels

@@ -1,7 +1,10 @@
 import Tool from "../utils/tool.js"; // Imports the tool
 
 class Circle_Tool extends Tool { // Must extend the imported tool
-
+    constructor(){
+        super(); // DO NOT TOUCH THIS LINE
+        this._buttonID = "tool_circle";
+    }
     // a^2 + b^2 = c^2
     // Magnitude is the difference between two vectors
     calculateMagnitude(a, b){

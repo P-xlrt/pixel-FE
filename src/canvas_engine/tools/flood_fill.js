@@ -1,6 +1,12 @@
+import { applyChanges } from "../utils/drawing.js";
 import Tool from "../utils/tool.js";
+import { clientToCanvasCoordinate } from "../utils/view.js";
 
 class Flood_Fill extends Tool {
+    constructor(){
+        super(); // DO NOT TOUCH THIS LINE
+        this._buttonID = "tool_fill";
+    }
 
     compare(colour1, colour2){
         return colour1.r === colour2.r && colour1.g === colour2.g && colour1.b === colour2.b && colour1.a === colour2.a;
@@ -12,13 +18,16 @@ class Flood_Fill extends Tool {
         this._modifiedPixels[x][y] = colour; // Sets the colour of the chosen pixel inside of the operation (canvas is changed later)
     }
 
-    tool_ended(canvasX, canvasY){
+    end(mouseButton, clientX, clientY){
+        if(mouseButton !== this.started) return; // Don't end if the mouse button isn't the same as the currently used one
+        const [x, y] = clientToCanvasCoordinate(clientX, clientY); // Get the pixel coordinates under the mouse
+
         const [imgSizeX, imgSizeY] = this.imageSize;
-        const searchingColour = this.getPixel(canvasX, canvasY)
-        this.setPixel(canvasX, canvasY, this.toolColour); // Initial set
+        const searchingColour = this.getPixel(x, y);
+        this.setPixel(x, y, this.toolColour); // Initial set
 
         let currentSearch = [];
-        currentSearch.push({x: canvasX, y: canvasY});
+        currentSearch.push({x, y});
         let nextSearch = [];
 
         const check = (newX, newY) => {  
@@ -30,6 +39,7 @@ class Flood_Fill extends Tool {
             }
         }
 
+        console.log("Search start");
         // Iterate through all the locations to be checked
         while(currentSearch.length > 0){       
             for(let i = 0; i < currentSearch.length; i++){
@@ -42,6 +52,10 @@ class Flood_Fill extends Tool {
             currentSearch = [...nextSearch];
             nextSearch.length = 0;
         }
+        console.log("Search end");
+
+        applyChanges(this._modifiedPixels, this._removePreviewOnEnd, false); // Sends the operation over to the canvas drawing code
+        this._started = null; // Reset the tool
     }
 }
 

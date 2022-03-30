@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { changeHex, changeSlider, setOverwriteColours, getOverwriteColours, getDataURL, swapColours, updateModifyingColour, changeImageSizeValue } from "../canvas_engine/utils/drawing";
+import { changeHex, changeSlider, toggleOverwriteColours, getDataURL, swapColours, updateModifyingColour, changeImageSizeValue } from "../canvas_engine/utils/drawing";
 import { commenceUndo, commenceRedo, exportImage, setTool, copy, paste, startMove, changeSelection, toggleGrid, cut } from "../canvas_engine/utils/canvas_client";
 import { saveImage, updateImage } from "../utils/imageRequests"; 
 import Pencil from "../canvas_engine/tools/pencil";
@@ -14,11 +14,17 @@ import Line_Tool from "../canvas_engine/tools/line_tool";
 export const Toolbox = ({imageID, imageIDSetter}) => {
 
     const [hex, updateHex] = useState("");
-    const changeHexInput = e => updateHex(e.target.value);
+    const [xSize, updateXSize] = useState(16);
+    const [ySize, updateYSize] = useState(16);
 
     const submitHex = (e) => {
         e.preventDefault();
         changeHex(hex);
+    }
+
+    const submitImageSize = (e) => {
+        e.preventDefault();
+        changeImageSizeValue(xSize, ySize);
     }
 
     // When the user clicks this button, it clicks the hidden import tag, which opens a file selection menu.
@@ -26,6 +32,18 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
     const tryImport = (e) => {
         e.preventDefault();
         document.getElementById("import_file").click();
+    }
+
+    const toggle = (element, func) => {
+        element.classList.toggle("toolbox_selected");
+        func();
+    }
+
+    const oneOffClick = (element, func) => {
+        toggle(element, func);
+        setTimeout(() => {
+            element.classList.toggle("toolbox_selected");
+        }, 100);
     }
 
     const trySaveDatabase = async () => {
@@ -52,20 +70,20 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
             <h2>Toolbox</h2>
             <input type="file" id="import_file" accept="image/*" hidden/>
             <div id="toggles">
-                <button id="grid_button" onClick={toggleGrid}>Grid</button>
-                <button id="overwrite_button" onClick={() => setOverwriteColours(!getOverwriteColours())}>Overwrite</button>
+                <button id="grid_button" onClick={(e) => toggle(e.target, toggleGrid)}>Grid</button>
+                <button id="overwrite_button" onClick={(e) => toggle(e.target, toggleOverwriteColours)}>Overwrite</button>
             </div>
             <div id="one-off">
-                <button id="save_button" onClick={trySaveDatabase}>Save</button>
+                <button id="save_button" onClick={(e) => oneOffClick(e.target, trySaveDatabase)}>Save</button>
                 <a href="/profile"><button id="load_button">Save as</button></a>
                 <a href="/profile"><button id="load_button">Load</button></a>
-                <button id="import_button" onClick={tryImport}>Import</button>
-                <button id="export_button" onClick={exportImage}>Export</button>
-                <button id="copy_button" onClick={copy}>Copy</button>
-                <button id="cut_button" onClick={cut}>Cut</button>
-                <button id="paste_button" onClick={paste}>Paste</button>
-                <button id="undo_button" onClick={commenceUndo}>Undo</button>
-                <button id="redo_button" onClick={commenceRedo}>Redo</button>
+                <button id="import_button" onClick={(e) => oneOffClick(e.target, tryImport)}>Import</button>
+                <button id="export_button" onClick={(e) => oneOffClick(e.target, exportImage)}>Export</button>
+                <button id="copy_button" onClick={(e) => oneOffClick(e.target, copy)}>Copy</button>
+                <button id="cut_button" onClick={(e) => oneOffClick(e.target, cut)}>Cut</button>
+                <button id="paste_button" onClick={(e) => oneOffClick(e.target, paste)}>Paste</button>
+                <button id="undo_button" onClick={(e) => oneOffClick(e.target, commenceUndo)}>Undo</button>
+                <button id="redo_button" onClick={(e) => oneOffClick(e.target, commenceRedo)}>Redo</button>
             </div>
             <div id="tools">
                 <button id="tool_pencil" onClick={() => setTool(new Pencil())}>Pencil</button>
@@ -117,18 +135,20 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
                     </div>
                     <input type="number" className="keypress_input" id="number_alpha" min="0" max="255" onChange={(e) => {changeSlider(3, e.target.value)}}></input>
                 </div>
-                <form id="hex_input_form" onSubmit={submitHex}><input id="hex_input" className="keypress_input" onChange={changeHexInput}/></form>
+                <form id="hex_input_form" onSubmit={submitHex}>
+                    <input id="hex_input" className="keypress_input" onChange={(e) => updateHex(e.target.value)}/>
+                </form>
             </div>
             <p>Resize</p>
             <div id="image_resizer">
-                <div className="resizeSettingsContainer">
+                <form onSubmit={submitImageSize} className="resizeSettingsContainer">
                     <div><p>X</p></div>
-                    <input type="number" className="keypress_input" id="resize_x" min="1" max="1024" onChange={(e) => {changeImageSizeValue(e.target.value, true)}}></input>
-                </div>
-                <div className="resizeSettingsContainer">
+                    <input type="number" className="keypress_input" id="resize_x" min="1" max="1024" onChange={(e) => {updateXSize(e.target.value)}}></input>
+                </form>
+                <form onSubmit={submitImageSize} className="resizeSettingsContainer">
                     <div><p>Y</p></div>
-                    <input type="number" className="keypress_input" id="resize_y" min="1" max="1024" onChange={(e) => {changeImageSizeValue(e.target.value, false)}}></input>
-                </div>
+                    <input type="number" className="keypress_input" id="resize_y" min="1" max="1024" onChange={(e) => {updateYSize(e.target.value)}}></input>
+                </form>
             </div>
         </div>
     );

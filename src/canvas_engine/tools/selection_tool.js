@@ -12,6 +12,7 @@ class Selection_Tool extends Tool { // Must extend the imported tool
         this._changeSelection = selectorFunction;
         this._removePreviewOnEnd = false;
         this._defaultSelection = defaultSelection;
+        this._buttonID = "tool_selection";
     }
 
     end(mouseButton, clientX, clientY){

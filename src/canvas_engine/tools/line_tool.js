@@ -3,6 +3,11 @@ import Tool from "../utils/tool.js"; // Imports the tool
 
 class Line_Tool extends Tool { // Must extend the imported tool
 
+    constructor(){
+        super(); // DO NOT TOUCH THIS LINE
+        this._buttonID = "tool_line";
+    }
+
     redraw(canvasX, canvasY) {
         this.clearPreview(); // Clears the preview canvas
         this.setupPixelRecording(); // Resets the changed pixels

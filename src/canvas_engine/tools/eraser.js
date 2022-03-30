@@ -6,6 +6,10 @@ const eraserColour = new Colour(0, 0, 0, 0);
 const overlayColour = new Colour(0, 0, 0, 0.5);
 
 class Eraser extends Tool {
+    constructor(){
+        super(); // DO NOT TOUCH THIS LINE
+        this._buttonID = "tool_eraser";
+    }
     setPixel(x, y){ // Override the default setPixel behaviour
         const [imageSizeX, imageSizeY] = this.imageSize; // Gets the image size
         if(x < 0 || x >= imageSizeX || y < 0 || y >= imageSizeY) return; // Makes sure the pixel coordinates are within the bounds of the image
