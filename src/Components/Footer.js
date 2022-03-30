@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../styling/footer.css";
 export const Footer = () => {
   return (
-    <section className='footer_wrap'>
+    <footer className='footer_wrap'>
       <nav className='footer_nav'>
         <div>
           <Link className="footer_link" to='/team'>Meet the Team</Link>
