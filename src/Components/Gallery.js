@@ -16,7 +16,7 @@ import { Navigate, useParams } from "react-router-dom";
 export const Gallery = (props) => {
 
   // grabs params
-  const { amountOfItems, page } = useParams();
+  const { amountOfItems, page, user } = useParams();
 
   // this holds the object containing the images
   const [images, setImages] = useState([]);
@@ -36,6 +36,10 @@ export const Gallery = (props) => {
   
   // this should be grabbed from/put in the url
   const [itemsNeeded, setItemsNeeded] = useState(parseInt(amountOfItems));
+
+  // this should be grabbed from/put in the url
+  const [targetUser, setTargetUser] = useState(parseInt(user));
+
 
 
 
@@ -72,14 +76,17 @@ export const Gallery = (props) => {
   // export const grabImages = async (setImages, setTotalImgQty, itemsPerPage, pageNumber, targetUser) => {
 
   useEffect(() => {
+    if (!targetUser) {
+      setTargetUser("all");
+    };
     if (!itemsNeeded) {
       setItemsNeeded(9);
     };
     if (!currentPage) {
       setCurrentPage(1);
     };
-    grabImages(setImages, setTotalImgQty, itemsNeeded, currentPage, "all");
-  }, [refreshNeeded, currentPage, itemsNeeded]);
+    grabImages(setImages, setTotalImgQty, itemsNeeded, currentPage, targetUser);
+  }, [refreshNeeded, currentPage, itemsNeeded, targetUser]);
 
   useEffect(() => {
     if (totalImgQty > 1) {
@@ -97,9 +104,9 @@ export const Gallery = (props) => {
   return (
     
     <div className="galleryContainer">
-      {(!itemsNeeded) && <Navigate to={`/gallery/9/1`} />}
-      {(itemsNeeded != parseInt(amountOfItems)) && <Navigate to={`/gallery/${itemsNeeded}/1`} />}
-      {(currentPage != parseInt(page)) && <Navigate to={`/gallery/${itemsNeeded}/${currentPage}`} />}
+      {(!itemsNeeded) && <Navigate to={`/gallery/all/9/1`} />}
+      {(itemsNeeded != parseInt(amountOfItems)) && <Navigate to={`/gallery/all/${itemsNeeded}/1`} />}
+      {(currentPage != parseInt(page)) && <Navigate to={`/gallery/all/${itemsNeeded}/${currentPage}`} />}
 
       <h1>Gallery</h1>
       <label>Images per page: 

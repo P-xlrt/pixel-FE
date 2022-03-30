@@ -45,8 +45,8 @@ const App = () => {
             element={<Login user={user} setUser={setUser} />}
           />
           <Route path='/settings' element={<Settings />} />
-          <Route path='/gallery' element={ <Gallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
-          <Route path='/gallery/:amountOfItems/:page' element={ <Gallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
+          <Route path='/gallery' element={ <Gallery user="all" public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
+          <Route path='/gallery/:user/:amountOfItems/:page' element={ <Gallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
           <Route path='/create' element={
               <Canvas
                 imageURL={canvasImageURL}
