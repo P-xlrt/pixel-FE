@@ -49,6 +49,7 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
 
     return (
         <div id="tool_box">
+            <h2>Toolbox</h2>
             <input type="file" id="import_file" accept="image/*" hidden/>
             <div id="toggles">
                 <button id="grid_button" onClick={toggleGrid}>Grid</button>
@@ -56,7 +57,7 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
             </div>
             <div id="one-off">
                 <button id="save_button" onClick={trySaveDatabase}>Save</button>
-                <a href="/gallery"><button id="load_button">Load</button></a>
+                <a href="/profile"><button id="load_button">Load</button></a>
                 <button id="import_button" onClick={tryImport}>Import</button>
                 <button id="export_button" onClick={exportImage}>Export</button>
                 <button id="copy_button" onClick={copy}>Copy</button>

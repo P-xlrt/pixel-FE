@@ -1,4 +1,5 @@
 // User settings page: Update Email, Update Password, Delete Account, Add/Change Image and Log-out
+import { useState } from "react";
 import "../styling/settings.css";
 import {
   updateUser,
@@ -79,7 +80,7 @@ export const Settings = () => {
               setUsername(event.target.value);
             }}
           />
-          <button onclick={() => {}}>Upload</button>
+          <button onClick={() => {}}>Upload</button>
         </form>
 
         {/* ========== Update User display name here  ========= */}
@@ -108,7 +109,7 @@ export const Settings = () => {
             placeholder='Enter new password'
             className='form_item-control'
           />
-          <button onclick={() => {}}>Update Password</button>
+          <button onClick={() => {}}>Update Password</button>
         </form>
       </article>
     </section>
