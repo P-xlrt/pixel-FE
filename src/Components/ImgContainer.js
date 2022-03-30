@@ -1,7 +1,4 @@
-//@ts-check
-
-
-import { deleteImage, getOneImg } from "../utils/imageRequests";
+import { deleteImage, getOneImg, updateImage } from "../utils/imageRequests";
 import { useState } from "react";
 import "../styling/imgContainer.css";
 import { useNavigate } from "react-router-dom";
@@ -29,13 +26,20 @@ export const ImgContainer = (props) => {
     props.setRefreshNeeded(!props.refreshNeeded);
   }
 
+  const saveAs = async (imageID) => {
+    const response = await updateImage({ id: imageID, img: props.currentCanvasImage, public: true, title: "image" });
+    console.log(response);
+  }
 
   return (
     <div className="ImgContainer">
         <h2>{title}</h2>
         <img src={img} className="imgInBox"></img>
-        <label><button className='button' onClick={() => passToCanvas(id, img)}>&#128393;</button>edit</label>
-        <label><button className='button' onClick={() => deleteAndRefresh(id)}>&#x1F5D1;</button>delete</label>
+        {!props.public ? (<>
+          <label><button className='button' onClick={() => passToCanvas(id, img)}>&#128393;</button>Load</label>
+          <label><button className='button' onClick={() => saveAs(id)}>&#x1F4BE;</button>Save</label>
+          <label><button className='button' onClick={() => deleteAndRefresh(id)}>&#x1F5D1;</button>Delete</label>
+        </>) : null}
     </div>
   );
 };

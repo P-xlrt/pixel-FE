@@ -57,6 +57,7 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
             </div>
             <div id="one-off">
                 <button id="save_button" onClick={trySaveDatabase}>Save</button>
+                <a href="/profile"><button id="load_button">Save as</button></a>
                 <a href="/profile"><button id="load_button">Load</button></a>
                 <button id="import_button" onClick={tryImport}>Import</button>
                 <button id="export_button" onClick={exportImage}>Export</button>

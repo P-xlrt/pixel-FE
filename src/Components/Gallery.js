@@ -1,6 +1,3 @@
-//@ts-check
-
-
 
 // on click on an image, make it full screen and show buttons if available
 // on delete, reload images
@@ -56,9 +53,9 @@ export const Gallery = (props) => {
     if (!currentPage) {
       setCurrentPage(1);
     };
-    grabImages(setImages, setTotalImgQty, itemsNeeded, currentPage, "all");
+    grabImages(setImages, setTotalImgQty, itemsNeeded, currentPage, "all"); //props.public ? "all" : USER ); // If props.public is false, get the images belonging to user. Otherwise, use "all".
     setAmountOfPages();
-
+    console.log(props);
   }, [refreshNeeded]);
 
   let pagesArray = (pages) => {
@@ -78,6 +75,7 @@ export const Gallery = (props) => {
   return (
     
     <div className="galleryContainer">
+      
       {(itemsNeeded != amountOfItems) && <Navigate to={`/gallery/${itemsNeeded}/1`} />}
       {(currentPage != page) && <Navigate to={`/gallery/${itemsNeeded}/${currentPage}`} />}
       {(!itemsNeeded) && <Navigate to={`/gallery/9/1`} />}
@@ -111,9 +109,8 @@ export const Gallery = (props) => {
 
         {images.map((imgObj) => {
           return (
-            // <img src={imgObj.img} key={`img_${imgObj.id}`}></img>
-            <>
-              <ImgContainer key={`img_${imgObj.id}`} imgObj={imgObj} setRefreshNeeded={setRefreshNeeded} refreshNeeded={refreshNeeded} setCurrentImg={props.imageURLSetter} setCurrrentImgId={props.imageIDSetter}/>
+            <> {/* Public determines whether to show save/load/delete or not */}
+              <ImgContainer currentCanvasImage={props.currentCanvasImage} public={props.public} key={`img_${imgObj.id}`} imgObj={imgObj} setRefreshNeeded={setRefreshNeeded} refreshNeeded={refreshNeeded} setCurrentImg={props.imageURLSetter} setCurrrentImgId={props.imageIDSetter}/>
             </>
           );
         })}

@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navbar } from "./Components/Navbar";
 import { Canvas } from "./Components/Canvas";
 import { Footer } from "./Components/Footer";
@@ -23,6 +23,16 @@ const App = () => {
   const [canvasImageURL, setCanvasImageURL] = useState(null);
   const [canvasImageID, setCanvasImageID] = useState(null);
 
+  useEffect(() => {
+    setCanvasImageURL(localStorage.getItem("canvasImageURL"));
+    console.log("Loaded");
+  }, [])
+  
+  window.onunload = () => {
+    localStorage.setItem("canvasImageURL", canvasImageURL);
+    console.log("Saved");
+  }
+
   return (
     <div className='app'>
       {/* <FontAwesomeIcon icon={faGear} /> */}
@@ -35,11 +45,9 @@ const App = () => {
             element={<Login user={user} setUser={setUser} />}
           />
           <Route path='/settings' element={<Settings />} />
-          <Route path='/gallery' element={ <Gallery imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
-          <Route path='/gallery/:amountOfItems/:page' element={ <Gallery imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
-          <Route
-            path='/create'
-            element={
+          <Route path='/gallery' element={ <Gallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
+          <Route path='/gallery/:amountOfItems/:page' element={ <Gallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
+          <Route path='/create' element={
               <Canvas
                 imageURL={canvasImageURL}
                 imageURLSetter={setCanvasImageURL}
@@ -48,7 +56,8 @@ const App = () => {
               />
             }
           />
-          <Route path='/profile' element={<Profile />} />
+          <Route path='/profile' element={<Profile public={false} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID}/>} />
+          <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID}/>} />
           <Route path='/landing' element={<Landing />} />
           <Route path='/team' element={<Team />} />
           {/* <Route path='*' element={<p>404 Not Found</p>} /> */}

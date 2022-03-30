@@ -8,44 +8,24 @@
 
 div.galleryContainer {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 100px);
 
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     flex-wrap: wrap;
 
-    border-style: solid;
-    border-color: black;
-    border-width: 2px;
     /* background-color: lightgrey; */
 
-    background-color: pink;
-
-    overflow: scroll;
+    overflow-x: hidden;
 }
 
-div.ImgContainer {
-
-    overflow:visible;
-
-
+.ImgContainer {
+    overflow: hidden;
+    height: 300px;
     width: 30%;
     text-align: center;
-    height: fit-content;
-    /* background-color: lightgrey; */
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    flex-wrap: wrap;
-
-    background-color: green;
-
-    max-height: 50%;
-
-
-
+    margin-bottom: 50px;
 }
 
 label {
