@@ -4,7 +4,8 @@
   align-items: center;
   font-size: 1.2rem;
   height: 50px;
-  width: 100%;
+  width: 75%;
+  margin: 0 auto;
 }
 
 .navbar li {

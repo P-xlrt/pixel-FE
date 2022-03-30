@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../styling/footer.css";
 export const Footer = () => {
   return (
-    <section className='footer_wrap'>
+    <footer className='footer_wrap'>
       <h2>Connect with Us</h2>
       <nav className='footer_nav'>
         <div>
@@ -35,6 +35,6 @@ export const Footer = () => {
       </nav>
 
       <p>© P:xlrt MMXXII</p>
-    </section>
+    </footer>
   );
 };
