@@ -1,1 +1,22 @@
-.
+.teamContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 100px;
+    flex-wrap: wrap;
+    /* overflow-y: scroll; */
+    height: calc(100% - 100px);
+}
+
+.teamMember {
+    width: 50%;
+    padding-bottom: 20px;
+    padding-left: 50px;
+}
+
+.teamMember a:hover{
+    color: white;
+    background-color: #8a1953;
+    border-radius: 4px;
+    transition: all 0.2s ease-out;
+}
