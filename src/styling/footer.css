@@ -60,3 +60,10 @@
   font-size: 0.9em;
   font-weight: 300;
 }
+
+.footer_link:hover {
+  color: white;
+  background-color: #8a1953;
+  border-radius: 4px;
+  transition: all 0.2s ease-out;
+}
