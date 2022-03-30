@@ -34,16 +34,8 @@ const App = () => {
             element={<Login user={user} setUser={setUser} />}
           />
           <Route path='/settings' element={<Settings />} />
-          <Route
-            path='/gallery'
-            element={
-              <Gallery
-                imageURLSetter={setCanvasImageURL}
-                imageIDSetter={setCanvasImageID}
-              />
-            }
-          />{" "}
-          {/* export const Gallery = ({imageURLSetter, imageIDSetter}) => { */}
+          <Route path='/gallery' element={ <Gallery imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
+          <Route path='/gallery/:amountOfItems/:page' element={ <Gallery imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
           <Route
             path='/create'
             element={

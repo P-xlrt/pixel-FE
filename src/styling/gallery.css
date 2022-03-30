@@ -27,7 +27,7 @@ div.galleryContainer {
 
 div.ImgContainer {
 
-    overflow: clip;
+    overflow:visible;
 
 
     width: 30%;
@@ -48,6 +48,13 @@ div.ImgContainer {
 
 }
 
+label {
+    width: 100%;
+    text-align: center;
+    height: fit-content;
+
+}
+
 div.ImgContainer button {
     height: fit-content;
 }
@@ -62,14 +69,14 @@ div.ImgContainer h2 {
 
 div.ImgContainer img {
     width: 100%;
-    /* max-height: 5%; */
+    max-height: 75%;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
 
 
     
-    /* object-fit: cover; */
+    object-fit: contain;
 
 }
 

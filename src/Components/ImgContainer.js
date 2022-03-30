@@ -4,10 +4,7 @@
 import { deleteImage, getOneImg } from "../utils/imageRequests";
 import { useState } from "react";
 import "../styling/imgContainer.css";
-
-
-
-// {/* <Route path='/gallery' element={<Gallery imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID}/>} />   */}
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -18,20 +15,19 @@ export const ImgContainer = (props) => {
   const [currentImg, setCurrentImg] = useState([]);
 
   let {title, id, img, createdAt, updatedAt, UserId} = props.imgObj;
+  let navigate = useNavigate();
 
   // very roundabout way but it works
   const passToCanvas = (id, img) => {
     props.setCurrrentImgId(id); 
     props.setCurrentImg(img);
+    navigate("/create");
   }
 
   const deleteAndRefresh = (id) => {
     deleteImage(id)
-    props.setRefreshNeeded(true);
+    props.setRefreshNeeded(!props.refreshNeeded);
   }
-
-  // {"id":7,"title":"Such Wonder","public":true,"img":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAOklEQVRYR+3QuREAMBACMei/aH9NXGCREO6Mus7a5lwmvsltz8RflwABAgQIECBAgAABAgQIEPheYAMDciArUlVDXQAAAABJRU5ErkJggg==","createdAt":"2022-03-28T22:10:32.000Z","updatedAt":"2022-03-28T22:10:32.000Z","UserId":"damien"}
-
 
 
   return (
