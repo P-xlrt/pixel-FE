@@ -1,7 +1,5 @@
 import Colour from "./colour.js";
-import Pencil from "../tools/pencil.js"
-import Flood_Fill from "../tools/flood_fill.js"
-import { setupNewHistory , addHistory } from "./history.js";
+import { setupNewHistory , addHistory, editCurrentHistory } from "./history.js";
 import { applyResize } from "./view.js";
 
 
@@ -210,42 +208,49 @@ export const clearPreviewCanvas = () => {
     previewCtx.clearRect(0, 0, imageSizeX, imageSizeY);
 }
 
-// Read the pixel array and apply every change.
-export const applyChanges = (pixelArray, clearPreview = true) => {
-    
-    let historyEntry = [];
-
-    pixelArray.forEach((yArray, x) => {
-        yArray.forEach((colour, y) => {
-            if(!historyEntry[x]) historyEntry[x] = [];
-            historyEntry[x][y] = getPixel(x, y);
-
-            // Changes the pixel on the canvas
-            setPixel(x, y, colour, overwriteColours);
-        })
-    });
-
-    if(historyEntry.length > 0) {
-        addHistory(historyEntry, pixelArray);
-    }
-
-    // Clear the preview ctx
-    if(clearPreview) clearPreviewCanvas();
+const setupPixelData = () => {
+    return drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY).data;
 }
 
-export const applyChangesMove = (pixelArray, history) => {
+export const applyImageData = (data) => {
+    drawingCtx.putImageData(data, 0, 0);
+}
 
-    pixelArray.forEach((yArray, x) => {
-        yArray.forEach((colour, y) => {
-            if(!history[x]) history[x] = [];
-            history[x][y] = getPixel(x, y);
+const applyPixelData = (pixelArray) => {
+    const pixelData = setupPixelData();
+    let yPosition = 0, position = 0;;
 
-            // Changes the pixel on the canvas
-            setPixel(x, y, colour, overwriteColours);
-        })
-    });
+    for(let y = 0; y < imageSizeY; y++){
+        yPosition = y * imageSizeX;
+        for(let x = 0; x < imageSizeX; x++){
+            position = (yPosition + x) * 4;
+            if(pixelArray[x][y]){
+                pixelData[position] = pixelArray[x][y].r;
+                pixelData[position + 1] = pixelArray[x][y].g;
+                pixelData[position + 2] = pixelArray[x][y].b;
+                pixelData[position + 3] = pixelArray[x][y].a * 255;
+            }
+        }
+    }
 
-    addHistory(history, pixelArray);
+    return new ImageData(Uint8ClampedArray.from(pixelData), imageSizeX);
+}
+
+// Read the pixel array and apply every change.
+export const applyChanges = (pixelArray, clearPreview = true) => {
+    const data = applyPixelData(pixelArray);
+    drawingCtx.putImageData(data, 0, 0);
+    addHistory(data);
+
+    // Clear the preview ctx
+    if(clearPreview) {
+        clearPreviewCanvas();
+    }
+}
+
+export const applyChangesMove = (data, xPos, yPos) => {
+    drawingCtx.putImageData(data, xPos, yPos);
+    editCurrentHistory(drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY));
     clearPreviewCanvas();
 }
 
@@ -265,7 +270,7 @@ export const newImage = (xSize = 16, ySize = 16) => {
     drawingCtx.globalAlpha = 1;
     drawingCtx.fillRect(0, 0, canvas_drawing.width, canvas_drawing.height);
 
-    setupNewHistory();
+    setupNewHistory(drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY));
     applyResize();
 }
 
@@ -273,23 +278,29 @@ const validateSelection = (x1, x2, y1, y2) => {
     return x1 !== null || x2 !== null || y1 !== null || y2 !== null
 }
 
+export const deleteCanvasArea = (selX, selY, sizeX, sizeY, previewCanvas = true) => {
+    if(previewCanvas) previewCtx.clearRect(selX, selY, sizeX, sizeY);
+    else drawingCtx.clearRect(selX, selY, sizeX, sizeY);
+}
+
+export const setCanvasArea = (selX, selY, sizeX, sizeY, colour, previewCanvas = true) => {
+    const ctx = previewCanvas ? previewCtx : drawingCtx;
+    ctx.fillStyle = colour.rgb;
+    ctx.globalAlpha = colour.a;
+    ctx.fillRect(selX, selY, sizeX, sizeY);
+}
+
 // Deletes everything that has been selected
 export const deleteSelection = (selX1, selY1, selX2, selY2) => {
     if(!validateSelection(selX1, selX2, selY1, selY2)) return;
+    const xSize = selX2 - selX1 + 1;
+    const ySize = selY2 - selY1 + 1;
 
-    let modifiedPixels = [];
-    for(let x = selX1; x <= selX2; x++){
-        modifiedPixels[x] = [];
-        for(let y = selY1; y <= selY2; y++){
-            modifiedPixels[x][y] = emptyColour;
-        }
-    }
-
-    // Temporarily override the overwrite-colours setting
-    const overwriteSettings = getOverwriteColours();
-    setOverwriteColours(true);
-    applyChanges(modifiedPixels, true); // Apply changes
-    setOverwriteColours(overwriteSettings); // Put the settings back
+    // Add pixel data to history
+    addHistory(drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY));
+    // Delete!
+    deleteCanvasArea(selX1, selY1, xSize, ySize, true);
+    deleteCanvasArea(selX1, selY1, xSize, ySize, false);
 }
 
 export const getDataURL = () => {

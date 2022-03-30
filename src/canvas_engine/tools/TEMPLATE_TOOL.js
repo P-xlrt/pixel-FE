@@ -68,9 +68,6 @@ class TEMPLATE_TOOL extends Tool { // Must extend the imported tool
         // Allows you to read the colour the tool is currently using.
         // Returns a Colour class (canvas_engine/utils/colour.js)
         const colour = this.toolColour;
-
-
-
     }
 }
 

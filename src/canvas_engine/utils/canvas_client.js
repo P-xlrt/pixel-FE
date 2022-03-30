@@ -1,10 +1,8 @@
-import { undo, redo } from "./history";
-import { setupView, changeZoom, offsetPosition, redrawGrid, applyResize } from "./view";
-import { newImage, setupDrawing, applyChanges, getOverwriteColours, setOverwriteColours, getPixel, setPixel, deleteSelection } from "./drawing";
+import { undo, redo, addHistory, setupNewHistory } from "./history";
+import { setupView, changeZoom, offsetPosition, redrawGrid } from "./view";
+import { newImage, setupDrawing, deleteSelection } from "./drawing";
 import Colour from "./colour";
 import Pencil from "../tools/pencil";
-import Eraser from "../tools/eraser";
-import Colour_Picker from "../tools/colour_picker";
 import Selection_Tool from "../tools/selection_tool";
 import Move_Tool from "../tools/move_tool";
 import Flood_Fill from "../tools/flood_fill";
@@ -73,7 +71,7 @@ export const windowKeyDown = (e) => {
             }
             else if(e.code == "KeyY"){ // Redo
                 keyDebounce = e.code;
-                commenceRedo()
+                commenceRedo();
             }
             else if(e.code == "KeyC"){ // Copy
                 keyDebounce = e.code;
@@ -90,6 +88,10 @@ export const windowKeyDown = (e) => {
                 const tool = new Selection_Tool(changeSelection, [selX1, selY1, selX2, selY2])
                 setTool(tool);
                 tool.start();
+            }
+            else if(e.code == "KeyX"){
+                keyDebounce = e.code;
+                cut();
             }
         }
         else if(e.code == "Delete"){ // Delete selection
@@ -184,6 +186,7 @@ export const loadImage = (dataURL) => {
 
         createNewImage(img.width, img.height);
         drawingCtx.drawImage(img, 0, 0);
+        setupNewHistory(drawingCtx.getImageData(0, 0, img.width, img.height));
 
         img.remove();
         console.log("Done.");
@@ -193,39 +196,28 @@ export const loadImage = (dataURL) => {
 }
 
 export const commenceUndo = () => {
-    if(tool.specialType() == "Moving"){
-        setTool(new Selection_Tool(changeSelection)); // Moving tools finalize their change when right mouse button is pressed.
-    }
+    if(tool.specialType() === "Moving") setTool(new Selection_Tool(changeSelection)); // Moving tools finalize their change when right mouse button is pressed.
     undo();
 }
 
 export const commenceRedo = () => {
-    if(!tool.specialType() == "Moving"){
-        redo();
-    }
+    if(tool.specialType() === "Moving") return;
+    redo();
 }
 
 export const startMove = () => {
     if(!validateSelection()) return;
 
-    let historyEntry = [];
-    let modifiedPixels = [];
-    for(let x = 0; x <= selX2 - selX1; x++){
-        modifiedPixels[x] = [];
-        for(let y = 0; y <= selY2 - selY1; y++){
+    const image = drawingCtx.getImageData(selX1, selY1, selX2 - selX1 + 1, selY2 - selY1 + 1); // Get image data
+    deleteSelection(selX1, selY1, selX2, selY2); // Delete selection
 
-            const pixel = getPixel(selX1 + x, selY1 + y);
-
-            if(!historyEntry[selX1 + x]) historyEntry[selX1 + x] = [];
-            historyEntry[selX1 + x][selY1 + y] = pixel;
-
-            modifiedPixels[x][y] = pixel // Grab the pixel from the canvas before clearing it
-            setPixel(selX1 + x, selY1 + y, emptyColour, true); // Clear the pixel from the canvas
-        }
-    }
-
-    setTool(new Move_Tool(modifiedPixels, selX1, selY1, historyEntry));
+    setTool(new Move_Tool(image, selX1, selY1));
     selX1 = null, selY1 = null, selX2 = null, selY2 = null;
+}
+
+export const cut = async () => {
+    copy();
+    deleteSelection(selX1, selY1, selX2, selY2);
 }
 
 export const copy = async () => {
@@ -233,26 +225,14 @@ export const copy = async () => {
     // If nothing selected, do nothing. 
     if(!validateSelection()) return; 
 
-    console.log("(" + selX1 + ", " + selY1 + ")", "(" + selX2 + ", " + selY2 + ")");
-
     const tempCanvas = document.createElement("canvas");
     tempCanvas.width = 1 + (selX2 - selX1);
     tempCanvas.height = 1 + (selY2 - selY1);
     const ctx = tempCanvas.getContext("2d");
 
     // Copy the selected pixels onto the temporary canvas
-    for(let x = 0; x < tempCanvas.width; x++){
-        for(let y = 0; y <= tempCanvas.height; y++){
-            const pixel = drawingCtx.getImageData(selX1 + x, selY1 + y, 1, 1).data;
-            //return new Colour(pixel[0], pixel[1], pixel[2], pixel[3] / 255);
-            ctx.globalAlpha = pixel[3] / 255;
-            ctx.fillStyle = Colour.generateRGB(pixel[0], pixel[1], pixel[2]);
-            ctx.fillRect(x, y, 1, 1);
-        }
-    }
-
+    ctx.putImageData(drawingCtx.getImageData(selX1, selY1, tempCanvas.width, tempCanvas.height), 0, 0);
     selectedURL = tempCanvas.toDataURL();
-    console.log(selectedURL);
 
     try {
         tempCanvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]))
@@ -274,17 +254,7 @@ const startPaste = (dataURL) => {
         tempCanvas.height = img.height;
         ctx.drawImage(img, 0, 0);
 
-        let modifiedPixels = [];
-
-        for(let x = 0; x < tempCanvas.width; x++){
-            modifiedPixels[x] = [];
-            for(let y = 0; y < tempCanvas.height; y++){
-                const pixel = ctx.getImageData(x, y, 1, 1).data;
-                modifiedPixels[x][y] = new Colour(pixel[0], pixel[1], pixel[2], pixel[3] / 255);
-            }
-        }
-
-        setTool(new Move_Tool(modifiedPixels, 0, 0, []));
+        setTool(new Move_Tool(ctx.getImageData(0, 0, tempCanvas.width, tempCanvas.height), 0, 0));
 
         img.remove();
         tempCanvas.remove();
@@ -306,11 +276,9 @@ export const paste = async () => {
     try {
         // Tries to read from the clipboard first
         const clipboardItem = (await navigator.clipboard.read())[0];
-        console.log(clipboardItem);
         if(clipboardItem.types.includes("image/png")){ // Pasting an image
             console.log("Pasting an image");
             const dataURL = await clipboardItem.getType("image/png");
-            console.log(URL.createObjectURL(dataURL));
             startPaste(URL.createObjectURL(dataURL));
         }
         else if(clipboardItem.types.includes("text/plain")){
@@ -326,7 +294,7 @@ export const paste = async () => {
     catch (err) {
         //alert("An error occured. If you are using Firefox, type 'about:config' into the URL bar, search for 'dom.events.asyncClipboard.read' and enable it.");
         // If we can't read from the clipboard (firefox settings), read from the selectedURL variable
-        console.log("Plan B!");
+        console.log("Pasting internal url");
         startPaste(selectedURL);
     }
 }

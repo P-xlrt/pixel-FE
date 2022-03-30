@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { changeHex, changeSlider, setOverwriteColours, getOverwriteColours, getDataURL, swapColours, updateModifyingColour } from "../canvas_engine/utils/drawing";
-import { commenceUndo, commenceRedo, exportImage, setTool, copy, paste, startMove, changeSelection, toggleGrid } from "../canvas_engine/utils/canvas_client";
+import { commenceUndo, commenceRedo, exportImage, setTool, copy, paste, startMove, changeSelection, toggleGrid, cut } from "../canvas_engine/utils/canvas_client";
 import { saveImage, updateImage } from "../utils/imageRequests"; 
 import Pencil from "../canvas_engine/tools/pencil";
 import Eraser from "../canvas_engine/tools/eraser";
@@ -22,7 +22,6 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
 
     // When the user clicks this button, it clicks the hidden import tag, which opens a file selection menu.
     // When a file is selected, the import tag's "change" event listener is fired.
-    const tryLoad = function() { loadImage(URL.createObjectURL(this.files[0])); }
     const tryImport = (e) => {
         e.preventDefault();
         document.getElementById("import_file").click();
@@ -49,17 +48,18 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
 
     return (
         <div id="tool_box">
-            <input type="file" id="import_file" accept="image/*" hidden onChange={tryLoad}/>
+            <input type="file" id="import_file" accept="image/*" hidden/>
             <div id="toggles">
                 <button id="grid_button" onClick={toggleGrid}>Grid</button>
                 <button id="overwrite_button" onClick={() => setOverwriteColours(!getOverwriteColours())}>Overwrite</button>
             </div>
             <div id="one-off">
                 <button id="save_button" onClick={trySaveDatabase}>Save</button>
-                <button id="load_button"><a href="/gallery">Load</a></button>
+                <a href="/gallery"><button id="load_button">Load</button></a>
                 <button id="import_button" onClick={tryImport}>Import</button>
                 <button id="export_button" onClick={exportImage}>Export</button>
                 <button id="copy_button" onClick={copy}>Copy</button>
+                <button id="cut_button" onClick={cut}>Cut</button>
                 <button id="paste_button" onClick={paste}>Paste</button>
                 <button id="undo_button" onClick={commenceUndo}>Undo</button>
                 <button id="redo_button" onClick={commenceRedo}>Redo</button>
@@ -74,7 +74,6 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
                 <button id="tool_square" onClick={() => setTool(new Square_Tool())}>Square</button>
                 <button id="tool_circle" onClick={() => setTool(new Circle_Tool())}>Circle</button>
             </div>
-
             <div id="colour_picker">
                 <div id="selectPrimarySecondary">
                     <div id="selectPrimarySecondary_select">

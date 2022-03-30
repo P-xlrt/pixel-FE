@@ -1,10 +1,9 @@
 import Colour from "../utils/colour.js";
 import Tool from "../utils/tool.js"; // Imports the tool
-import { setPixel } from "../utils/drawing";
+import { clientToCanvasCoordinate } from "../utils/view.js";
+import { deleteCanvasArea, setCanvasArea } from "../utils/drawing";
 
-const overlayColour1 = new Colour(0, 0, 0, 0.2);
-const overlayColour2 = new Colour(255, 255, 255, 0.2);
-const emptyColour = new Colour(0, 0, 0, 0);
+const overlayColour = new Colour(0, 0, 0, 0.2);
 
 class Selection_Tool extends Tool { // Must extend the imported tool
 
@@ -15,28 +14,27 @@ class Selection_Tool extends Tool { // Must extend the imported tool
         this._defaultSelection = defaultSelection;
     }
 
-    setPixel(x, y, colour){ // Override the default setPixel behaviour
-        const [imageSizeX, imageSizeY] = this.imageSize; // Gets the image size
-        if(x < 0 || x >= imageSizeX || y < 0 || y >= imageSizeY) return; // Makes sure the pixel coordinates are within the bounds of the image
-        setPixel(x, y, colour, true, true); // The preview canvas (not the main one) is updated to reflect what changes are being made
+    end(mouseButton, clientX, clientY){
+        if(mouseButton !== this.started) return; // Don't end if the mouse button isn't the same as the currently used one
+        const [x, y] = clientToCanvasCoordinate(clientX, clientY); // Get the pixel coordinates under the mouse
+        this._changeSelection(this._startPosX, this._startPosY, this._endPosX, this._endPosY);
+        this._started = null; // Reset the tool
     }
 
     removeOverlay(){
         // Remove overlay
-        for(let x = Math.min(this._startPosX, this._endPosX); x <= Math.max(this._startPosX, this._endPosX); x++){
-            for(let y = Math.min(this._startPosY, this._endPosY); y <= Math.max(this._startPosY, this._endPosY); y++){
-                this.setPixel(x, y, emptyColour);
-            }
-        }
+        const xPos = Math.min(this._startPosX, this._endPosX);
+        const yPos = Math.min(this._startPosY, this._endPosY);
+
+        deleteCanvasArea(xPos, yPos, Math.max(this._startPosX, this._endPosX) - xPos + 1, Math.max(this._startPosY, this._endPosY) - yPos + 1);
     }
 
     addOverlay() {
         // Add new overlay
-        for(let x = Math.min(this._startPosX, this._endPosX); x <= Math.max(this._startPosX, this._endPosX); x++){
-            for(let y = Math.min(this._startPosY, this._endPosY); y <= Math.max(this._startPosY, this._endPosY); y++){
-                this.setPixel(x, y, (x + y) % 2 == 0 ? overlayColour1 : overlayColour2);
-            }
-        }
+        const xPos = Math.min(this._startPosX, this._endPosX);
+        const yPos = Math.min(this._startPosY, this._endPosY);
+
+        setCanvasArea(xPos, yPos, Math.max(this._startPosX, this._endPosX) - xPos + 1, Math.max(this._startPosY, this._endPosY) - yPos + 1, overlayColour);
     }
 
     tool_started(canvasX, canvasY){ 
@@ -46,8 +44,6 @@ class Selection_Tool extends Tool { // Must extend the imported tool
             this._startPosY = this._defaultSelection[1];
             this._endPosX = this._defaultSelection[2];
             this._endPosY = this._defaultSelection[3];
-            console.log(this._startPosX, this._startPosY);
-            console.log(this._endPosX, this._endPosY);
         }
         else{
             this._startPosX = canvasX;
@@ -61,16 +57,11 @@ class Selection_Tool extends Tool { // Must extend the imported tool
 
     tool_moved(canvasX, canvasY){ 
         this.removeOverlay();
-
         // Change positions
         this._endPosX = canvasX;
         this._endPosY = canvasY;
 
         this.addOverlay();
-    }
-
-    tool_ended(canvasX, canvasY){ 
-        this._changeSelection(this._startPosX, this._startPosY, this._endPosX, this._endPosY);
     }
 
     tool_unselected(){

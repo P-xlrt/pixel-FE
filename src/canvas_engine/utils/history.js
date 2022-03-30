@@ -1,45 +1,38 @@
-import { setPixel } from "./drawing.js";
+import { applyImageData } from "./drawing.js";
 
+let history = [];
 let historyPosition = 0;
-let oldHistory = [];
-let operationHistory = [];
 
-// TODO: Merge the two arrays into one. Don't need to store the same image states twice.
-
-const applyHistory = (array) => { // Looks through the 2D array (If no changes were made, no entries were recorded)
-    array[historyPosition].forEach((yArray, x) => {
-        yArray.forEach((colour, y) => {
-            setPixel(x, y, colour, true);
-        })
-    });
+const applyHistory = () => {
+    applyImageData(history[historyPosition]);
 }
 
 export const undo = () => {
     if(historyPosition > 0) {
         historyPosition--;
-        applyHistory(oldHistory);
+        applyHistory();
     }
 }
 
 export const redo = () => {
-    if(historyPosition < operationHistory.length) {
-        applyHistory(operationHistory);
+    if(historyPosition < history.length - 1) {
         historyPosition++;
-    } 
+        applyHistory();  
+    }
 }
 
-export const addHistory = (old, operation) => {
-    oldHistory.length = historyPosition; // Removes everything after the current position in the array
-    oldHistory.push(old); // Adds the entry to the history
-
-    operationHistory.length = historyPosition;
-    operationHistory.push(operation);
-
-    historyPosition = oldHistory.length; // Moves the history position towards the end (should be same as "historyPosition++");
+export const addHistory = (newCanvasData) => {
+    history.length = historyPosition + 1;
+    history.push(newCanvasData);
+    historyPosition++;
 }
 
-export const setupNewHistory = () => {
-    oldHistory.length = 0;
-    operationHistory.length = 0;
+export const editCurrentHistory = (newCanvasData) => {
+    history[historyPosition] = newCanvasData;
+}
+
+export const setupNewHistory = (imageData) => {
+    history.length = 0;
+    history.push(imageData);
     historyPosition = 0;
 }

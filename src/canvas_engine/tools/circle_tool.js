@@ -20,10 +20,9 @@ class Circle_Tool extends Tool { // Must extend the imported tool
         // If it's an outline, the difference between the radius constant and the magnitude must be less than or equal to one
         for(let x = this._originX - radius; x <= this._originX + radius; x++){
             for(let y = this._originY - radius; y <= this._originY + radius; y++){
-                if(Math.abs(this.calculateMagnitude(this._originX - x, this._originY - y) - radius) <= 1) this.setPixel(x, y, this.toolColour);
+                if(Math.abs(this.calculateMagnitude(this._originX - x, this._originY - y) - radius) < 1) this.setPixel(x, y, this.toolColour);
             }
         }
-   
     }
 
     tool_started(canvasX, canvasY){ 
