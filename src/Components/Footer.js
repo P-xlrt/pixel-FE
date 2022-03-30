@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import "../styling/footer.css";
 export const Footer = () => {
   return (
-    <footer className='footer_wrap'>
-      <h2>Connect with Us</h2>
+    <section className='footer_wrap'>
       <nav className='footer_nav'>
         <div>
-          <Link to='/team'>Meet the Team</Link>
+          <Link className="footer_link" to='/team'>Meet the Team</Link>
         </div>
         {/* Social Media Icons */}
         <ul>
