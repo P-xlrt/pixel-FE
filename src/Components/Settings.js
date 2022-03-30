@@ -4,8 +4,8 @@ import "../styling/settings.css";
 import {
   updateUser,
   updatePass,
-  deleteUser,
   updateImageProfile,
+  deleteUser,
 } from "../utils";
 
 export const Settings = () => {
@@ -111,6 +111,15 @@ export const Settings = () => {
           />
           <button onClick={() => {}}>Update Password</button>
         </form>
+
+        {/* ========== Delete User  Here ========= */}
+        <div>
+          <p>
+            Are you sure you want to delete your profile? This action is NOT
+            reversible!
+          </p>
+          <button click={() => {}}>Delete Profile</button>
+        </div>
       </article>
     </section>
   );
