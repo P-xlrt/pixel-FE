@@ -1,9 +1,15 @@
 // User settings page: Update Email, Update Password, Delete Account, Add/Change Image and Log-out
 import "../styling/settings.css";
-import { deleteUser, updateUser } from "../utils";
+import {
+  updateUser,
+  updatePass,
+  deleteUser,
+  updateImageProfile,
+} from "../utils";
 
 export const Settings = () => {
   // Define Update Handler
+  const [username, setUsername] = useState();
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -67,6 +73,7 @@ export const Settings = () => {
 
           <input
             type='file'
+            name='user-image'
             onChange={(event) => {
               previewFile();
               setUsername(event.target.value);
