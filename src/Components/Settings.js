@@ -3,9 +3,9 @@ import { useState } from "react";
 import "../styling/settings.css";
 import {
   updateUser,
-  updatePass,
-  updateImageProfile,
-  deleteUser,
+  // updatePass,
+  // updateImageProfile,
+  // deleteUser,
 } from "../utils";
 
 export const Settings = () => {
@@ -17,10 +17,16 @@ export const Settings = () => {
   // ========== Event Handler
   const passNameHandler = (e) => {
     e.preventDefault();
+    let changeName = document.getElementById("chg_displ_nme");
+    let changePass = document.getElementById("chg_pass");
 
-    if (bool) {
-      updateUser(username, pass);
-    }
+    // if (changeName) {
+    //   updateUser(username);
+    // } else if (changePass) {
+    //   updatePass(pass);
+    // } else {
+    //   console.error("That is not a valid entry");
+    // }
   };
 
   // ========== Event Handler
@@ -79,7 +85,11 @@ export const Settings = () => {
           </form>
 
           {/* ========== Update User display name here  ========= */}
-          <form className='change_pass' onChange={passNameHandler}>
+          <form
+            id='chg_displ_nme'
+            className='change_pass'
+            onChange={passNameHandler}
+          >
             <input
               onChange={(event) => {
                 setUsername(event.target.value);
@@ -99,7 +109,7 @@ export const Settings = () => {
           </form>
 
           {/* ========== Update User Password Here ========= */}
-          <form action='' onChange={passNameHandler}>
+          <form id='chg_pass' onChange={passNameHandler}>
             <input
               name='updateUserPass'
               onChange={(event) => setPass(event.target.value)}

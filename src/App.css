@@ -34,9 +34,9 @@ h1 {
 /* ============================================================= */
 
 .navbar ul li a {
-  color: #838383;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 1em;
+  letter-spacing: -1px;
 }
 
 .navbar ul li a:hover {

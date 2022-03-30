@@ -4,8 +4,9 @@
   align-items: center;
   font-size: 1.2rem;
   height: 50px;
-  width: 75%;
+  width: 90%;
   margin: 0 auto;
+  padding: 0 3em 0 3em;
 }
 
 .navbar li {
@@ -49,7 +50,7 @@
 }
 
 .nav-links:hover {
-  background-color: #8a1953;
+  color: #d3d3d3;
   border-radius: 4px;
   transition: all 0.2s ease-out;
 }
@@ -126,7 +127,7 @@
   }
 
   .nav-links:hover {
-    background-color: #8a1953;
+    /* background-color: #8a1953; */
     border-radius: 0;
   }
 
@@ -162,7 +163,7 @@
     margin: 2rem auto;
     border-radius: 4px;
     width: 80%;
-    background: #8a1953;
+    /* background: #8a1953; */
     text-decoration: none;
     font-size: 1.5rem;
   }
