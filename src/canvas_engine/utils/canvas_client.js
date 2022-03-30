@@ -187,14 +187,12 @@ export const loadImage = (dataURL) => {
     let img = new Image();
 
     img.addEventListener("load", function () {
-        console.log("Image loaded");
 
         createNewImage(img.width, img.height);
         drawingCtx.drawImage(img, 0, 0);
         setupNewHistory(drawingCtx.getImageData(0, 0, img.width, img.height));
 
         img.remove();
-        console.log("Done.");
     });
 
     img.src = dataURL;

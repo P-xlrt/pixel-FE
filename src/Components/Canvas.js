@@ -3,11 +3,25 @@ import "../styling/canvas.css";
 import { setupClient, canvasMouseDown, canvasWheel, windowMouseUp, windowMouseMove, windowKeyDown, windowKeyUp, loadImage } from "../canvas_engine/utils/canvas_client";
 import { applyResize } from "../canvas_engine/utils/view";
 import { getDataURL } from "../canvas_engine/utils/drawing";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const Canvas = ({imageURL, imageURLSetter, imageID, imageIDSetter}) => {
 	// When the canvas component is mounted
-	useEffect(() => { 
+	useEffect(() => {
+
+		if(!imageURL){
+			console.log("Setting up token image");
+			const url = localStorage.getItem("canvasImageURL");
+			imageURLSetter(url);
+			setupClient(url);
+			console.log("Loaded", imageID, url);
+		}
+		else{
+			console.log("Setting up state image");
+			setupClient(imageURL);
+			console.log("Loaded", imageID, imageURL);
+		}
+
 		setupClient(imageURL);
 		// Set up canvas code and window event handlers for the canvas page
 		window.addEventListener("mouseup", windowMouseUp);
