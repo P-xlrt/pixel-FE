@@ -34,11 +34,17 @@ export const Gallery = (props) => {
     setRefreshNeeded(!refreshNeeded);
   }
 
-  
+  const setAmountOfPages = () => {
+    let pagesNeeded = totalImgQty / pages;
+    setPages(pagesNeeded);
+  }
+
   const setPageAndRefresh = (newValue) => {
     setCurrentPage(newValue);
     setRefreshNeeded(!refreshNeeded);
   }
+
+   
 
 
   // export const grabImages = async (setImages, setTotalImgQty, itemsPerPage, pageNumber, targetUser) => {
@@ -46,22 +52,22 @@ export const Gallery = (props) => {
   useEffect(() => {
     if (!itemsNeeded) {
       setItemsNeeded(9);
-    }
+    };
     if (!currentPage) {
       setCurrentPage(1);
-    }
+    };
     grabImages(setImages, setTotalImgQty, itemsNeeded, currentPage, "all");
+    setAmountOfPages();
+
   }, [refreshNeeded]);
 
   let pagesArray = (pages) => {
 
-    let theArray = [1 , 2 , 3];
-    // for (let i = 0; i > pages; i++) {
-    //   theArray[i] = i - 1;
-    //   console.log(theArray);
-      
-
-    // }
+    let theArray = [1];
+    for (let i = 0; i > pages; i++) {
+      theArray[i] = i + 1;
+      console.log(theArray);
+    }
     return theArray;
   }
 
@@ -70,37 +76,44 @@ export const Gallery = (props) => {
 
 
   return (
+    
     <div className="galleryContainer">
+      {(itemsNeeded != amountOfItems) && <Navigate to={`/gallery/${itemsNeeded}/1`} />}
+      {(currentPage != page) && <Navigate to={`/gallery/${itemsNeeded}/${currentPage}`} />}
+      {(!itemsNeeded) && <Navigate to={`/gallery/9/1`} />}
+
       <h1>Gallery</h1>
       <label>Images per page: 
       <select id="amountSelector" name="amountSelector" value={itemsNeeded} onChange={(e) => setImgNeededAndRefresh(e.target.value)}>
-          <option value="9">9</option>
-          <option value="12">12</option>
-          <option value="18">18</option>
-          <option value="60">60</option>
+          <option value="9" key="imgNeeds_9">9</option>
+          <option value="12" key="imgNeeds_12">12</option>
+          <option value="18" key="imgNeeds_18">18</option>
+          <option value="60" key="imgNeeds_60">60</option>
         </select></label>
 
         <label>Page: 
         <select id="pageSelector" name="pages" value={itemsNeeded} onChange={(e) => setPageAndRefresh(e.target.value)}>
-          {pagesArray(pages).map((aPage) => {
+          <option value="1" key="page_9">1</option>
+          <option value="2" key="page_91">2</option>
+          <option value="3" key="jkks_18">3</option>
+          <option value="4" key="imgkjk0">4</option>
+
+          {/* {pagesArray(pages).map((aPage) => {
             return (
               <>
-              <option value={aPage} key={`pageArray${aPage}`}>{aPage}</option>
+              <option value={aPage} key={`pageArray_${aPage}`}>{aPage}</option>
               </>
             )
           })
-          }
+          } */}
         </select></label>
 
 
         {images.map((imgObj) => {
           return (
-            // <img src={imgObj.img}></img>
+            // <img src={imgObj.img} key={`img_${imgObj.id}`}></img>
             <>
-              {(itemsNeeded != amountOfItems) && <Navigate to={`/gallery/${itemsNeeded}/1`} />}
-              {(currentPage != page) && <Navigate to={`/gallery/${itemsNeeded}/${currentPage}`} />}
-              {(!itemsNeeded) && <Navigate to={`/gallery/9/1`} />}
-              <ImgContainer key={imgObj.id} imgObj={imgObj} setRefreshNeeded={setRefreshNeeded} refreshNeeded={refreshNeeded} setCurrentImg={props.imageURLSetter} setCurrrentImgId={props.imageIDSetter}/>
+              <ImgContainer key={`img_${imgObj.id}`} imgObj={imgObj} setRefreshNeeded={setRefreshNeeded} refreshNeeded={refreshNeeded} setCurrentImg={props.imageURLSetter} setCurrrentImgId={props.imageIDSetter}/>
             </>
           );
         })}
