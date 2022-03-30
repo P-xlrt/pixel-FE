@@ -53,17 +53,17 @@ export const Gallery = (props) => {
     grabImages(setImages, setTotalImgQty, itemsNeeded, currentPage, "all");
   }, [refreshNeeded]);
 
-  // let pagesArray = (pages) => {
+  let pagesArray = (pages) => {
 
-  //   let theArray = [1 , 2 , 3];
-  //   // for (let i = 0; i > pages; i++) {
-  //   //   theArray[i] = i - 1;
-  //   //   console.log(theArray);
+    let theArray = [1 , 2 , 3];
+    // for (let i = 0; i > pages; i++) {
+    //   theArray[i] = i - 1;
+    //   console.log(theArray);
       
 
-  //   // }
-  //   return theArray;
-  // }
+    // }
+    return theArray;
+  }
 
 
 
@@ -80,17 +80,17 @@ export const Gallery = (props) => {
           <option value="60">60</option>
         </select></label>
 
-        {/* <label>Page: 
+        <label>Page: 
         <select id="pageSelector" name="pages" value={itemsNeeded} onChange={(e) => setPageAndRefresh(e.target.value)}>
           {pagesArray(pages).map((aPage) => {
             return (
               <>
-              <option value={aPage} key={aPage}>{aPage}</option>
+              <option value={aPage} key={`pageArray${aPage}`}>{aPage}</option>
               </>
             )
           })
           }
-        </select></label> */}
+        </select></label>
 
 
         {images.map((imgObj) => {
@@ -98,6 +98,7 @@ export const Gallery = (props) => {
             // <img src={imgObj.img}></img>
             <>
               {(itemsNeeded != amountOfItems) && <Navigate to={`/gallery/${itemsNeeded}/1`} />}
+              {(currentPage != page) && <Navigate to={`/gallery/${itemsNeeded}/${currentPage}`} />}
               {(!itemsNeeded) && <Navigate to={`/gallery/9/1`} />}
               <ImgContainer key={imgObj.id} imgObj={imgObj} setRefreshNeeded={setRefreshNeeded} refreshNeeded={refreshNeeded} setCurrentImg={props.imageURLSetter} setCurrrentImgId={props.imageIDSetter}/>
             </>
