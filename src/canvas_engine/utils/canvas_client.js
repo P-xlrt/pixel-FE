@@ -6,6 +6,7 @@ import Pencil from "../tools/pencil";
 import Selection_Tool from "../tools/selection_tool";
 import Move_Tool from "../tools/move_tool";
 import Flood_Fill from "../tools/flood_fill";
+import Line_Tool from "../tools/line_tool";
 
 let canvas_container, canvas_drawing, drawingCtx, canvas_preview, previewCtx, canvas_grid, gridCtx;
 
@@ -115,6 +116,10 @@ export const windowKeyDown = (e) => {
         else if(e.code == "KeyF"){
             keyDebounce = e.code;
             setTool(new Flood_Fill());
+        }
+        else if(e.code == "KeyO"){
+            keyDebounce = e.code;
+            setTool(new Line_Tool());
         }
     }
 }

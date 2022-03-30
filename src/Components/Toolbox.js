@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { changeHex, changeSlider, setOverwriteColours, getOverwriteColours, getDataURL, swapColours, updateModifyingColour } from "../canvas_engine/utils/drawing";
+import { changeHex, changeSlider, setOverwriteColours, getOverwriteColours, getDataURL, swapColours, updateModifyingColour, changeImageSizeValue } from "../canvas_engine/utils/drawing";
 import { commenceUndo, commenceRedo, exportImage, setTool, copy, paste, startMove, changeSelection, toggleGrid, cut } from "../canvas_engine/utils/canvas_client";
 import { saveImage, updateImage } from "../utils/imageRequests"; 
 import Pencil from "../canvas_engine/tools/pencil";
@@ -9,6 +9,7 @@ import Selection_Tool from "../canvas_engine/tools/selection_tool";
 import Flood_Fill from "../canvas_engine/tools/flood_fill";
 import Square_Tool from "../canvas_engine/tools/square_tool";
 import Circle_Tool from "../canvas_engine/tools/circle_tool";
+import Line_Tool from "../canvas_engine/tools/line_tool";
 
 export const Toolbox = ({imageID, imageIDSetter}) => {
 
@@ -71,6 +72,7 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
                 <button id="tool_selection" onClick={() => setTool(new Selection_Tool(changeSelection))}>Select</button>
                 <button id="tool_move" onClick={startMove}>Move</button>
                 <button id="tool_fill" onClick={() => setTool(new Flood_Fill())}>Fill</button>
+                <button id="tool_line" onClick={() => setTool(new Line_Tool())}>Line</button>
                 <button id="tool_square" onClick={() => setTool(new Square_Tool())}>Square</button>
                 <button id="tool_circle" onClick={() => setTool(new Circle_Tool())}>Circle</button>
             </div>
@@ -114,6 +116,17 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
                     <input type="number" className="keypress_input" id="number_alpha" min="0" max="255" onChange={(e) => {changeSlider(3, e.target.value)}}></input>
                 </div>
                 <form id="hex_input_form" onSubmit={submitHex}><input id="hex_input" className="keypress_input" onChange={changeHexInput}/></form>
+            </div>
+            <p>Resize</p>
+            <div id="image_resizer">
+                <div className="resizeSettingsContainer">
+                    <div><p>X</p></div>
+                    <input type="number" className="keypress_input" id="resize_x" min="1" max="1024" onChange={(e) => {changeImageSizeValue(e.target.value, true)}}></input>
+                </div>
+                <div className="resizeSettingsContainer">
+                    <div><p>Y</p></div>
+                    <input type="number" className="keypress_input" id="resize_y" min="1" max="1024" onChange={(e) => {changeImageSizeValue(e.target.value, false)}}></input>
+                </div>
             </div>
         </div>
     );

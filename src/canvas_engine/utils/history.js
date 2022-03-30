@@ -36,3 +36,13 @@ export const setupNewHistory = (imageData) => {
     history.push(imageData);
     historyPosition = 0;
 }
+
+export const restoreHistory = ([backup, pos]) => {
+    history = backup;
+    historyPosition = pos;
+}
+
+export const backupHistory = () => {
+    console.log(history);
+    return [[...history], historyPosition];
+}
