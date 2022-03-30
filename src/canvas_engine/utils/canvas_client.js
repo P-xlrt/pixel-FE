@@ -17,6 +17,16 @@ export const setTool = (newTool) => {
     if(tool) tool.tool_unselected();
     tool = newTool;
     tool.tool_selected();
+
+    // Iterate through all tool selection buttons inside of the toolbox and disable their "selected button" css
+    const toolButtons = document.getElementById("tools").children;
+    for(let i = 0; i < toolButtons.length; i++){
+        toolButtons[i].classList.remove("toolbox_selected");
+    }
+
+    // Reenables the "selected button" css of the button assosciated with the tool.
+    // console.log(tool.constructor.name); // Alternative method
+    document.getElementById(tool.buttonID).classList.toggle("toolbox_selected");
 }
 
 // Image moving variables
@@ -40,6 +50,13 @@ export const changeSelection = (x1, y1, x2, y2) => {
     selY1 = Math.max(Math.min(y1, y2), 0);
     selX2 = Math.min(Math.max(x1, x2), canvas_drawing.width);
     selY2 = Math.min(Math.max(y1, y2), canvas_drawing.width);
+}
+
+const selectAll = () => {
+    selX1 = 0; 
+    selY1 = 0; 
+    selX2 = canvas_drawing.width - 1;
+    selY2 = canvas_drawing.height - 1;
 }
 
 const validateSelection = () => {
@@ -84,8 +101,7 @@ export const windowKeyDown = (e) => {
             }
             else if(e.code == "KeyA"){ // Select all
                 keyDebounce = e.code;
-                selX1 = 0; selX2 = canvas_drawing.width - 1;
-                selY1 = 0; selY2 = canvas_drawing.height - 1;
+                selectAll();
                 const tool = new Selection_Tool(changeSelection, [selX1, selY1, selX2, selY2])
                 setTool(tool);
                 tool.start();
@@ -101,7 +117,6 @@ export const windowKeyDown = (e) => {
             deleteSelection(selX1, selY1, selX2, selY2);
         }
         else if(e.code == "KeyM"){ // Move
-            if(!validateSelection()) return;
             keyDebounce = e.code;
             startMove();
         }
@@ -209,7 +224,7 @@ export const commenceRedo = () => {
 }
 
 export const startMove = () => {
-    if(!validateSelection()) return;
+    if(!validateSelection()) selectAll();
 
     const image = drawingCtx.getImageData(selX1, selY1, selX2 - selX1 + 1, selY2 - selY1 + 1); // Get image data
     deleteSelection(selX1, selY1, selX2, selY2); // Delete selection

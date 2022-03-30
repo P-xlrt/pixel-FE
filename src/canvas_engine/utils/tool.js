@@ -11,6 +11,7 @@ class Tool {
         this._currentX = 0;
         this._currentY = 0;
         this._removePreviewOnEnd = true;
+        this._buttonID = null;
     }
     getPixel(x, y){
         const [imageSizeX, imageSizeY] = this.imageSize; // Gets the image size
@@ -69,6 +70,9 @@ class Tool {
     }
     get imageSize(){
         return getImageSize(); // Returns the image size
+    }
+    get buttonID(){
+        return this._buttonID;
     }
     specialType(){
         return null;

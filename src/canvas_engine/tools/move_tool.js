@@ -11,6 +11,7 @@ class Move_Tool extends Tool { // Must extend the imported tool
         this._movingImage = modifiedPixels;
         this._positionX = canvasX;
         this._positionY = canvasY;
+        this._buttonID = "tool_move";
     }
 
     redrawImage(canvasX, canvasY){

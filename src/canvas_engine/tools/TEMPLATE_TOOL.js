@@ -3,12 +3,10 @@ import Tool from "../utils/tool.js"; // Imports the tool
 
 class TEMPLATE_TOOL extends Tool { // Must extend the imported tool
 
-    // The Tool class' constructor does everything this tool needs to run, and thus a constructor for your tool is optional.
-    // If you wish to create a constructor for your tool, make sure the first line inside the constructor is "super()".
-    // constructor(){
-    //     super(); // DO NOT TOUCH THIS LINE
-    //     // CONSTRUCTOR CODE GOES HERE
-    // }
+    constructor(){
+        super(); // DO NOT TOUCH THIS LINE
+        this._buttonID = null; // Change null to the id of the toolbox button that activates this tool.
+    }
 
     // The function that runs when the mouse buttons are pressed down
     // canvasX and canvasY are the coordinates of where the mouse is on the canvas

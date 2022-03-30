@@ -18,6 +18,7 @@ let primaryColour = new Colour(0, 0, 0, 1);
 let secondaryColour = new Colour(255, 255, 255, 1);
 let overwriteColours = false;
 export const setOverwriteColours = bool => overwriteColours = bool;
+export const toggleOverwriteColours = () => overwriteColours = !overwriteColours;
 
 export const getOverwriteColours = () => { 
     return overwriteColours; 
@@ -222,7 +223,7 @@ export const applyImageData = (data) => {
     currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
 }
 
-const applyPixelData = (pixelArray) => {
+const applyPixelData = (pixelArray, doFurtherOperations = false) => {
     const pixelData = setupPixelData();
     let yPosition = 0, position = 0;;
     let additional = [];
@@ -232,7 +233,7 @@ const applyPixelData = (pixelArray) => {
         for(let x = 0; x < imageSizeX; x++){
             position = (yPosition + x) * 4;
             if(pixelArray[x][y]){
-                if(pixelArray[x][y].a === 1){
+                if(!doFurtherOperations || pixelArray[x][y].a === 1){
                     pixelData[position] = pixelArray[x][y].r;
                     pixelData[position + 1] = pixelArray[x][y].g;
                     pixelData[position + 2] = pixelArray[x][y].b;
@@ -248,25 +249,33 @@ const applyPixelData = (pixelArray) => {
 }
 
 // Read the pixel array and apply every change.
-export const applyChanges = (pixelArray, clearPreview = true) => {
-    const [data, furtherOperations] = applyPixelData(pixelArray);
-    drawingCtx.putImageData(data, 0, 0);
-    for(let i = 0; i < furtherOperations.length; i++){
-        setPixel(furtherOperations[i].X, furtherOperations[i].Y, furtherOperations[i].colour, overwriteColours);
+export const applyChanges = (pixelArray, clearPreview = true, doFurtherOperations = true) => {
+
+    const [newData, furtherOperations] = applyPixelData(pixelArray, doFurtherOperations);
+    drawingCtx.putImageData(newData, 0, 0);
+
+    if(doFurtherOperations){
+        for(let i = 0; i < furtherOperations.length; i++){
+            setPixel(furtherOperations[i].X, furtherOperations[i].Y, furtherOperations[i].colour, overwriteColours);
+        }
     }
-    addHistory(drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY));
+
     // Clear the preview ctx
     if(clearPreview) {
         clearPreviewCanvas();
     }
-    currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
+    const data = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
+    addHistory(data);
+    currentImage = data
 }
 
-export const applyChangesMove = (data, xPos, yPos) => {
-    drawingCtx.putImageData(data, xPos, yPos);
-    editCurrentHistory(drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY));
+export const applyChangesMove = (newData, xPos, yPos) => {
+    drawingCtx.putImageData(newData, xPos, yPos);
     clearPreviewCanvas();
-    currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
+
+    const data = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
+    editCurrentHistory(data); // Current image data should be merged with the history of the delete selection operation that happened when move was started
+    currentImage = data;
 }
 
 // Called when a new canvas is being created or when the window is being resized.
@@ -286,8 +295,8 @@ export const newImage = (xSize = 16, ySize = 16, resetHistory = true) => {
     canvas_preview.height = imageSizeY;
 
     // DRAW BLANK IMAGE
-    drawingCtx.fillStyle = new Colour(255, 255, 255, 1).rgb; //Colour.generateRGB(255, 255, 255);
-    drawingCtx.globalAlpha = 1;
+    drawingCtx.fillStyle = new Colour(255, 255, 255, 0).rgb; //Colour.generateRGB(255, 255, 255);
+    drawingCtx.globalAlpha = 0;
     drawingCtx.fillRect(0, 0, canvas_drawing.width, canvas_drawing.height);
 
     applyResize();
@@ -297,15 +306,12 @@ export const newImage = (xSize = 16, ySize = 16, resetHistory = true) => {
 }
 
 // xSize = true when changing X, xSize = false when changing Y
-export const changeImageSizeValue = (newSize, xSize) => {
+export const changeImageSizeValue = (xSize, ySize) => {
     // Copy image
     const currentDrawingData = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
-    if(xSize){
-        newImage(newSize, imageSizeY, false);
-    }
-    else{
-        newImage(imageSizeX, newSize, false);
-    } 
+
+    newImage(xSize, ySize, false);
+
     // Paste
     drawingCtx.putImageData(currentDrawingData, 0, 0);
     currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
@@ -345,4 +351,9 @@ export const deleteSelection = (selX1, selY1, selX2, selY2) => {
 
 export const getDataURL = () => {
     return canvas_drawing.toDataURL();
+}
+
+// Used so history can accurately undo changes after image resizing
+export const deleteCanvas = () => {
+    deleteCanvasArea(0, 0, imageSizeX, imageSizeY, false);
 }
