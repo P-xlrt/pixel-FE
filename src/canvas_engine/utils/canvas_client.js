@@ -7,6 +7,8 @@ import Selection_Tool from "../tools/selection_tool";
 import Move_Tool from "../tools/move_tool";
 import Flood_Fill from "../tools/flood_fill";
 import Line_Tool from "../tools/line_tool";
+import Colour_Picker from "../tools/colour_picker";
+import Eraser from "../tools/eraser";
 
 let canvas_container, canvas_drawing, drawingCtx, canvas_preview, previewCtx, canvas_grid, gridCtx;
 
@@ -136,6 +138,14 @@ export const windowKeyDown = (e) => {
             keyDebounce = e.code;
             setTool(new Line_Tool());
         }
+        else if(e.code == "KeyK"){
+            keyDebounce = e.code;
+            setTool(new Colour_Picker());
+        }
+        else if(e.code == "KeyE"){
+            keyDebounce = e.code;
+            setTool(new Eraser());
+        }
     }
 }
 
@@ -202,7 +212,7 @@ export const loadImage = (dataURL) => {
     let img = new Image();
 
     img.addEventListener("load", function () {
-        console.log(img.src);
+        // console.log(img.src);
         createNewImage(img.width, img.height);
 
         drawingCtx.globalAlpha = 0.999999; // Img doesn't deal with transparency by default
@@ -210,7 +220,7 @@ export const loadImage = (dataURL) => {
         setupNewHistory(drawingCtx.getImageData(0, 0, img.width, img.height));
 
         img.remove();
-        console.log(drawingCtx.getImageData(0, 0, img.width, img.height));
+        // console.log(drawingCtx.getImageData(0, 0, img.width, img.height));
     });
 
     img.src = dataURL;
@@ -278,7 +288,7 @@ const startPaste = (dataURL) => {
     const ctx = tempCanvas.getContext("2d");
 
     img.addEventListener("load", function () {
-        console.log(dataURL);
+        //console.log(dataURL);
         tempCanvas.width = img.width;
         tempCanvas.height = img.height;
 

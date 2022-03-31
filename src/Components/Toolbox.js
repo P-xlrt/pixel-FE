@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { changeHex, changeSlider, toggleOverwriteColours, getDataURL, swapColours, updateModifyingColour, changeImageSizeValue } from "../canvas_engine/utils/drawing";
 import { commenceUndo, commenceRedo, exportImage, setTool, copy, paste, startMove, changeSelection, toggleGrid, cut } from "../canvas_engine/utils/canvas_client";
 import { saveImage, updateImage } from "../utils/imageRequests"; 
@@ -51,11 +52,13 @@ export const Toolbox = ({imageID, imageIDSetter, imageName, imageNameSetter, isI
         }, 100);
     }
 
-    const trySaveDatabase = async () => {
+    const trySaveDatabase = async (id = imageID) => {
         try{
+            if(!localStorage.getItem("myToken")) throw new Error("User not logged in.");
+
             let response = {};
-            if(imageID == null) response = await saveImage(getDataURL(), false, name);
-            else response = await updateImage({ id: imageID, img: getDataURL(), public: isImagePublic, title: name });
+            if(id == null) response = await saveImage(getDataURL(), false, name);
+            else response = await updateImage({ id, img: getDataURL(), public: isImagePublic, title: name });
 
             if(response.imageID !== null) {
                 imageIDSetter(response.imgId);
@@ -66,11 +69,12 @@ export const Toolbox = ({imageID, imageIDSetter, imageName, imageNameSetter, isI
             }
         }
         catch(err){
-            console.err(err); // Maybe add an error message popup?
+            alert(err); // Maybe add an error message popup?
         }
     }
 
     return (
+        
         <div id="tool_box">
             <h2>Toolbox</h2>
             <input type="file" id="import_file" accept="image/*" hidden/>
@@ -80,7 +84,7 @@ export const Toolbox = ({imageID, imageIDSetter, imageName, imageNameSetter, isI
             </div>
             <div id="one-off">
                 <button id="save_button" onClick={(e) => oneOffClick(e.target, trySaveDatabase)}>Save</button>
-                <a href="/profile/9/1"><button id="saveload_button">Load / Save</button></a>
+                <Link to="/profile/9/1"><button id="saveload_button" onClick={() => {}}>Load / Save As</button></Link>
                 <button id="import_button" onClick={(e) => oneOffClick(e.target, tryImport)}>Import</button>
                 <button id="export_button" onClick={(e) => oneOffClick(e.target, exportImage)}>Export</button>
                 <button id="copy_button" onClick={(e) => oneOffClick(e.target, copy)}>Copy</button>
@@ -140,23 +144,23 @@ export const Toolbox = ({imageID, imageIDSetter, imageName, imageNameSetter, isI
                     <input type="number" className="keypress_input" id="number_alpha" min="0" max="255" onChange={(e) => {changeSlider(3, e.target.value)}}></input>
                 </div>
                 <form id="hex_input_form" onSubmit={submitHex}>
-                    <input id="hex_input" className="keypress_input" onChange={(e) => updateHex(e.target.value)}/>
+                    <input id="hex_input" onBlur={(e) => {updateHex(e.target.value)}} className="keypress_input" onChange={(e) => updateHex(e.target.value)}/>
                 </form>
             </div>
             <p>Resize</p>
             <div id="image_resizer">
                 <form onSubmit={submitImageSize} className="resizeSettingsContainer">
                     <div><p>X</p></div>
-                    <input type="number" className="keypress_input" id="resize_x" min="1" max="1024" onChange={(e) => {updateXSize(e.target.value)}}></input>
+                    <input type="number" onBlur={(e) => {updateXSize(e.target.value)}} className="keypress_input" id="resize_x" min="1" max="1024" onChange={(e) => {updateXSize(e.target.value)}}></input>
                 </form>
                 <form onSubmit={submitImageSize} className="resizeSettingsContainer">
                     <div><p>Y</p></div>
-                    <input type="number" className="keypress_input" id="resize_y" min="1" max="1024" onChange={(e) => {updateYSize(e.target.value)}}></input>
+                    <input type="number" onBlur={(e) => {updateYSize(e.target.value)}} className="keypress_input" id="resize_y" min="1" max="1024" onChange={(e) => {updateYSize(e.target.value)}}></input>
                 </form>
             </div>
             <form id="image_renamer" onSubmit={submitImageName}>
                 <div><p>Name</p></div>
-                <input id="name_input" value={name} className="keypress_input" onChange={(e) => updateName(e.target.value)}/>
+                <input id="name_input" onBlur={submitImageName} value={name} className="keypress_input" onChange={(e) => updateName(e.target.value)}/>
             </form>
         </div>
     );

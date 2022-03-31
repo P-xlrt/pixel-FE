@@ -39,7 +39,7 @@ class Flood_Fill extends Tool {
             }
         }
 
-        console.log("Search start");
+        //console.log("Search start");
         // Iterate through all the locations to be checked
         while(currentSearch.length > 0){       
             for(let i = 0; i < currentSearch.length; i++){
@@ -52,7 +52,7 @@ class Flood_Fill extends Tool {
             currentSearch = [...nextSearch];
             nextSearch.length = 0;
         }
-        console.log("Search end");
+        //console.log("Search end");
 
         applyChanges(this._modifiedPixels, this._removePreviewOnEnd, false); // Sends the operation over to the canvas drawing code
         this._started = null; // Reset the tool

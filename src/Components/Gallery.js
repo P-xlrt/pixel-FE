@@ -41,15 +41,15 @@ export const Gallery = (props) => {
 
   // calculates how many pages are available
   const setAmountOfPages = () => {
-    console.log("entering setamountofpagees", totalImgQty);
-    console.log("entering setamountofpagees", itemsNeeded);
+    // console.log("entering setamountofpagees", totalImgQty);
+    // console.log("entering setamountofpagees", itemsNeeded);
     if ((!totalImgQty) ||(parseInt(totalImgQty) < 1)) {
       setPages(1);
     } else {
       let pagesNeeded = Math.ceil(parseInt(totalImgQty) / parseInt(itemsNeeded));
       // pages returns NaN at the moment
-      console.log("total img", totalImgQty, "pages", pages);
-      console.log("pages needed:", pagesNeeded);
+      // console.log("total img", totalImgQty, "pages", pages);
+      // console.log("pages needed:", pagesNeeded);
       setPages(pagesNeeded);
     }
   }
@@ -57,10 +57,10 @@ export const Gallery = (props) => {
   const pagesArray = (pages) => {
     // setAmountOfPages();    
     let theArray = [];
-    console.log("pages in pagesArray: ", pages);
+    //console.log("pages in pagesArray: ", pages);
     for (let i = 0; i < pages; i++) {
       theArray[i] = i + 1;
-      console.log(theArray);
+      //console.log(theArray);
     }
     return theArray;
   }
