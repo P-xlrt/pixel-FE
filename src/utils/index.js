@@ -65,7 +65,7 @@ export const deleteUser = async (user) => {
   }
 };
 
-export const updateUser = async (username, passUpdate) => {
+export const updateUser = async (passUpdate) => {
   try {
     const response = await fetch(`${process.env.REACT_APP_REST_API}user`, {
       method: "PATCH",
@@ -74,7 +74,6 @@ export const updateUser = async (username, passUpdate) => {
         Authorization: `Bearer ${localStorage.getItem("myToken")}`,
       },
       body: JSON.stringify({
-        username: username,
         pass: passUpdate,
       }),
     });
@@ -84,5 +83,23 @@ export const updateUser = async (username, passUpdate) => {
     }
   } catch (error) {
     console.log();
+  }
+};
+
+exports.updateImageProfile = async (req, res) => {
+  try {
+    const updateUserprofile = await User.update(
+      { img: req.body.img },
+      { where: { id: req.user.id } }
+    );
+    console.log(updateUserprofile);
+    if (updateUserprofile[0] === 1) {
+      res.status(200).send({ msg: "successfully update profile" });
+    } else {
+      throw new Error("Did not update profile");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ err: error.message });
   }
 };

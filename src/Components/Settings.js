@@ -1,76 +1,69 @@
 // User settings page: Update Email, Update Password, Delete Account, Add/Change Image and Log-out
 import { useState } from "react";
 import "../styling/settings.css";
-import {
-  updateUser,
-  // updatePass,
-  // updateImageProfile,
-  // deleteUser,
-} from "../utils";
+import { updateUser, deleteUser } from "../utils";
+import { Navigate } from "react-router-dom";
 
-export const Settings = () => {
+export const Settings = ({ user }) => {
   // Define Update Handler
-  const [username, setUsername] = useState();
+  // const [username, setUsername] = useState();
   const [pass, setPass] = useState();
-  const [bool, setBool] = useState(false);
 
   // ========== Event Handler
   const passNameHandler = (e) => {
     e.preventDefault();
-    let changeName = document.getElementById("chg_displ_nme");
-    let changePass = document.getElementById("chg_pass");
+    // let changeName = document.getElementById("chg_displ_nme");
+    // let changePass = document.getElementById("chg_pass");
 
-    // if (changeName) {
-    //   updateUser(username);
-    // } else if (changePass) {
-    //   updatePass(pass);
-    // } else {
-    //   console.error("That is not a valid entry");
-    // }
+    if (pass) {
+      updateUser(pass);
+    } else {
+      console.error("That is not a valid entry");
+    }
   };
 
   // ========== Event Handler
-  const submitImageHandler = (e) => {
-    e.preventDefault();
+  // const submitImageHandler = (e) => {
+  //   e.preventDefault();
 
-    if (bool) {
-      updateImageProfile(img, userID);
-    }
-  };
+  //   if (bool) {
+  //     updateImageProfile(img, userID);
+  //   }
+  // };
 
-  //============ Preview Profile image thumbnail ==========
-  const previewFile = () => {
-    let preview = document.querySelector("img");
-    let file = document.querySelector("input[type=file]").files[0];
-    let reader = new FileReader();
+  // //============ Preview Profile image thumbnail ==========
+  // const previewFile = () => {
+  //   let preview = document.querySelector("img");
+  //   let file = document.querySelector("input[type=file]").files[0];
+  //   let reader = new FileReader();
 
-    reader.onloadend = () => {
-      preview.src = reader.result;
-    };
+  //   reader.onloadend = () => {
+  //     preview.src = reader.result;
+  //   };
 
-    if (file) {
-      reader.readAsDataURL(file);
-    } else {
-      preview.src = "";
-    }
-  };
+  //   if (file) {
+  //     reader.readAsDataURL(file);
+  //   } else {
+  //     preview.src = "";
+  //   }
+  // };
 
   return (
     <>
       <section className='settings_wrap'>
+        {!user && <Navigate to='/landing' />}
         <h1 className='settingsTitle'>Settings</h1>
-        <p>{username}</p>
+        <p>{user}</p>
 
         {/* ========== User can upload profile image here ========= */}
         <article>
-          <form onSubmit={submitImageHandler}>
+          {/* <form onSubmit={submitImageHandler}>
             <label>Profile image</label>
             <figure>
               <img src='' height='80' alt='Image preview...' />
               <figcaption>
                 Images should be square e.g. 150px X 150px
               </figcaption>
-              {/* Display the image here */}
             </figure>
 
             <input
@@ -82,10 +75,10 @@ export const Settings = () => {
               }}
             />
             <button onClick={() => {}}>Upload</button>
-          </form>
+          </form> */}
 
           {/* ========== Update User display name here  ========= */}
-          <form
+          {/* <form
             id='chg_displ_nme'
             className='change_pass'
             onChange={passNameHandler}
@@ -106,10 +99,10 @@ export const Settings = () => {
             >
               Change Display Name
             </button>
-          </form>
+          </form> */}
 
           {/* ========== Update User Password Here ========= */}
-          <form id='chg_pass' onChange={passNameHandler}>
+          <form id='chg_pass' onSubmit={passNameHandler}>
             <input
               name='updateUserPass'
               onChange={(event) => setPass(event.target.value)}
@@ -117,7 +110,7 @@ export const Settings = () => {
               placeholder='Enter new password'
               className='form_item-control'
             />
-            <button onClick={() => {}}>Update Password</button>
+            <button>Update Password</button>
           </form>
 
           {/* ========== Delete User  Here ========= */}
@@ -126,7 +119,7 @@ export const Settings = () => {
               Are you sure you want to delete your profile? This action is NOT
               reversible!
             </p>
-            <button click={() => {}}>Delete Profile</button>
+            <button onClick={() => deleteUser(user)}>Delete Profile</button>
           </div>
         </article>
       </section>

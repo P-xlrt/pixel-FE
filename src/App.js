@@ -34,10 +34,32 @@ const App = () => {
             path='/login'
             element={<Login user={user} setUser={setUser} />}
           />
-          <Route path='/settings' element={<Settings />} />
-          <Route path='/gallery' element={ <Gallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
-          <Route path='/gallery/:amountOfItems/:page' element={ <Gallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
-          <Route path='/create' element={
+          <Route path='/settings' element={<Settings user={user} />} />
+          <Route
+            path='/gallery'
+            element={
+              <Gallery
+                public={true}
+                currentCanvasImage={canvasImageURL}
+                imageURLSetter={setCanvasImageURL}
+                imageIDSetter={setCanvasImageID}
+              />
+            }
+          />
+          <Route
+            path='/gallery/:amountOfItems/:page'
+            element={
+              <Gallery
+                public={true}
+                currentCanvasImage={canvasImageURL}
+                imageURLSetter={setCanvasImageURL}
+                imageIDSetter={setCanvasImageID}
+              />
+            }
+          />
+          <Route
+            path='/create'
+            element={
               <Canvas
                 imageURL={canvasImageURL}
                 imageURLSetter={setCanvasImageURL}
@@ -46,8 +68,28 @@ const App = () => {
               />
             }
           />
-          <Route path='/profile' element={<Profile public={false} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID}/>} />
-          <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID}/>} />
+          <Route
+            path='/profile'
+            element={
+              <Profile
+                public={false}
+                currentCanvasImage={canvasImageURL}
+                imageURLSetter={setCanvasImageURL}
+                imageIDSetter={setCanvasImageID}
+              />
+            }
+          />
+          <Route
+            path='/profile/:amountOfItems/:page'
+            element={
+              <Profile
+                public={false}
+                currentCanvasImage={canvasImageURL}
+                imageURLSetter={setCanvasImageURL}
+                imageIDSetter={setCanvasImageID}
+              />
+            }
+          />
           <Route path='/landing' element={<Landing />} />
           <Route path='/team' element={<Team />} />
           {/* <Route path='*' element={<p>404 Not Found</p>} /> */}

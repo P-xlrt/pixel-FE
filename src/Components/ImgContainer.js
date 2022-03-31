@@ -35,7 +35,8 @@ export const ImgContainer = (props) => {
   };
 
   return (
-    <figure className='ImgContainer'>
+    <div className='ImgContainer'>
+      <h2>{title}</h2>
       <img src={img} className='imgInBox'></img>
       {!props.public ? (
         <>
@@ -59,7 +60,6 @@ export const ImgContainer = (props) => {
           </label>
         </>
       ) : null}
-      <figcaption>{title}</figcaption>
-    </figure>
+    </div>
   );
 };
