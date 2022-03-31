@@ -67,53 +67,55 @@ export const Profile = (props) => {
   }
 
   return (
-    
-    <div className="galleryContainer">
-      
-      {(itemsNeeded != amountOfItems) && <Navigate to={`/profile/${itemsNeeded}/1`} />}
-      {(currentPage != page) && <Navigate to={`/profile/${itemsNeeded}/${currentPage}`} />}
-      {(!itemsNeeded) && <Navigate to={`/profile/9/1`} />}
+    <>
+      {!props.user && <Navigate to='/login' />}
+      <div className="galleryContainer">
+        
+        {(itemsNeeded != amountOfItems) && <Navigate to={`/profile/${itemsNeeded}/1`} />}
+        {(currentPage != page) && <Navigate to={`/profile/${itemsNeeded}/${currentPage}`} />}
+        {(!itemsNeeded) && <Navigate to={`/profile/9/1`} />}
 
-      <h1>Profile</h1>
-      <div className="profileData">
-        <div><h2>username</h2>
-        <img scr="" alt="user profile image"/></div>
-      </div>
+        <h1>Profile</h1>
+        <div className="profileData">
+          <img src={props.userImage}/>
+          <h2>{props.user}</h2>
+        </div>
 
-      <label>Images per page: 
-      <select id="amountSelector" name="amountSelector" value={itemsNeeded} onChange={(e) => setImgNeededAndRefresh(e.target.value)}>
-          <option value="9" key="imgNeeds_9">9</option>
-          <option value="12" key="imgNeeds_12">12</option>
-          <option value="18" key="imgNeeds_18">18</option>
-          <option value="60" key="imgNeeds_60">60</option>
-        </select></label>
+        <label>Images per page: 
+        <select id="amountSelector" name="amountSelector" value={itemsNeeded} onChange={(e) => setImgNeededAndRefresh(e.target.value)}>
+            <option value="9" key="imgNeeds_9">9</option>
+            <option value="12" key="imgNeeds_12">12</option>
+            <option value="18" key="imgNeeds_18">18</option>
+            <option value="60" key="imgNeeds_60">60</option>
+          </select></label>
 
-        <label>Page: 
-        <select id="pageSelector" name="pages" value={itemsNeeded} onChange={(e) => setPageAndRefresh(e.target.value)}>
-          <option value="1" key="page_9">1</option>
-          <option value="2" key="page_91">2</option>
-          <option value="3" key="jkks_18">3</option>
-          <option value="4" key="imgkjk0">4</option>
+          <label>Page: 
+          <select id="pageSelector" name="pages" value={itemsNeeded} onChange={(e) => setPageAndRefresh(e.target.value)}>
+            <option value="1" key="page_9">1</option>
+            <option value="2" key="page_91">2</option>
+            <option value="3" key="jkks_18">3</option>
+            <option value="4" key="imgkjk0">4</option>
 
-          {/* {pagesArray(pages).map((aPage) => {
+            {/* {pagesArray(pages).map((aPage) => {
+              return (
+                <>
+                <option value={aPage} key={`pageArray_${aPage}`}>{aPage}</option>
+                </>
+              )
+            })
+            } */}
+          </select></label>
+
+
+          {images.map((imgObj) => {
             return (
-              <>
-              <option value={aPage} key={`pageArray_${aPage}`}>{aPage}</option>
+              <> {/* Public determines whether to show save/load/delete or not */}
+                <ImgContainer imageNameSetter={props.imageNameSetter} publicImageToggle={props.publicImageToggle} currentCanvasImage={props.currentCanvasImage} public={props.public} key={`img_${imgObj.id}`} imgObj={imgObj} setRefreshNeeded={setRefreshNeeded} refreshNeeded={refreshNeeded} setCurrentImg={props.imageURLSetter} setCurrrentImgId={props.imageIDSetter}/>
               </>
-            )
-          })
-          } */}
-        </select></label>
-
-
-        {images.map((imgObj) => {
-          return (
-            <> {/* Public determines whether to show save/load/delete or not */}
-              <ImgContainer currentCanvasImage={props.currentCanvasImage} public={props.public} key={`img_${imgObj.id}`} imgObj={imgObj} setRefreshNeeded={setRefreshNeeded} refreshNeeded={refreshNeeded} setCurrentImg={props.imageURLSetter} setCurrrentImgId={props.imageIDSetter}/>
-            </>
-          );
-        })}
-    </div>
+            );
+          })}
+      </div>
+    </>
   );
 };
 

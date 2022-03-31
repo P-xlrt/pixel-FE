@@ -16,6 +16,9 @@ export const ImgContainer = (props) => {
   const passToCanvas = (id, img) => {
     props.setCurrrentImgId(id);
     props.setCurrentImg(img);
+    if (props.publicImageToggle)
+      props.publicImageToggle(props.imgObj["public"]);
+    if (props.imageNameSetter) props.imageNameSetter(title);
     navigate("/create");
   };
 
@@ -34,12 +37,29 @@ export const ImgContainer = (props) => {
     console.log(response);
   };
 
+  const handleCheckboxChange = async (e) => {
+    const response = await updateImage({
+      id,
+      img,
+      public: e.target.checked,
+      title: "image",
+    });
+    alert("Image was made " + (e.target.checked ? "public." : "private."));
+  };
+
   return (
     <div className='ImgContainer'>
       <h2>{title}</h2>
       <img src={img} className='imgInBox'></img>
       {!props.public ? (
         <>
+          <input
+            type='checkbox'
+            className='publicCheckbox'
+            name='Public'
+            onChange={handleCheckboxChange}
+            defaultChecked={props.imgObj["public"]}
+          />
           <label>
             <button className='button' onClick={() => passToCanvas(id, img)}>
               &#128393;

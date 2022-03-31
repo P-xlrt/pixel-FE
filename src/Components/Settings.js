@@ -1,8 +1,9 @@
 // User settings page: Update Email, Update Password, Delete Account, Add/Change Image and Log-out
 import { useState } from "react";
-import "../styling/settings.css";
-import { updateUser, deleteUser } from "../utils";
 import { Navigate } from "react-router-dom";
+import "../styling/settings.css";
+
+import { updateUser, deleteUser, updateProfileUser } from "../utils";
 
 export const Settings = ({ user }) => {
   // Define Update Handler
@@ -31,25 +32,27 @@ export const Settings = ({ user }) => {
   //   }
   // };
 
-  // //============ Preview Profile image thumbnail ==========
-  // const previewFile = () => {
-  //   let preview = document.querySelector("img");
-  //   let file = document.querySelector("input[type=file]").files[0];
-  //   let reader = new FileReader();
+  //============ Preview Profile image thumbnail ==========
+  const previewFile = () => {
+    let preview = document.querySelector("img");
+    let file = document.querySelector("input[type=file]").files[0];
+    let reader = new FileReader();
 
-  //   reader.onloadend = () => {
-  //     preview.src = reader.result;
-  //   };
+    reader.onloadend = () => {
+      preview.src = reader.result;
+      setImage(reader.result);
+    };
 
-  //   if (file) {
-  //     reader.readAsDataURL(file);
-  //   } else {
-  //     preview.src = "";
-  //   }
-  // };
+    if (file) {
+      reader.readAsDataURL(file);
+    } else {
+      preview.src = "";
+    }
+  };
 
   return (
     <>
+      {!user && <Navigate to='/login' />}
       <section className='settings_wrap'>
         {!user && <Navigate to='/landing' />}
         <h1 className='settingsTitle'>Settings</h1>
@@ -57,7 +60,7 @@ export const Settings = ({ user }) => {
 
         {/* ========== User can upload profile image here ========= */}
         <article>
-          {/* <form onSubmit={submitImageHandler}>
+          <form onSubmit={submitImageHandler}>
             <label>Profile image</label>
             <figure>
               <img src='' height='80' alt='Image preview...' />
@@ -74,8 +77,14 @@ export const Settings = ({ user }) => {
                 previewFile();
               }}
             />
-            <button onClick={() => {}}>Upload</button>
-          </form> */}
+            <button
+              onClick={() => {
+                updateProfileUser(loadedImage);
+              }}
+            >
+              Upload
+            </button>
+          </form>
 
           {/* ========== Update User display name here  ========= */}
           {/* <form
@@ -114,7 +123,7 @@ export const Settings = ({ user }) => {
           </form>
 
           {/* ========== Delete User  Here ========= */}
-          <div>
+          <div className='deleteUser'>
             <p>
               Are you sure you want to delete your profile? This action is NOT
               reversible!

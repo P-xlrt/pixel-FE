@@ -251,3 +251,17 @@ body {
 .toolbox_selected {
   background-color: pink;
 }
+
+#image_renamer {
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#image_renamer div p {
+  margin-bottom: 0;
+}
+
+#name_input {
+  width: 100%;
+}

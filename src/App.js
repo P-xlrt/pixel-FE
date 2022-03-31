@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useState } from "react";
+import { tokenLogin } from "./utils";
+import { useState, useEffect } from "react";
 import { Navbar } from "./Components/Navbar";
 import { Canvas } from "./Components/Canvas";
 import { Footer } from "./Components/Footer";
@@ -19,15 +20,24 @@ const App = () => {
   // library.add(fab, faCheckSquare, faCoffee);
   // const [isShowLogin, setIsShowLogin] = useState(true);
   const [user, setUser] = useState();
+  const [userImage, setUserImage] = useState("");
 
   const [canvasImageURL, setCanvasImageURL] = useState(null);
   const [canvasImageID, setCanvasImageID] = useState(null);
+  const [isImagePublic, setPublicImage] = useState(false);
+  const [canvasImageName, setCanvasImageName] = useState("image");
+
+  useEffect(() => {
+    if (localStorage.key("myToken")) {
+      tokenLogin(setUser, setUserImage);
+    }
+  }, [user]);
 
   return (
     <div className='app'>
       {/* <FontAwesomeIcon icon={faGear} /> */}
       <BrowserRouter>
-        <Navbar />
+        <Navbar user={user} />
 
         <Routes>
           <Route
@@ -65,6 +75,9 @@ const App = () => {
                 imageURLSetter={setCanvasImageURL}
                 imageID={canvasImageID}
                 imageIDSetter={setCanvasImageID}
+                imageName={canvasImageName}
+                imageNameSetter={setCanvasImageName}
+                isImagePublic={isImagePublic}
               />
             }
           />
@@ -73,9 +86,12 @@ const App = () => {
             element={
               <Profile
                 public={false}
+                user={user}
+                userImage={userImage}
                 currentCanvasImage={canvasImageURL}
                 imageURLSetter={setCanvasImageURL}
                 imageIDSetter={setCanvasImageID}
+                imageNameSetter={setCanvasImageName}
               />
             }
           />
@@ -84,9 +100,13 @@ const App = () => {
             element={
               <Profile
                 public={false}
+                user={user}
+                userImage={userImage}
+                publicImageToggle={setPublicImage}
                 currentCanvasImage={canvasImageURL}
                 imageURLSetter={setCanvasImageURL}
                 imageIDSetter={setCanvasImageID}
+                imageNameSetter={setCanvasImageName}
               />
             }
           />

@@ -15,8 +15,7 @@
 }
 
 .teamMember a:hover{
-    color: white;
-    background-color: #8a1953;
+    color: #d3d3d3;
     border-radius: 4px;
     transition: all 0.2s ease-out;
 }

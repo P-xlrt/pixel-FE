@@ -35,14 +35,15 @@ export const login = async (username, pass, setter) => {
   }
 };
 
-export const tokenLogin = async (setter) => {
+export const tokenLogin = async (setter, imageSetter) => {
   try {
     const response = await fetch(`${process.env.REACT_APP_REST_API}user`, {
       method: "GET",
-      headers: { Authorisation: `Bearer ${localStorage.getItem("myToken")}` },
+      headers: { Authorization: `Bearer ${localStorage.getItem("myToken")}` },
     });
     const data = await response.json();
     setter(data.user);
+    imageSetter(data.userImg);
   } catch (error) {
     console.log(error);
   }
@@ -77,29 +78,59 @@ export const updateUser = async (passUpdate) => {
         pass: passUpdate,
       }),
     });
-    const data = await response.JSON();
+    const data = await response.json();
     if (!data.msg) {
       throw new Error(data.err);
     }
   } catch (error) {
-    console.log();
+    console.log(error);
   }
 };
 
-exports.updateImageProfile = async (req, res) => {
+export const updateProfileUser = async (newProfileImage) => {
+  console.log(newProfileImage);
+  if (!newProfileImage) return; // Do nothing if no image is provided
+
   try {
-    const updateUserprofile = await User.update(
-      { img: req.body.img },
-      { where: { id: req.user.id } }
+    const response = await fetch(
+      `${process.env.REACT_APP_REST_API}user-image`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("myToken")}`,
+        },
+        body: JSON.stringify({
+          img: newProfileImage,
+        }),
+      }
     );
-    console.log(updateUserprofile);
-    if (updateUserprofile[0] === 1) {
-      res.status(200).send({ msg: "successfully update profile" });
-    } else {
-      throw new Error("Did not update profile");
+    const data = await response.json();
+    console.log(data);
+    alert("Profile changed");
+    if (!data.msg) {
+      throw new Error(data.err);
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send({ err: error.message });
+  }
+};
+
+export const dateUserprofile = async (userimage) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_REST_API}user-image`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("myToken")}`,
+        },
+        body: JSON.stringify(userimage),
+      }
+    );
+    return await response.json();
+  } catch (error) {
+    console.log(error);
   }
 };

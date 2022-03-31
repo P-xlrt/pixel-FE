@@ -19,8 +19,15 @@
 }
 
 .profileData img {
-    max-width: 200;
-    max-height: 200;
+    height: 50px;
+    width: 50px;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+
+
+    
+    object-fit: contain;
 }
 
 .userGallery {
