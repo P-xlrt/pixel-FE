@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { changeHex, changeSlider, toggleOverwriteColours, getDataURL, swapColours, updateModifyingColour, changeImageSizeValue } from "../canvas_engine/utils/drawing";
 import { commenceUndo, commenceRedo, exportImage, setTool, copy, paste, startMove, changeSelection, toggleGrid, cut } from "../canvas_engine/utils/canvas_client";
 import { saveImage, updateImage } from "../utils/imageRequests"; 
@@ -11,11 +11,12 @@ import Square_Tool from "../canvas_engine/tools/square_tool";
 import Circle_Tool from "../canvas_engine/tools/circle_tool";
 import Line_Tool from "../canvas_engine/tools/line_tool";
 
-export const Toolbox = ({imageID, imageIDSetter}) => {
+export const Toolbox = ({imageID, imageIDSetter, imageName, imageNameSetter, isImagePublic = false}) => {
 
     const [hex, updateHex] = useState("");
     const [xSize, updateXSize] = useState(16);
     const [ySize, updateYSize] = useState(16);
+    const [name, updateName] = useState(imageName);
 
     const submitHex = (e) => {
         e.preventDefault();
@@ -27,10 +28,14 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
         changeImageSizeValue(xSize, ySize);
     }
 
+    const submitImageName = (e) => {
+        e.preventDefault();
+        imageNameSetter(name);
+    }
+
     // When the user clicks this button, it clicks the hidden import tag, which opens a file selection menu.
     // When a file is selected, the import tag's "change" event listener is fired.
-    const tryImport = (e) => {
-        e.preventDefault();
+    const tryImport = () => {
         document.getElementById("import_file").click();
     }
 
@@ -49,12 +54,12 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
     const trySaveDatabase = async () => {
         try{
             let response = {};
-            if(imageID == null) response = await saveImage(getDataURL(), true, "image");
-            else response = await updateImage({ id: imageID, img: getDataURL(), public: true, title: "image" });
+            if(imageID == null) response = await saveImage(getDataURL(), false, name);
+            else response = await updateImage({ id: imageID, img: getDataURL(), public: isImagePublic, title: name });
 
             if(response.imageID !== null) {
                 imageIDSetter(response.imgId);
-                console.log("Saved!"); // Maybe replace with a confirmation message popup?
+                alert("Save successful!"); // Maybe replace with a confirmation message popup?
             }
             else{
                 throw new Error(response);
@@ -75,8 +80,7 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
             </div>
             <div id="one-off">
                 <button id="save_button" onClick={(e) => oneOffClick(e.target, trySaveDatabase)}>Save</button>
-                <a href="/profile"><button id="load_button">Save as</button></a>
-                <a href="/profile"><button id="load_button">Load</button></a>
+                <a href="/profile/9/1"><button id="saveload_button">Load / Save</button></a>
                 <button id="import_button" onClick={(e) => oneOffClick(e.target, tryImport)}>Import</button>
                 <button id="export_button" onClick={(e) => oneOffClick(e.target, exportImage)}>Export</button>
                 <button id="copy_button" onClick={(e) => oneOffClick(e.target, copy)}>Copy</button>
@@ -150,6 +154,10 @@ export const Toolbox = ({imageID, imageIDSetter}) => {
                     <input type="number" className="keypress_input" id="resize_y" min="1" max="1024" onChange={(e) => {updateYSize(e.target.value)}}></input>
                 </form>
             </div>
+            <form id="image_renamer" onSubmit={submitImageName}>
+                <div><p>Name</p></div>
+                <input id="name_input" value={name} className="keypress_input" onChange={(e) => updateName(e.target.value)}/>
+            </form>
         </div>
     );
 };

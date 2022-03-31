@@ -151,7 +151,7 @@ const updateSliders = () => {
     rSlider.value = modifyingPrimary ? primaryColour.r : secondaryColour.r;
     gSlider.value = modifyingPrimary ? primaryColour.g : secondaryColour.g;
     bSlider.value = modifyingPrimary ? primaryColour.b : secondaryColour.b;
-    aSlider.value = modifyingPrimary ? primaryColour.a * 256 : secondaryColour.a * 256;
+    aSlider.value = modifyingPrimary ? primaryColour.a * 255 : secondaryColour.a * 255;
     rNum.value = rSlider.value;
     gNum.value = gSlider.value;
     bNum.value = bSlider.value;
@@ -181,6 +181,7 @@ export const setToolColour = (mouseButton, colour) => {
         secondaryColour = colour;
         refreshSecondary();
     }
+    updateSliders();
 }
 
 // =========================================================== //
@@ -276,6 +277,7 @@ export const applyChangesMove = (newData, xPos, yPos) => {
     const data = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
     editCurrentHistory(data); // Current image data should be merged with the history of the delete selection operation that happened when move was started
     currentImage = data;
+    
 }
 
 // Called when a new canvas is being created or when the window is being resized.
