@@ -27,7 +27,7 @@ const App = () => {
     <div className='app'>
       {/* <FontAwesomeIcon icon={faGear} /> */}
       <BrowserRouter>
-        <Navbar />
+        <Navbar  user={user} setUser={setUser}  />
 
         <Routes>
           <Route
@@ -50,6 +50,7 @@ const App = () => {
           <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID}/>} />
           <Route path='/landing' element={<Landing />} />
           <Route path='/team' element={<Team />} />
+          <Route path='/logout' element={<Logout />} />
           {/* <Route path='*' element={<p>404 Not Found</p>} /> */}
         </Routes>
 

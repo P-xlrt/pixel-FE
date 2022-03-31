@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Dropdown } from "./Dropdown";
 import "../styling/navbar.css";
 
-export const Navbar = () => {
+export const Navbar = ({ user, setUser }) => {
   const [click, setClick] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const handleClick = () => setClick(!click);
@@ -41,9 +41,9 @@ export const Navbar = () => {
             </Link>
           </li>
           <li className='nav-item'>
-            <Link to='/login' className='nav-links' onClick={closeMobileMenu}>
-              Login/Sign-up
-            </Link>
+
+          {(!user) && <Link to='/login' className='nav-links' onClick={closeMobileMenu}>Login/Sign-up</Link>}
+            
           </li>
           <li
             className='nav-item'
