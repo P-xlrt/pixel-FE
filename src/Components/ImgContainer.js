@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 export const ImgContainer = (props) => {
   const [currentImg, setCurrentImg] = useState([]);
 
+  console.log(props.imgObj);
   let {title, id, img, createdAt, updatedAt, UserId} = props.imgObj;
   let navigate = useNavigate();
 
@@ -18,6 +19,8 @@ export const ImgContainer = (props) => {
   const passToCanvas = (id, img) => {
     props.setCurrrentImgId(id); 
     props.setCurrentImg(img);
+    if(props.publicImageToggle) props.publicImageToggle(props.imgObj["public"]);
+    if(props.imageNameSetter) props.imageNameSetter(title);
     navigate("/create");
   }
 
@@ -31,11 +34,17 @@ export const ImgContainer = (props) => {
     console.log(response);
   }
 
+  const handleCheckboxChange = async (e) => {
+    const response = await updateImage({ id, img, public: e.target.checked, title: "image"});
+    alert("Image was made " + (e.target.checked ? "public." : "private."));
+  }
+
   return (
     <div className="ImgContainer">
         <h2>{title}</h2>
         <img src={img} className="imgInBox"></img>
         {!props.public ? (<>
+          <input type="checkbox" className="publicCheckbox" name="Public" onChange={handleCheckboxChange} defaultChecked={props.imgObj["public"]}/>
           <label><button className='button' onClick={() => passToCanvas(id, img)}>&#128393;</button>Load</label>
           <label><button className='button' onClick={() => saveAs(id)}>&#x1F4BE;</button>Save</label>
           <label><button className='button' onClick={() => deleteAndRefresh(id)}>&#x1F5D1;</button>Delete</label>

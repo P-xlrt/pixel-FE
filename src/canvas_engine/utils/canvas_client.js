@@ -202,12 +202,14 @@ export const loadImage = (dataURL) => {
     let img = new Image();
 
     img.addEventListener("load", function () {
-
         createNewImage(img.width, img.height);
+
+        drawingCtx.globalAlpha = 0.999999; // Img doesn't deal with transparency by default
         drawingCtx.drawImage(img, 0, 0);
         setupNewHistory(drawingCtx.getImageData(0, 0, img.width, img.height));
 
         img.remove();
+        console.log(drawingCtx.getImageData(0, 0, img.width, img.height));
     });
 
     img.src = dataURL;
@@ -249,31 +251,45 @@ export const copy = async () => {
     const ctx = tempCanvas.getContext("2d");
 
     // Copy the selected pixels onto the temporary canvas
-    ctx.putImageData(drawingCtx.getImageData(selX1, selY1, tempCanvas.width, tempCanvas.height), 0, 0);
-    selectedURL = tempCanvas.toDataURL();
+    let img = new Image();
 
-    try {
-        tempCanvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]))
-    } 
-    catch (err) {
-        console.log(err);
-        //alert("An error occured. If you are using Firefox, type 'about:config' into the URL bar, search for 'dom.events.asyncClipboard.clipboardItem' and enable it.");
-    }
-    tempCanvas.remove();
+    img.addEventListener("load", function () {
+        ctx.drawImage(img, -selX1, -selY1);
+        selectedURL = tempCanvas.toDataURL();
+        try {
+            tempCanvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]))
+        } 
+        catch (err) {
+            console.log(err);
+            //alert("An error occured. If you are using Firefox, type 'about:config' into the URL bar, search for 'dom.events.asyncClipboard.clipboardItem' and enable it.");
+        }
+        tempCanvas.remove();
+    });
+
+    img.src = canvas_drawing.toDataURL();
+
 }
 
 const startPaste = (dataURL) => {
+
     let img = new Image();
     const tempCanvas = document.createElement("canvas");
     const ctx = tempCanvas.getContext("2d");
 
     img.addEventListener("load", function () {
+        console.log(dataURL);
         tempCanvas.width = img.width;
         tempCanvas.height = img.height;
+
+        ctx.fillStyle = new Colour(255, 255, 255, 0).rgb; //Colour.generateRGB(255, 255, 255);
+        ctx.globalAlpha = 0;
+        ctx.fillRect(0, 0, canvas_drawing.width, canvas_drawing.height);
+
+        ctx.globalAlpha = 0.999999; // Img doesn't deal with transparency by default
         ctx.drawImage(img, 0, 0);
 
         setTool(new Move_Tool(ctx.getImageData(0, 0, tempCanvas.width, tempCanvas.height), 0, 0));
-
+        
         img.remove();
         tempCanvas.remove();
     });
@@ -325,7 +341,7 @@ export const paste = async () => {
 export const exportImage = () => {
     let a = document.createElement("a");
     a.href = canvas_drawing.toDataURL();
-    a.setAttribute("download", "export.png"); // export.png can be changed to image title name
+    a.setAttribute("download", document.getElementById("name_input").value + ".png"); // export.png can be changed to image title name
     a.click();
     a.remove();
 }

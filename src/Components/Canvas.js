@@ -5,7 +5,7 @@ import { applyResize } from "../canvas_engine/utils/view";
 import { getDataURL } from "../canvas_engine/utils/drawing";
 import { useEffect } from "react";
 
-export const Canvas = ({imageURL, imageURLSetter, imageID, imageIDSetter}) => {
+export const Canvas = ({imageURL, imageURLSetter, imageID, imageIDSetter, imageName, imageNameSetter, isImagePublic = false}) => {
 	// When the canvas component is mounted
 	useEffect(() => {
 
@@ -37,7 +37,7 @@ export const Canvas = ({imageURL, imageURLSetter, imageID, imageIDSetter}) => {
 
 	return (
 		<div id="canvas_page_body">
-			<Toolbox imageID={imageID} imageIDSetter={imageIDSetter}/>
+			<Toolbox imageID={imageID} imageIDSetter={imageIDSetter} isImagePublic={isImagePublic} imageName={imageName} imageNameSetter={imageNameSetter}/>
 			<div id="canvas_container" onMouseDown={canvasMouseDown} onContextMenu={(e) => e.preventDefault()}>
 				<canvas id="canvas_grid" width="800" height="800"></canvas>
 				<canvas id="canvas_interaction" width="800" height="800"></canvas>

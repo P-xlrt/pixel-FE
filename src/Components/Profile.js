@@ -109,7 +109,7 @@ export const Profile = (props) => {
         {images.map((imgObj) => {
           return (
             <> {/* Public determines whether to show save/load/delete or not */}
-              <ImgContainer currentCanvasImage={props.currentCanvasImage} public={props.public} key={`img_${imgObj.id}`} imgObj={imgObj} setRefreshNeeded={setRefreshNeeded} refreshNeeded={refreshNeeded} setCurrentImg={props.imageURLSetter} setCurrrentImgId={props.imageIDSetter}/>
+              <ImgContainer imageNameSetter={props.imageNameSetter} publicImageToggle={props.publicImageToggle} currentCanvasImage={props.currentCanvasImage} public={props.public} key={`img_${imgObj.id}`} imgObj={imgObj} setRefreshNeeded={setRefreshNeeded} refreshNeeded={refreshNeeded} setCurrentImg={props.imageURLSetter} setCurrrentImgId={props.imageIDSetter}/>
             </>
           );
         })}
