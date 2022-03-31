@@ -47,6 +47,9 @@ export const Gallery = (props) => {
       setPages(1);
     } else {
       let pagesNeeded = Math.ceil(parseInt(totalImgQty) / parseInt(itemsNeeded));
+      if (currentPage > pagesNeeded) {
+        setCurrentPage(1);
+      }
       // pages returns NaN at the moment
       // console.log("total img", totalImgQty, "pages", pages);
       // console.log("pages needed:", pagesNeeded);
