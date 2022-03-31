@@ -88,6 +88,7 @@
   color: #fdfdfd;
   margin-bottom: 0.5em;
   height: 2em;
+  cursor: pointer;
 }
 
 .settings_wrap figcaption {

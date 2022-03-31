@@ -32,7 +32,7 @@ export const Login = ({ user, setUser }) => {
   };
   return (
     <>
-      {user && <Navigate to='/landing' />}
+      {user && <Navigate to='/Landing' />}
       <form className='form_wrap' onSubmit={submitHandler}>
         <input
           className='form_item'
