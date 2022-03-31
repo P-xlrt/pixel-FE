@@ -4,7 +4,9 @@ import "../styling/footer.css";
 export const Footer = () => {
   return (
     <footer className='footer_wrap'>
+      {/* <h2>Connect with us</h2> */}
       <nav className='footer_nav'>
+        
         <div className="footer_item">
           <Link className="footer_link" to='/team'>Meet the Team</Link>
         </div>
