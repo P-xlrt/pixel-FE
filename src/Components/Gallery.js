@@ -38,7 +38,7 @@ export const Gallery = (props) => {
   const [itemsNeeded, setItemsNeeded] = useState(parseInt(amountOfItems));
 
   // this should be grabbed from/put in the url
-  const [targetUser, setTargetUser] = useState(parseInt(user));
+  const [targetUser, setTargetUser] = useState();
 
 
 
@@ -61,10 +61,8 @@ export const Gallery = (props) => {
   const pagesArray = (pages) => {
     // setAmountOfPages();    
     let theArray = [];
-    console.log("pages in pagesArray: ", pages);
     for (let i = 0; i < pages; i++) {
       theArray[i] = i + 1;
-      console.log(theArray);
     }
     return theArray;
   }
@@ -86,13 +84,17 @@ export const Gallery = (props) => {
       setCurrentPage(1);
     };
     grabImages(setImages, setTotalImgQty, itemsNeeded, currentPage, targetUser);
-  }, [refreshNeeded, currentPage, itemsNeeded, targetUser]);
+  }, [refreshNeeded, currentPage, itemsNeeded, amountOfItems, page, user]);
+// }, [refreshNeeded, currentPage, itemsNeeded, targetUser, amountOfItems, page, user]);
 
   useEffect(() => {
     if (totalImgQty > 1) {
       setAmountOfPages();
+      setCurrentPage(1);
     }
   }, [totalImgQty, itemsNeeded]);
+
+
 
 
 
@@ -107,6 +109,7 @@ export const Gallery = (props) => {
       {(!itemsNeeded) && <Navigate to={`/gallery/all/9/1`} />}
       {(itemsNeeded != parseInt(amountOfItems)) && <Navigate to={`/gallery/all/${itemsNeeded}/1`} />}
       {(currentPage != parseInt(page)) && <Navigate to={`/gallery/all/${itemsNeeded}/${currentPage}`} />}
+      {(targetUser != user) && <Navigate to={`/gallery/${user}/${itemsNeeded}/1`} />}
 
       <h1>Gallery</h1>
       <label>Images per page: 
