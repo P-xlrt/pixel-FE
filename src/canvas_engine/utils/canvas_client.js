@@ -1,6 +1,6 @@
 import { undo, redo, addHistory, setupNewHistory } from "./history";
-import { setupView, changeZoom, offsetPosition, redrawGrid } from "./view";
-import { newImage, setupDrawing, deleteSelection } from "./drawing";
+import { setupView, changeZoom, offsetPosition, redrawGrid, clientToCanvasCoordinate } from "./view";
+import { newImage, setupDrawing, deleteSelection, getImageSize } from "./drawing";
 import Colour from "./colour";
 import Pencil from "../tools/pencil";
 import Selection_Tool from "../tools/selection_tool";
@@ -10,10 +10,9 @@ import Line_Tool from "../tools/line_tool";
 import Colour_Picker from "../tools/colour_picker";
 import Eraser from "../tools/eraser";
 
-let canvas_container, canvas_drawing, drawingCtx, canvas_preview, previewCtx, canvas_grid, gridCtx;
+let canvas_container, canvas_drawing, drawingCtx, canvas_preview, previewCtx, canvas_grid, gridCtx, animationCtx;
 
 // Tools
-const emptyColour = new Colour(0, 0, 0, 0);
 let tool = null;
 export const setTool = (newTool) => {
     if(tool) tool.tool_unselected();
@@ -40,7 +39,7 @@ let cursorLocationY = 0;
 // One key instruction at a time and only once, until it's unpressed
 let keyDebounce = null; 
 
-const createNewImage = (x = 16, y = 16) => {
+export const createNewImage = (x = 16, y = 16) => {
     newImage(x, y);
 }
 
@@ -51,7 +50,7 @@ export const changeSelection = (x1, y1, x2, y2) => {
     selX1 = Math.max(Math.min(x1, x2), 0);
     selY1 = Math.max(Math.min(y1, y2), 0);
     selX2 = Math.min(Math.max(x1, x2), canvas_drawing.width);
-    selY2 = Math.min(Math.max(y1, y2), canvas_drawing.width);
+    selY2 = Math.min(Math.max(y1, y2), canvas_drawing.height);
 }
 
 const selectAll = () => {
@@ -192,6 +191,7 @@ export const canvasMouseDown = (e) => {
     }
     else{
         if (!tool) return;
+        if (e.target.id !== "canvas_container" && e.target.tagName !== "CANVAS") return;
 
         // Different rules for moving tool
         if(tool.specialType() == "Moving"){ 
@@ -201,7 +201,15 @@ export const canvasMouseDown = (e) => {
         }
 
         // Every other tool
-        if(e.button == 0 || e.button == 2) tool.start(e.button, e.clientX, e.clientY);
+        if(e.button == 0 || e.button == 2) {
+            if(tilingActive){
+                tool.start(e.button, e.clientX, e.clientY);
+            }
+            else{
+                tool.start(e.button, e.clientX, e.clientY);
+            }
+        }
+        
     }
 }
 
@@ -288,7 +296,6 @@ const startPaste = (dataURL) => {
     const ctx = tempCanvas.getContext("2d");
 
     img.addEventListener("load", function () {
-        //console.log(dataURL);
         tempCanvas.width = img.width;
         tempCanvas.height = img.height;
 
@@ -362,6 +369,257 @@ export const exportImage = () => {
 export const toggleGrid = () => {
     canvas_grid.style.visibility = canvas_grid.style.visibility == "hidden" ? "visible" : "hidden";
     redrawGrid();
+}
+
+const createDuplicateCanvas = () => {
+    let canvas = document.createElement("canvas");
+    canvas.classList.add("canvas_tiling");
+    canvas.width = canvas_drawing.width;
+    canvas.height = canvas_drawing.height;
+    canvas.style.width = canvas_drawing.style.width;
+    canvas.style.height = canvas_drawing.style.height;
+    canvas_container.appendChild(canvas);
+    return canvas;
+}
+
+const createDuplicatePreview = () => {
+    let canvas = createDuplicateCanvas();
+    canvas.classList.remove("canvas_tiling");
+    canvas.classList.add("canvas_tiling_preview");
+    return canvas;
+}
+
+let tilingActive = false;
+let tilingCanvases = [];
+let tilingCanvasCtx = [];
+let tilingPreviews = [];
+let tilingPreviewCtx = [];
+let orientation = "Horizontal";
+
+export const getTiling = () => { return tilingActive; }
+
+export const copyTiles = (imageData) => {
+    if(!tilingActive) return;
+
+    for(let i = 0; i < 9; i++){
+        if(i == 4) continue;
+        const canvas = tilingCanvasCtx[i];
+        if(!canvas) continue;
+        tilingCanvasCtx[i].clearRect(0, 0, canvas.width, canvas.height);
+        tilingCanvasCtx[i].putImageData(imageData, 0, 0);
+    }
+}
+
+export const setPixelTiles = (x, y, colour, overwrite) => {
+    if(!tilingActive) return;
+    for(let i = 0; i < 9; i++){
+        if(i == 4) continue;
+        const canvas = tilingPreviewCtx[i];
+        if(!canvas) continue;
+        canvas.globalAlpha = colour.a;
+        canvas.fillStyle = colour.rgb;
+        if(overwrite) canvas.clearRect(x, y, 1, 1); // Clears the pixel for completely overwriting pixel
+        canvas.fillRect(x, y, 1, 1);
+    }
+}
+
+export const clearPreviewTiles = () => {
+    if(!tilingActive) return;
+    for(let i = 0; i < 9; i++){
+        if(i == 4 || !tilingPreviews[i]) continue;
+        tilingPreviewCtx[i].clearRect(0, 0, tilingPreviews[i].width, tilingPreviews[i].height);
+    }
+}
+/*
+    0   1   2
+    3   4   5
+    6   7   8
+*/
+export const repositionTiles = () => {
+    if(!tilingActive) return;
+    const drawing = canvas_drawing.getBoundingClientRect();
+    const offset = canvas_container.getBoundingClientRect();
+
+    const xPos = drawing.left;
+    const yPos = drawing.top - offset.top;
+
+    if(tilingCanvases[0]){
+        tilingCanvases[0].style.left = (xPos - drawing.width) + "px";
+        tilingCanvases[0].style.top = (yPos - drawing.height) + "px";
+        tilingPreviews[0].style.left = tilingCanvases[0].style.left;
+        tilingPreviews[0].style.top = tilingCanvases[0].style.top;
+    }
+    if(tilingCanvases[1]){
+        tilingCanvases[1].style.left = (xPos) + "px";
+        tilingCanvases[1].style.top = (yPos - drawing.height) + "px";
+        tilingPreviews[1].style.left = tilingCanvases[1].style.left;
+        tilingPreviews[1].style.top = tilingCanvases[1].style.top;
+    }
+    if(tilingCanvases[2]){
+        tilingCanvases[2].style.left = (xPos + drawing.width) + "px";
+        tilingCanvases[2].style.top = (yPos - drawing.height) + "px";
+        tilingPreviews[2].style.left = tilingCanvases[2].style.left;
+        tilingPreviews[2].style.top = tilingCanvases[2].style.top;
+    }
+    if(tilingCanvases[3]){
+        tilingCanvases[3].style.left = (xPos - drawing.width) + "px";
+        tilingCanvases[3].style.top = (yPos) + "px";
+        tilingPreviews[3].style.left = tilingCanvases[3].style.left;
+        tilingPreviews[3].style.top = tilingCanvases[3].style.top;
+    }
+    if(tilingCanvases[5]){
+        tilingCanvases[5].style.left = (xPos + drawing.width) + "px";
+        tilingCanvases[5].style.top = (yPos) + "px";
+        tilingPreviews[5].style.left = tilingCanvases[5].style.left;
+        tilingPreviews[5].style.top = tilingCanvases[5].style.top;
+    }
+    if(tilingCanvases[6]){
+        tilingCanvases[6].style.left = (xPos - drawing.width) + "px";
+        tilingCanvases[6].style.top = (yPos + drawing.height) + "px";
+        tilingPreviews[6].style.left = tilingCanvases[6].style.left;
+        tilingPreviews[6].style.top = tilingCanvases[6].style.top;
+    }
+    if(tilingCanvases[7]){
+        tilingCanvases[7].style.left = (xPos) + "px";
+        tilingCanvases[7].style.top = (yPos + drawing.height) + "px";
+        tilingPreviews[7].style.left = tilingCanvases[7].style.left;
+        tilingPreviews[7].style.top = tilingCanvases[7].style.top;
+    }
+    if(tilingCanvases[8]){
+        tilingCanvases[8].style.left = (xPos + drawing.width) + "px";
+        tilingCanvases[8].style.top = (yPos + drawing.height) + "px";
+        tilingPreviews[8].style.left = tilingCanvases[8].style.left;
+        tilingPreviews[8].style.top = tilingCanvases[8].style.top;
+    }
+    const [x, y] = getImageSize();
+    copyTiles(drawingCtx.getImageData(0, 0, x, y));
+}
+
+const deleteTiles = () => {
+    for(let i = 0; i < 9; i++){
+        if(tilingCanvases[i]) {
+            tilingCanvases[i].remove();
+            tilingPreviews[i].remove();
+        }
+    }
+    tilingCanvases.length = 0;
+    tilingCanvasCtx.length = 0;
+    tilingPreviews.length = 0;
+    tilingPreviewCtx.length = 0;
+}
+
+export const applyTiling = () => {
+    if(!tilingActive) return;
+    deleteTiles();
+    if(orientation == "Horizontal"){
+        tilingCanvases[3] = createDuplicateCanvas();
+        tilingCanvasCtx[3] = tilingCanvases[3].getContext("2d");
+        tilingPreviews[3] = createDuplicatePreview();
+        tilingPreviewCtx[3] = tilingPreviews[3].getContext("2d");
+        tilingCanvases[5] = createDuplicateCanvas();
+        tilingCanvasCtx[5] = tilingCanvases[5].getContext("2d");
+        tilingPreviews[5] = createDuplicatePreview();
+        tilingPreviewCtx[5] = tilingPreviews[5].getContext("2d");
+    }
+    else if(orientation == "Vertical"){
+        tilingCanvases[1] = createDuplicateCanvas();
+        tilingCanvasCtx[1] = tilingCanvases[1].getContext("2d");
+        tilingPreviews[1] = createDuplicatePreview();
+        tilingPreviewCtx[1] = tilingPreviews[1].getContext("2d");
+        tilingCanvases[7] = createDuplicateCanvas();
+        tilingCanvasCtx[7] = tilingCanvases[7].getContext("2d");
+        tilingPreviews[7] = createDuplicatePreview();
+        tilingPreviewCtx[7] = tilingPreviews[7].getContext("2d");
+    }
+    else{
+        for(let x = 0; x < 9; x++){
+            if(x == 4) continue;
+            tilingCanvases[x] = createDuplicateCanvas();
+            tilingCanvasCtx[x] = tilingCanvases[x].getContext("2d");
+            tilingPreviews[x] = createDuplicatePreview();
+            tilingPreviewCtx[x] = tilingPreviews[x].getContext("2d");
+        }
+    }
+    repositionTiles();
+}
+
+
+export const changeTiling = (setting) => {
+    orientation = setting;
+    applyTiling();
+}
+
+export const setTiling = (bool = false) => {
+    tilingActive = bool;
+    //console.log("Tiling " + (bool ? "activated" : "deactivated"))
+    if(bool) applyTiling();
+    else deleteTiles();
+}
+
+let animationTimer = null;
+let animationFrameX = 16;
+let animationFrameY = 16;
+let animationTotalFrames = 2;
+let animationGap = 0;
+let currentFrame = 0;
+let timer = 100;
+
+const refreshAnimation = () => {
+    clearInterval(animationTimer);
+    animationTimer = setInterval(() => {
+            
+        const find = document.getElementById("canvas_animation");
+        if(!find) return;
+        const animationCtx = find.getContext("2d");
+
+        animationCtx.clearRect(0, 0, animationFrameX, animationFrameY);
+        const data = drawingCtx.getImageData(0, currentFrame * animationFrameY + (animationGap * currentFrame), animationFrameX, animationFrameY);
+        animationCtx.putImageData(data, 0, 0);
+
+        currentFrame++;
+        if(currentFrame >= animationTotalFrames) currentFrame = 0;
+        
+    }, timer);
+}
+
+export const setAnimationGap = (int) => {
+    animationGap = int;
+    //console.log("Animation gap ", animationGap);
+}
+
+export const setAnimationSize = (x, y) => {
+    animationFrameX = parseInt(x);
+    animationFrameY = parseInt(y);
+
+    const find = document.getElementById("canvas_animation");
+    if(!find) return;
+    find.width = animationFrameX;
+    find.height = animationFrameY;
+}
+
+export const setAnimationFrames = (count) => {
+    animationTotalFrames = parseInt(count);
+    //console.log("Frame count ", animationTotalFrames);
+    refreshAnimation();
+}
+
+export const setAnimationTiming = (timing) => {
+    if(animationTimer) timer = timing;
+    //console.log("Animation timing ", timing);
+    refreshAnimation();
+}
+
+export const setAnimation = (bool = false) => {
+    //console.log("Animation " + (bool ? "activated" : "deactivated"))
+    if(bool){ // Activation
+        refreshAnimation();
+    }
+    else{ // Deactivation
+        if(animationTimer) {
+            clearInterval(animationTimer);
+            animationTimer = null;
+        }
+    }
 }
 
 export const setupClient = (imageURL = null) => {

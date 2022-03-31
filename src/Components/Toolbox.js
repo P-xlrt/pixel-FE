@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { changeHex, changeSlider, toggleOverwriteColours, getDataURL, swapColours, updateModifyingColour, changeImageSizeValue } from "../canvas_engine/utils/drawing";
-import { commenceUndo, commenceRedo, exportImage, setTool, copy, paste, startMove, changeSelection, toggleGrid, cut } from "../canvas_engine/utils/canvas_client";
+import { commenceUndo, commenceRedo, exportImage, setTool, copy, paste, startMove, changeSelection, toggleGrid, cut, setAnimation, setTiling, createNewImage } from "../canvas_engine/utils/canvas_client";
 import { saveImage, updateImage } from "../utils/imageRequests"; 
 import Pencil from "../canvas_engine/tools/pencil";
 import Eraser from "../canvas_engine/tools/eraser";
@@ -12,7 +12,7 @@ import Square_Tool from "../canvas_engine/tools/square_tool";
 import Circle_Tool from "../canvas_engine/tools/circle_tool";
 import Line_Tool from "../canvas_engine/tools/line_tool";
 
-export const Toolbox = ({imageID, imageIDSetter, imageName, imageNameSetter, isImagePublic = false}) => {
+export const Toolbox = ({sidePanel, sidePanelSetter, imageID, imageIDSetter, imageName, imageNameSetter, isImagePublic = false}) => {
 
     const [hex, updateHex] = useState("");
     const [xSize, updateXSize] = useState(16);
@@ -34,6 +34,11 @@ export const Toolbox = ({imageID, imageIDSetter, imageName, imageNameSetter, isI
         imageNameSetter(name);
     }
 
+    const startNewImage = () => {
+        imageIDSetter(null);
+        createNewImage();
+    }
+
     // When the user clicks this button, it clicks the hidden import tag, which opens a file selection menu.
     // When a file is selected, the import tag's "change" event listener is fired.
     const tryImport = () => {
@@ -50,6 +55,29 @@ export const Toolbox = ({imageID, imageIDSetter, imageName, imageNameSetter, isI
         setTimeout(() => {
             element.classList.toggle("toolbox_selected");
         }, 100);
+    }
+
+    const changeSidePanel = (newPanel) => {
+        document.getElementById("animation_button").classList.remove("toolbox_selected");
+        document.getElementById("tiling_button").classList.remove("toolbox_selected");
+        if(newPanel === sidePanel){
+            sidePanelSetter(0);
+            setAnimation(false);
+            setTiling(false);
+        } 
+        else {
+            sidePanelSetter(newPanel);
+            if(newPanel == 1){
+                setAnimation(true);
+                setTiling(false);
+                document.getElementById("animation_button").classList.add("toolbox_selected");
+            }
+            else{
+                setAnimation(false);
+                setTiling(true);
+                document.getElementById("tiling_button").classList.add("toolbox_selected");
+            }
+        }
     }
 
     const trySaveDatabase = async (id = imageID) => {
@@ -82,7 +110,12 @@ export const Toolbox = ({imageID, imageIDSetter, imageName, imageNameSetter, isI
                 <button id="grid_button" onClick={(e) => toggle(e.target, toggleGrid)}>Grid</button>
                 <button id="overwrite_button" onClick={(e) => toggle(e.target, toggleOverwriteColours)}>Overwrite</button>
             </div>
+            <div id="sidepanel_tools">
+                <button id="animation_button" onClick={(e) => changeSidePanel(1)}>Animations</button>
+                <button id="tiling_button" onClick={(e) => changeSidePanel(2)}>Tiling</button>
+            </div>
             <div id="one-off">
+                <button id="new_button" onClick={(e) => oneOffClick(e.target, startNewImage)}>New</button>
                 <button id="save_button" onClick={(e) => oneOffClick(e.target, trySaveDatabase)}>Save</button>
                 <Link to="/profile/9/1"><button id="saveload_button" onClick={() => {}}>Load / Save As</button></Link>
                 <button id="import_button" onClick={(e) => oneOffClick(e.target, tryImport)}>Import</button>
