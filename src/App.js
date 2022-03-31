@@ -61,6 +61,18 @@ const App = () => {
               />
             }
           />
+          <Route path='/' element={
+              <Canvas
+                imageURL={canvasImageURL}
+                imageURLSetter={setCanvasImageURL}
+                imageID={canvasImageID}
+                imageIDSetter={setCanvasImageID}
+                imageName={canvasImageName}
+                imageNameSetter={setCanvasImageName}
+                isImagePublic={isImagePublic}
+              />
+            }
+          />
           <Route path='/profile' element={<Profile public={false} user={user} userImage={userImage} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
           <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} user={user} userImage={userImage} publicImageToggle={setPublicImage} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
           <Route path='/landing' element={<Landing />} />
