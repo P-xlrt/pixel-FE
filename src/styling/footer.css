@@ -1,9 +1,9 @@
 .footer_wrap {
   margin-top: 2em;
-  position:absolute;
-  left:0;
-  bottom:0;
-  right:0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
   height: 50px;
   display: flex;
   margin: 0;
@@ -32,6 +32,9 @@
   margin-left: 2em;
 }
 
+.footer_nav div a {
+  color: #ff49a4;
+}
 /*  Social Icons */
 
 .fa-twitter:hover {
