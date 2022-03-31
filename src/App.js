@@ -29,7 +29,7 @@ const App = () => {
     <div className='app'>
       {/* <FontAwesomeIcon icon={faGear} /> */}
       <BrowserRouter>
-        <Navbar />
+        <Navbar  user={user}  />
 
         <Routes>
           <Route
