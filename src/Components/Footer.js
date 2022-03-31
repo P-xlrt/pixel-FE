@@ -4,12 +4,14 @@ import "../styling/footer.css";
 export const Footer = () => {
   return (
     <footer className='footer_wrap'>
+      {/* <h2>Connect with us</h2> */}
       <nav className='footer_nav'>
-        <div>
+        
+        <div className="footer_item">
           <Link className="footer_link" to='/team'>Meet the Team</Link>
         </div>
         {/* Social Media Icons */}
-        <ul>
+        <ul className="footer_item">
           <li>
             <a href='#'>
               <i className='fab fa-facebook fa-lg'></i>
@@ -31,9 +33,11 @@ export const Footer = () => {
             </a>
           </li>
         </ul>
+        <p className="footer_item">© P:xlrt MMXXII</p>
       </nav>
+      
 
-      <p>© P:xlrt MMXXII</p>
+      
     </footer>
   );
 };
