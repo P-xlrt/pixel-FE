@@ -91,7 +91,7 @@ export const updateUser = async (username, passUpdate) => {
 
   export const dateUserprofile = async (userimage) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_REST_API}image`, {
+      const response = await fetch(`${process.env.REACT_APP_REST_API}user-image`, {
         method: "PATCH",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("myToken")}` },
       body: JSON.stringify(userimage),
