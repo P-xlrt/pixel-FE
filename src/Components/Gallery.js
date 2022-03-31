@@ -74,9 +74,9 @@ export const Gallery = (props) => {
   // export const grabImages = async (setImages, setTotalImgQty, itemsPerPage, pageNumber, targetUser) => {
 
   useEffect(() => {
-    if (!targetUser) {
-      setTargetUser("all");
-    };
+    // if (!targetUser) {
+    //   setTargetUser("all");
+    // };
     if (!itemsNeeded) {
       setItemsNeeded(9);
     };
@@ -106,10 +106,12 @@ export const Gallery = (props) => {
   return (
     
     <div className="galleryContainer">
-      {(!itemsNeeded) && <Navigate to={`/gallery/all/9/1`} />}
+      {/* {(!itemsNeeded) && <Navigate to={`/gallery/all/9/1`} />}
       {(itemsNeeded != parseInt(amountOfItems)) && <Navigate to={`/gallery/all/${itemsNeeded}/1`} />}
       {(currentPage != parseInt(page)) && <Navigate to={`/gallery/all/${itemsNeeded}/${currentPage}`} />}
-      {(targetUser != user) && <Navigate to={`/gallery/${user}/${itemsNeeded}/1`} />}
+      {(currentPage < parseInt(page)) && <Navigate to={`/gallery/all/${itemsNeeded}/1`} />} */}
+      {/* {(targetUser != user) && <Navigate to={`/gallery/${user}/${itemsNeeded}/1`} />} */}
+      {(targetUser != user) && <Navigate to={`/gallery/juliaa/9/1`} />}
 
       <h1>Gallery</h1>
       <label>Images per page: 
