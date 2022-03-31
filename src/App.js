@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useState } from "react";
+import { tokenLogin } from "./utils";
+import { useState, useEffect } from "react";
 import { Navbar } from "./Components/Navbar";
 import { Canvas } from "./Components/Canvas";
 import { Footer } from "./Components/Footer";
@@ -19,11 +20,18 @@ const App = () => {
   // library.add(fab, faCheckSquare, faCoffee);
   // const [isShowLogin, setIsShowLogin] = useState(true);
   const [user, setUser] = useState();
+  const [userImage, setUserImage] = useState("");
 
   const [canvasImageURL, setCanvasImageURL] = useState(null);
   const [canvasImageID, setCanvasImageID] = useState(null);
   const [isImagePublic, setPublicImage] = useState(false);
   const [canvasImageName, setCanvasImageName] = useState("image");
+
+  useEffect(() => {
+    if (localStorage.key("myToken")) {
+      tokenLogin(setUser, setUserImage);
+    }
+  }, [user]);
 
   return (
     <div className='app'>
@@ -36,7 +44,7 @@ const App = () => {
             path='/login'
             element={<Login user={user} setUser={setUser} />}
           />
-          <Route path='/settings' element={<Settings />} />
+          <Route path='/settings' element={<Settings user={user}/>} />
           <Route path='/gallery' element={ <Gallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
           <Route path='/gallery/:amountOfItems/:page' element={ <Gallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
           <Route path='/create' element={
@@ -51,8 +59,8 @@ const App = () => {
               />
             }
           />
-          <Route path='/profile' element={<Profile public={false} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
-          <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} publicImageToggle={setPublicImage} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
+          <Route path='/profile' element={<Profile public={false} user={user} userImage={userImage} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
+          <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} user={user} userImage={userImage} publicImageToggle={setPublicImage} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
           <Route path='/landing' element={<Landing />} />
           <Route path='/team' element={<Team />} />
           {/* <Route path='*' element={<p>404 Not Found</p>} /> */}

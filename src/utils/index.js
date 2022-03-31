@@ -35,14 +35,15 @@ export const login = async (username, pass, setter) => {
   }
 };
 
-export const tokenLogin = async (setter) => {
+export const tokenLogin = async (setter, imageSetter) => {
   try {
     const response = await fetch(`${process.env.REACT_APP_REST_API}user`, {
       method: "GET",
-      headers: { Authorisation: `Bearer ${localStorage.getItem("myToken")}` },
+      headers: { Authorization: `Bearer ${localStorage.getItem("myToken")}` },
     });
     const data = await response.json();
     setter(data.user);
+    imageSetter(data.userImg);
   } catch (error) {
     console.log(error);
   }
@@ -78,16 +79,41 @@ export const updateUser = async (username, passUpdate) => {
         pass: passUpdate,
       }),
     });
-    const data = await response.JSON();
+    const data = await response.json();
     if (!data.msg) {
       throw new Error(data.err);
     }
   } catch (error) {
-    console.log();
+    console.log(error);
   }
 };
 
 
+export const updateProfileUser = async (newProfileImage) => {
+  console.log(newProfileImage);
+  if(!newProfileImage) return; // Do nothing if no image is provided
+  
+  try {
+    const response = await fetch(`${process.env.REACT_APP_REST_API}user-image`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("myToken")}`,
+      },
+      body: JSON.stringify({
+        img: newProfileImage
+      })
+    });
+    const data = await response.json();
+    console.log(data);
+    alert("Profile changed");
+    if (!data.msg) {
+      throw new Error(data.err);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
   export const dateUserprofile = async (userimage) => {
     try {

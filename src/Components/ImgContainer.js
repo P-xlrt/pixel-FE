@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 export const ImgContainer = (props) => {
   const [currentImg, setCurrentImg] = useState([]);
 
-  console.log(props.imgObj);
   let {title, id, img, createdAt, updatedAt, UserId} = props.imgObj;
   let navigate = useNavigate();
 

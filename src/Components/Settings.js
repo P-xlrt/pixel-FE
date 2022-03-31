@@ -1,18 +1,21 @@
 // User settings page: Update Email, Update Password, Delete Account, Add/Change Image and Log-out
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import "../styling/settings.css";
 import {
   updateUser,
   // updatePass,
   // updateImageProfile,
   // deleteUser,
+  updateProfileUser
 } from "../utils";
 
-export const Settings = () => {
+export const Settings = ({user}) => {
   // Define Update Handler
   const [username, setUsername] = useState();
   const [pass, setPass] = useState();
   const [bool, setBool] = useState(false);
+  const [loadedImage, setImage] = useState(null);
 
   // ========== Event Handler
   const passNameHandler = (e) => {
@@ -46,6 +49,7 @@ export const Settings = () => {
 
     reader.onloadend = () => {
       preview.src = reader.result;
+      setImage(reader.result);
     };
 
     if (file) {
@@ -57,6 +61,7 @@ export const Settings = () => {
 
   return (
     <>
+      {!user && <Navigate to='/login' />}
       <section className='settings_wrap'>
         <h1 className='settingsTitle'>Settings</h1>
         <p>{username}</p>
@@ -81,7 +86,7 @@ export const Settings = () => {
                 previewFile();
               }}
             />
-            <button onClick={() => {}}>Upload</button>
+            <button onClick={() => {updateProfileUser(loadedImage)}}>Upload</button>
           </form>
 
           {/* ========== Update User display name here  ========= */}

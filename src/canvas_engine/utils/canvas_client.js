@@ -202,6 +202,7 @@ export const loadImage = (dataURL) => {
     let img = new Image();
 
     img.addEventListener("load", function () {
+        console.log(img.src);
         createNewImage(img.width, img.height);
 
         drawingCtx.globalAlpha = 0.999999; // Img doesn't deal with transparency by default
