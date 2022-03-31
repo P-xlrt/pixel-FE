@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 
 import { ImgContainer } from "./ImgContainer";
 import { Navigate, useParams } from "react-router-dom";
+import { NewSaveContainer } from "./NewSaveContainer";
 
 
 export const Profile = (props) => {
@@ -53,7 +54,7 @@ export const Profile = (props) => {
     };
     grabAllMyImages(setImages, setTotalImgQty, itemsNeeded, currentPage);
     setAmountOfPages();
-    console.log(props);
+    //console.log(props);
   }, [refreshNeeded]);
 
   let pagesArray = (pages) => {
@@ -61,14 +62,14 @@ export const Profile = (props) => {
     let theArray = [1];
     for (let i = 0; i > pages; i++) {
       theArray[i] = i + 1;
-      console.log(theArray);
+      //console.log(theArray);
     }
     return theArray;
   }
 
   return (
     <>
-      {!props.user && <Navigate to='/login' />}
+      {!localStorage.getItem("myToken") && <Navigate to='/login'/>}
       <div className="galleryContainer">
         
         {(itemsNeeded != amountOfItems) && <Navigate to={`/profile/${itemsNeeded}/1`} />}
@@ -105,7 +106,7 @@ export const Profile = (props) => {
             })
             } */}
           </select></label>
-
+          <NewSaveContainer imageURL={props.currentCanvasImage} imageName={props.currentCanvasName}/>
 
           {images.map((imgObj) => {
             return (

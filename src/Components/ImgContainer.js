@@ -1,7 +1,7 @@
 import { deleteImage, getOneImg, updateImage } from "../utils/imageRequests";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styling/imgContainer.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 export const ImgContainer = (props) => {
   const [currentImg, setCurrentImg] = useState([]);
 
-  let {title, id, img, createdAt, updatedAt, UserId} = props.imgObj;
+  //console.log(props.imgObj);
+  let {title, id, img, createdAt, updatedAt, UserId, User} = props.imgObj;
   let navigate = useNavigate();
 
   // very roundabout way but it works
@@ -24,13 +25,18 @@ export const ImgContainer = (props) => {
   }
 
   const deleteAndRefresh = (id) => {
-    deleteImage(id)
+    deleteImage(id);
     props.setRefreshNeeded(!props.refreshNeeded);
   }
 
   const saveAs = async (imageID) => {
-    const response = await updateImage({ id: imageID, img: props.currentCanvasImage, public: true, title: "image" });
-    console.log(response);
+    try{
+      const response = await updateImage({ id: imageID, img: props.currentCanvasImage, public: true, title: props.currentCanvasName || "image" });
+      alert("Save successful.");
+    }
+    catch(error){
+      console.log(error);
+    }
   }
 
   const handleCheckboxChange = async (e) => {
@@ -40,7 +46,8 @@ export const ImgContainer = (props) => {
 
   return (
     <div className="ImgContainer">
-        <h2>{title}</h2>
+        <h2>{'"' + title + '"'}{props.public ? (" by " + (User ? User.username : "[Unknown user]")) : null}</h2>
+        
         <img src={img} className="imgInBox"></img>
         {!props.public ? (<>
           <input type="checkbox" className="publicCheckbox" name="Public" onChange={handleCheckboxChange} defaultChecked={props.imgObj["public"]}/>

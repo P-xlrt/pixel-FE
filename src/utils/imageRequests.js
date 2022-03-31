@@ -40,7 +40,7 @@ export const grabImages = async (setImages, setTotalImgQty, itemsPerPage, pageNu
           method: "GET",
         });
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         setImages(data.imagePack.rows);
         setTotalImgQty(data.imagePack.count)
     } catch (error) {
