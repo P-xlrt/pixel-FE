@@ -9,10 +9,7 @@
     flex-wrap: wrap;
 }
 
-.settingsTitle {
-    width: 99%;
-    text-align: center;
-}
+
 
 .settingsOther {
     display: flex;
@@ -52,7 +49,7 @@
 .settings_wrap article {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   width: 60vw;
   margin: 0 auto;
   padding: 1em;
@@ -98,4 +95,14 @@
   font-family: "Work Sans", sans-serif;
   font-weight: 300;
   font-size: 0.7em;
+}
+
+
+.settingsTitle {
+  width: 99%;
+  text-align: center;
+}
+
+.deleteUser {
+  text-align: center;
 }

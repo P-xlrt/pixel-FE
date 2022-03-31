@@ -89,7 +89,6 @@ export const updateUser = async (username, passUpdate) => {
 };
 
 
-//userRouter.patch("/user-image", checkToken, updateImageProfile);
 export const updateProfileUser = async (newProfileImage) => {
   console.log(newProfileImage);
   if(!newProfileImage) return; // Do nothing if no image is provided
@@ -115,3 +114,16 @@ export const updateProfileUser = async (newProfileImage) => {
     console.log(error);
   }
 }
+
+  export const dateUserprofile = async (userimage) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_REST_API}user-image`, {
+        method: "PATCH",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("myToken")}` },
+      body: JSON.stringify(userimage),
+});
+return await response.json();
+} catch (error) {
+    console.log(error);
+}
+};
