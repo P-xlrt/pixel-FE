@@ -6,7 +6,7 @@ export const MenuItems = [
     // },
     {
         title: 'Profile',
-        path: '/profile',
+        path: '/profile/9/1',
         cName: 'dropdown-link',
     },
     {

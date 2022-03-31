@@ -22,6 +22,8 @@ const App = () => {
 
   const [canvasImageURL, setCanvasImageURL] = useState(null);
   const [canvasImageID, setCanvasImageID] = useState(null);
+  const [isImagePublic, setPublicImage] = useState(false);
+  const [canvasImageName, setCanvasImageName] = useState("image");
 
   return (
     <div className='app'>
@@ -43,11 +45,14 @@ const App = () => {
                 imageURLSetter={setCanvasImageURL}
                 imageID={canvasImageID}
                 imageIDSetter={setCanvasImageID}
+                imageName={canvasImageName}
+                imageNameSetter={setCanvasImageName}
+                isImagePublic={isImagePublic}
               />
             }
           />
-          <Route path='/profile' element={<Profile public={false} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID}/>} />
-          <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID}/>} />
+          <Route path='/profile' element={<Profile public={false} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
+          <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} publicImageToggle={setPublicImage} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
           <Route path='/landing' element={<Landing />} />
           <Route path='/team' element={<Team />} />
           <Route path='/logout' element={<Logout />} />
