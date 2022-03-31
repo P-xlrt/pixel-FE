@@ -28,6 +28,19 @@ div.galleryContainer {
     margin-bottom: 50px;
 }
 
+div#pageSelectors {
+    width: 100%;
+    display: flex;
+}
+
+#amountSelector {
+    margin: 5px;
+}
+
+select {
+    margin: 5px;
+}
+
 label {
     width: 100%;
     text-align: center;

@@ -102,6 +102,8 @@ export const Gallery = (props) => {
       {(currentPage != parseInt(page)) && <Navigate to={`/gallery/${itemsNeeded}/${currentPage}`} />}
 
       <h1>Gallery</h1>
+
+      <div id="pageSelectors">
       <label>Images per page: 
       <select id="amountSelector" name="amountSelector" value={itemsNeeded} onChange={(e) => setItemsNeeded(parseInt(e.target.value))}>
           <option value="9" key="imgNeeds_9">9</option>
@@ -121,6 +123,9 @@ export const Gallery = (props) => {
             )
           })}
         </select></label>
+
+        </div>
+
 
 
         {images.map((imgObj) => {
