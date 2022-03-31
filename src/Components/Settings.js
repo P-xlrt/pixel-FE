@@ -72,7 +72,7 @@ export const Settings = ({user}) => {
     <>
       {!user && <Navigate to='/login' />}
       <section className='settings_wrap'>
-        <h1 className='settingsTitle'>Settings</h1>
+        <h2 className='settingsTitle'>Your Settings</h2>
         <p>{username}</p>
 
         {/* ========== User can upload profile image here ========= */}
