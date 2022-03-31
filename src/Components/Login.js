@@ -14,6 +14,12 @@ export const Login = ({ user, setUser }) => {
   //   "Already have an account? (Sign-in)"
   // );
 
+  useEffect(() => {
+    if (localStorage.key("myToken")) {
+      tokenLogin(setUser);
+    }
+  }, [setUser]);
+
   // Define handler
   const submitHandler = (e) => {
     e.preventDefault();
@@ -24,7 +30,6 @@ export const Login = ({ user, setUser }) => {
       createUser(username, email, pass, setUser);
     }
   };
-  
   return (
     <>
       {user && <Navigate to='/Landing' />}
