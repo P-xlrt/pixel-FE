@@ -17,6 +17,7 @@ body {
   background-color: #ffffff;
   z-index: 5;
   margin: 0;
+  overflow: scroll;
 }
 
 #canvas_container {
