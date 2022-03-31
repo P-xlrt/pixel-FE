@@ -52,7 +52,10 @@ body {
   z-index: 3;
 }
 
-#toggles, #one-off, #tools, #colour_picker{
+#toggles,
+#one-off,
+#tools,
+#colour_picker {
   margin-top: 10px;
 }
 
@@ -64,20 +67,21 @@ body {
   flex-direction: row;
 }
 
-#selectPrimarySecondary{
+#selectPrimarySecondary {
   height: 20%;
   width: 100%;
   display: flex;
 }
 
-#selectPrimarySecondary_select{
+#selectPrimarySecondary_select {
   display: initial;
   height: 100%;
   width: 30%;
   position: relative;
 }
 
-#primaryColourBox, #secondaryColourBox{
+#primaryColourBox,
+#secondaryColourBox {
   position: absolute;
   height: 26px;
   width: 26px;
@@ -97,7 +101,7 @@ body {
   z-index: 0;
 }
 
-#swapColourBox{
+#swapColourBox {
   position: absolute;
   bottom: 1px;
   left: 1px;
@@ -106,7 +110,7 @@ body {
   background-color: black;
 }
 
-#selectPrimarySecondary_text{
+#selectPrimarySecondary_text {
   height: 100%;
   width: 70%;
   align-items: center;
@@ -121,29 +125,39 @@ body {
   line-height: 150%;
 }
 
-#sliders{
+#sliders {
   width: 100%;
   height: 80px;
 }
 
-.sliderContainer{
+.sliderContainer {
   position: relative;
   width: 65%;
   height: 100%;
 }
 
-#number_red, #number_green, #number_blue, #number_alpha{
+#number_red,
+#number_green,
+#number_blue,
+#number_alpha {
   width: 35%;
 }
 
-#background_red, #background_green, #background_blue, #background_alpha, #slider_red, #slider_blue, #slider_green, #slider_alpha{
+#background_red,
+#background_green,
+#background_blue,
+#background_alpha,
+#slider_red,
+#slider_blue,
+#slider_green,
+#slider_alpha {
   width: 100%;
   height: 100%;
   position: absolute;
   margin: 0;
 }
 
-.slider{
+.slider {
   -webkit-appearance: none;
   appearance: none;
   background: rgba(0, 0, 0, 0);
@@ -167,7 +181,7 @@ body {
   border: 1px solid white;
 }
 
-.toolboxSettingsContainer{
+.toolboxSettingsContainer {
   width: 95%;
   height: 20px;
   margin: 5px auto 5px auto;
@@ -175,11 +189,11 @@ body {
   display: flex;
 }
 
-#background_red{
+#background_red {
   background-color: red;
 }
 
-#background_green{
+#background_green {
   background-color: green;
 }
 
@@ -187,36 +201,36 @@ body {
   background-color: blue;
 }
 
-#background_alpha{
+#background_alpha {
   background-image: url("./images/empty.png");
 }
 
-#hex_input{
+#hex_input {
   width: 100%;
 }
 
-#image_resizer{
+#image_resizer {
   width: 100%;
   display: flex;
   flex-direction: row;
 }
 
-.resizeSettingsContainer{
+.resizeSettingsContainer {
   width: 100%;
   display: flex;
 }
 
 .resizeSettingsContainer input {
   width: 80%;
-  height: 100%
+  height: 100%;
 }
 
-.resizeSettingsContainer div{
+.resizeSettingsContainer div {
   width: 20%;
   height: 100%;
 }
 
-.resizeSettingsContainer p{
+.resizeSettingsContainer p {
   margin: 0;
   text-align: right;
   line-height: 150%;
