@@ -4,9 +4,6 @@ import { Navigate } from "react-router-dom";
 import "../styling/settings.css";
 import {
   updateUser,
-  // updatePass,
-  // updateImageProfile,
-  // deleteUser,
   updateProfileUser
 } from "../utils";
 
@@ -14,25 +11,37 @@ export const Settings = ({user}) => {
   // Define Update Handler
   const [username, setUsername] = useState();
   const [pass, setPass] = useState();
-  const [bool, setBool] = useState(false);
+  // const [bool, setBool] = useState(false);
   const [loadedImage, setImage] = useState(null);
 
-  // ========== Event Handler
-  const passNameHandler = (e) => {
-    e.preventDefault();
-    let changeName = document.getElementById("chg_displ_nme");
-    let changePass = document.getElementById("chg_pass");
+  // ========== Event Handler ============//
+  // const passNameHandler = (e) => {
+  //   e.preventDefault();
+  //   let changeName = document.getElementById("chg_displ_nme");
+  //   let changePass = document.getElementById("chg_pass");
 
-    // if (changeName) {
-    //   updateUser(username);
-    // } else if (changePass) {
-    //   updatePass(pass);
-    // } else {
-    //   console.error("That is not a valid entry");
-    // }
+  //   // if (changeName) {
+  //   //   updateUser(username);
+  //   // } else if (changePass) {
+  //   //   updatePass(pass);
+  //   // } else {
+  //   //   console.error("That is not a valid entry");
+  //   // }
+  // };
+
+   // ========== Password Event Handler ===========// 
+   const passNameHandler = (e) => {
+    e.preventDefault();
+    
+
+    if (pass) {
+      updateUser(pass);
+    } else {
+      console.error("That is not a valid entry");
+    }
   };
 
-  // ========== Event Handler
+  // ========== Image Event Handler ========
   const submitImageHandler = (e) => {
     e.preventDefault();
 
@@ -63,7 +72,7 @@ export const Settings = ({user}) => {
     <>
       {!user && <Navigate to='/login' />}
       <section className='settings_wrap'>
-        <h1 className='settingsTitle'>Settings</h1>
+        <h2 className='settingsTitle'>Your Settings</h2>
         <p>{username}</p>
 
         {/* ========== User can upload profile image here ========= */}
@@ -90,7 +99,7 @@ export const Settings = ({user}) => {
           </form>
 
           {/* ========== Update User display name here  ========= */}
-          <form
+          {/* <form
             id='chg_displ_nme'
             className='change_pass'
             onChange={passNameHandler}
@@ -111,10 +120,10 @@ export const Settings = ({user}) => {
             >
               Change Display Name
             </button>
-          </form>
+          </form> */}
 
           {/* ========== Update User Password Here ========= */}
-          <form id='chg_pass' onChange={passNameHandler}>
+          <form id='chg_pass' onSubmit={passNameHandler}>
             <input
               name='updateUserPass'
               onChange={(event) => setPass(event.target.value)}
@@ -122,16 +131,16 @@ export const Settings = ({user}) => {
               placeholder='Enter new password'
               className='form_item-control'
             />
-            <button onClick={() => {}}>Update Password</button>
+            <button>Update Password</button>
           </form>
 
           {/* ========== Delete User  Here ========= */}
-          <div className="deleteUser">
+          <div>
             <p>
               Are you sure you want to delete your profile? This action is NOT
               reversible!
             </p>
-            <button click={() => {}}>Delete Profile</button>
+            <button onClick={() => deleteUser(user)}>Delete Profile</button>
           </div>
         </article>
       </section>
