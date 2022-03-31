@@ -121,7 +121,7 @@ export const Settings = () => {
           </form>
 
           {/* ========== Delete User  Here ========= */}
-          <div>
+          <div className="deleteUser">
             <p>
               Are you sure you want to delete your profile? This action is NOT
               reversible!
