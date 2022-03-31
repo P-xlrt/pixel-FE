@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Dropdown } from "./Dropdown";
 import "../styling/navbar.css";
 
-export const Navbar = ({ user, setUser }) => {
+export const Navbar = ({ user }) => {
   const [click, setClick] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const handleClick = () => setClick(!click);
