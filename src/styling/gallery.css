@@ -6,67 +6,91 @@
 } */
 
 
-div.galleryContainer {
-    width: 100%;
+.galleryContainer {
+    width: 90%;
     height: calc(100% - 100px);
-
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     flex-wrap: wrap;
-
-    /* background-color: lightgrey; */
-
+    background-color: #fdfdfd;
+    border-radius: 7px;
     overflow-x: hidden;
+    margin: 0 auto;
+}
+
+.galleryContainer h1 {
+    width: 100%;
+    text-align: center;
+    height: fit-content;
+}
+
+
+.galleryContainer label {
+    width: 100%;
+    text-align: center;
+    height: -moz-fit-content;
+    height: fit-content;
+    font-size: 0.85em;
+    font-weight: 300;
+    color: #ff49a4;
 }
 
 .ImgContainer {
     overflow: hidden;
     height: 300px;
-    width: 30%;
+    width: 24%;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 1em;
+    /* border: 1px solid #efefef; */
+    border-radius: 4px;
+    /* padding: 0.45em; */
+    background-color: #fdfdfd;
 }
 
-label {
-    width: 100%;
-    text-align: center;
-    height: fit-content;
-
-}
-
-div.ImgContainer button {
-    height: fit-content;
-}
-
-
-
-div.ImgContainer h2 {
-    width: 100%;
-    text-align: center;
-    height: fit-content;
-}
-
-div.ImgContainer img {
+.ImgContainer img {
     width: 100%;
     max-height: 75%;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
-
-
-    
     object-fit: contain;
+    min-width:100%
 
 }
 
 
 
-div.galleryContainer h1 {
-    width: 100%;
-    text-align: center;
+.ImgContainer button {
     height: fit-content;
 }
+
+
+
+.ImgContainer figcaption {
+    width: 70%;
+    margin: auto;
+    text-align: center;
+    height: -moz-fit-content;
+    height: fit-content;
+    text-transform: capitalize;
+    font-size: 0.75em;
+    font-weight: 600;
+}
+
+.ImgContainer figcaption::before {
+    font-family: 'Font Awesome 5 Free';
+    content: '\f1fc';
+    margin-right: 0.5em;
+    color: #2f2f2f;
+    font-size: 1.1em;
+    
+}
+
+
+
+
+
 
 
 /* #galleryImage {

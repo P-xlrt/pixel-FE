@@ -46,7 +46,7 @@ export const ImgContainer = (props) => {
 
   return (
     <div className="ImgContainer">
-        <h2>{'"' + title + '"'}{props.public ? (" by " + (User ? User.username : "[Unknown user]")) : null}</h2>
+        
         
         <img src={img} className="imgInBox"></img>
         {!props.public ? (<>
@@ -55,6 +55,10 @@ export const ImgContainer = (props) => {
           <label><button className='button' onClick={() => saveAs(id)}>&#x1F4BE;</button>Save</label>
           <label><button className='button' onClick={() => deleteAndRefresh(id)}>&#x1F5D1;</button>Delete</label>
         </>) : null}
+        <div>
+        <figcaption>{'"' + title + '"'}{props.public ? (" by " + (User ? User.username : "[Unknown user]")) : null}</figcaption>
+        </div>
+        
     </div>
   );
 };

@@ -7,7 +7,7 @@
   box-sizing: border-box;
   font-size: 16px;
   font-family: "Work Sans", sans-serif;
-  background-color: #fdfdfd;
+  /* background-color: #fdfdfd; */
 }
 
 .app {
@@ -47,7 +47,7 @@ h1 {
 .navbar-logo h1 {
   font-family: "Pacifico", cursive;
   font-size: 1.1em;
-  margin-right: 1em;
+  margin-right: 1.5em;
 }
 
 .navbar-logo h1 span {
