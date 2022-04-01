@@ -24,16 +24,26 @@
     text-align: center;
     height: fit-content;
 }
+/* Pagination */
 
-
-.galleryContainer label {
-    width: 100%;
+.pagination {
+    margin-bottom: 1em;
+    text-align: center;
+}
+.pagination label {
     text-align: center;
     height: -moz-fit-content;
     height: fit-content;
     font-size: 0.85em;
     font-weight: 300;
     color: #2f2f2f;
+    
+}
+
+.pagination select {
+    font-size: 0.95em;
+    border-radius: 4px;
+    margin: 0 .5em;
 }
 
 /* Gallery and Image Container */
@@ -53,6 +63,12 @@
     padding: 0.45em;
     background-color: #fdfdfd;
     overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+    .nk_gallery_wrap figure {
+        width: 100%
+    }
 }
 
 
