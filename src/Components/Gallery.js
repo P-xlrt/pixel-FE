@@ -125,7 +125,7 @@ export const Gallery = (props) => {
 
       </section>
       
-
+      
 
         {images.map((imgObj) => {
           return (
