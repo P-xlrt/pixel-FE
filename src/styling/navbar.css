@@ -38,6 +38,12 @@
   padding-left: 0px;
 }
 
+@media screen and (max-widgth: 768px) {
+  .nav-menu {
+    width: 100%;
+  }
+}
+
 .nav-item {
   display: flex;
   align-items: center;

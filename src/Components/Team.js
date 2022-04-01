@@ -7,8 +7,8 @@ export const Team = () => {
                 <h2>Liam</h2>
                 <img />
                 <a href="https://github.com/LiamSmith" target="_blank">GitHub </a><a href="" target="_blank"> LinkedIn</a>
-                <p>say something about yourself</p>
-                <p>what did you contribute to the project</p>
+                <p>I'm Liam and I'm from Southport. I enjoy pool and video games.</p>
+                <p>I have focused on the canvas engine which is the core functionality of the website.</p>
             </div>
             <div className="teamMember">
                 <h2>Nate</h2>
@@ -21,22 +21,22 @@ export const Team = () => {
                 <h2>Damien</h2>
                 <img />
                 <a href="https://github.com/damien-rembert" target="_blank">GitHub </a><a href="" target="_blank"> LinkedIn</a>
-                <p>say something about yourself</p>
-                <p>what did you contribute to the project</p>
+                <p>I'm Damien and I'm from gay Paris. I love computers and my dog Pookie. </p>
+                <p>I worked mostly on the backend and I was surprised I liked react.</p>
             </div>
             <div className="teamMember">
                 <h2>Terry</h2>
                 <img />
                 <a href="https://github.com/Terrys101" target="_blank">GitHub </a><a href="" target="_blank"> LinkedIn</a>
-                <p>say something about yourself</p>
-                <p>what did you contribute to the project</p>
+                <p>I'm Terry and I like to program. I'm also pretty got at photography.</p>
+                <p>I worked on the backend of the project including the user functions. I also contributed to the gallery.</p>
             </div>
             <div className="teamMember">
                 <h2>Peter</h2>
                 <img />
                 <a href="https://github.com/MonkeyJuggler" target="_blank">GitHub </a><a href="" target="_blank"> LinkedIn</a>
-                <p>say something about yourself</p>
-                <p>what did you contribute to the project</p>
+                <p>I live in the Wirral and I like programming, motorbikes and aeroplanes.</p>
+                <p>I worked with the front end team and contributed to the planning.</p>
             </div>
             <div className="teamMember">
                 <h2>Julia</h2>
