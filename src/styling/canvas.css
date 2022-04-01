@@ -26,7 +26,7 @@ body {
   height: 100%;
 }
 
-#canvas_preview {
+#canvas_preview, .canvas_tiling_preview  {
   background-color: rgba(0, 0, 0, 0);
   position: absolute;
   image-rendering: pixelated;
@@ -34,7 +34,7 @@ body {
   z-index: 1;
 }
 
-#canvas_interaction {
+#canvas_interaction, .canvas_tiling {
   background-image: url("./images/empty.png");
   background-repeat: repeat;
   position: absolute;
@@ -250,4 +250,60 @@ body {
 
 #name_input{
   width: 100%;
+}
+
+.side_panel{
+  position: relative;
+}
+
+.side_panel h2, .side_panel p{
+  margin: 0;
+  text-align: center;
+}
+
+#side_animation{
+  width: 300px;
+  left: calc(100% - 300px);
+  height: auto;
+}
+
+.animation_setting {
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+}
+
+#side_animation div input{
+  width: 50%;
+}
+
+#animation_frames {
+  position: relative;
+  width: 20%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#side_tiling{
+  width: 150px;
+  left: calc(100% - 150px);
+}
+
+#side_tiling select{
+  width: 100%;
+}
+
+#animation_container{
+  margin-top: 10px;
+  position: absolute;
+  width: 100%;
+}
+
+#canvas_animation{
+  width: 100%;
+  background-image: url("./images/empty.png");
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }

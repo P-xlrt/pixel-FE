@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { tokenLogin } from "./utils";
 import { useState, useEffect } from "react";
 import { Navbar } from "./Components/Navbar";
@@ -63,7 +63,7 @@ const App = () => {
           <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} user={user} userImage={userImage} publicImageToggle={setPublicImage} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
           <Route path='/landing' element={<Landing />} />
           <Route path='/team' element={<Team />} />
-          {/* <Route path='*' element={<p>404 Not Found</p>} /> */}
+          <Route path='*' element={<Navigate to="/create"/>} />
         </Routes>
 
         <Footer />

@@ -3,7 +3,9 @@ import "../styling/canvas.css";
 import { setupClient, canvasMouseDown, canvasWheel, windowMouseUp, windowMouseMove, windowKeyDown, windowKeyUp, loadImage } from "../canvas_engine/utils/canvas_client";
 import { applyResize } from "../canvas_engine/utils/view";
 import { getDataURL } from "../canvas_engine/utils/drawing";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { AnimationSide } from "./AnimationSide";
+import { TilingSide } from "./TilingSide";
 
 export const Canvas = ({imageURL, imageURLSetter, imageID, imageIDSetter, imageName, imageNameSetter, isImagePublic = false}) => {
 	// When the canvas component is mounted
@@ -17,6 +19,7 @@ export const Canvas = ({imageURL, imageURLSetter, imageID, imageIDSetter, imageN
 		window.addEventListener("keyup", windowKeyUp);
 		window.addEventListener("resize", applyResize);
 		window.addEventListener("wheel", canvasWheel, {passive: false}) // Non-passive is needed to stop whole window from zooming on Ctrl+MouseWheel
+		
 		document.getElementById("import_file").addEventListener("change", function() {
 			loadImage(URL.createObjectURL(this.files[0]));
 		});
@@ -35,14 +38,21 @@ export const Canvas = ({imageURL, imageURLSetter, imageID, imageIDSetter, imageN
 		}
 	}, []); 
 
+	const [sidePanel, setSidePanel] = useState(0);
+
 	return (
-		<div id="canvas_page_body">
-			<Toolbox imageID={imageID} imageIDSetter={imageIDSetter} isImagePublic={isImagePublic} imageName={imageName} imageNameSetter={imageNameSetter}/>
-			<div id="canvas_container" onMouseDown={canvasMouseDown} onContextMenu={(e) => e.preventDefault()}>
-				<canvas id="canvas_grid" width="800" height="800"></canvas>
-				<canvas id="canvas_interaction" width="800" height="800"></canvas>
-				<canvas id="canvas_preview" width="800" height="800"></canvas>
+		<>
+			<div id="canvas_page_body">
+				<Toolbox sidePanel={sidePanel} sidePanelSetter={setSidePanel} imageID={imageID} imageIDSetter={imageIDSetter} isImagePublic={isImagePublic} imageName={imageName} imageNameSetter={imageNameSetter}/>
+				<div id="canvas_container" onMouseDown={canvasMouseDown} onContextMenu={(e) => e.preventDefault()}>
+					<canvas id="canvas_grid" width="800" height="800"></canvas>
+					<canvas id="canvas_interaction" width="800" height="800"></canvas>
+					<canvas id="canvas_preview" width="800" height="800"></canvas>
+					{ sidePanel === 1 && <AnimationSide/> }
+					{ sidePanel === 2 && <TilingSide/> }
+				</div>
 			</div>
-		</div>
+
+		</>
 	);
 };

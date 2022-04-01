@@ -1,3 +1,4 @@
+import { applyTiling, getTiling, repositionTiles } from "./canvas_client.js";
 import { getImageSize } from "./drawing.js";
 
 // Stores references to the HTML elements
@@ -40,7 +41,7 @@ const resetCameraLocation = () => {
 
 // Image zooming variables
 let zoom = 1;
-let zoomMin = 1;
+let zoomMin = 0.2;
 let zoomMax = 250;
 let canvasOriginalSizeX = 0;
 let canvasOriginalSizeY = 0;
@@ -49,7 +50,16 @@ let pixelSize = 50;
 // Converts the position of the client to a pixel coordinate on the canvas
 export const clientToCanvasCoordinate = (clientX, clientY) => {
     const canvas_position = canvas_drawing.getBoundingClientRect();
-    return [Math.floor((clientX - canvas_position.left) / pixelSize / zoom), Math.floor((clientY - canvas_position.top) / pixelSize / zoom)];
+    let x = Math.floor((clientX - canvas_position.left) / pixelSize / zoom);
+    let y = Math.floor((clientY - canvas_position.top) / pixelSize / zoom);
+
+    if(getTiling()){
+        const [xSize, ySize] = getImageSize();
+        x = ((x % xSize) + xSize) % xSize;
+        y = ((y % ySize) + ySize) % ySize;
+    }
+
+    return [x, y];
 }
 
 const applyPosition = () => {
@@ -66,6 +76,7 @@ const applyPosition = () => {
     // canvas_grid.style.left = canvas_drawing.style.left;
     // canvas_grid.style.top = canvas_drawing.style.top;
     redrawGrid();
+    repositionTiles();
 }
 
 export const offsetPosition = (cameraOffsetX, cameraOffsetY) => {
@@ -86,6 +97,7 @@ const applyZoom = (x, y) => {
     canvas_preview.style.height = canvas_drawing.style.height;
     applyPosition();
     redrawGrid();
+    applyTiling();
 }
 
 export const changeZoom = (delta, clientX = screenHalfX, clientY = screenHalfY) => {
