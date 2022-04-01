@@ -44,11 +44,14 @@ export const ImgContainer = (props) => {
     alert("Image was made " + (e.target.checked ? "public." : "private."));
   }
 
+
+  const userNamo = User ? User.username : "[Unknown user]";
+  const userLinko = User ? User.username : "all" ;
+
+  
   return (
-    <div className="ImgContainer">
-        
-        
-        <img src={img} className="imgInBox"></img>
+    <figure>
+        <img src={img}></img>
         {!props.public ? (<>
           <input type="checkbox" className="publicCheckbox" name="Public" onChange={handleCheckboxChange} defaultChecked={props.imgObj["public"]}/>
           <label><button className='button' onClick={() => passToCanvas(id, img)}>&#128393;</button>Load</label>
@@ -56,9 +59,11 @@ export const ImgContainer = (props) => {
           <label><button className='button' onClick={() => deleteAndRefresh(id)}>&#x1F5D1;</button>Delete</label>
         </>) : null}
         <div>
-        <figcaption>{'"' + title + '"'}{props.public ? (" by " + (User ? User.username : "[Unknown user]")) : null}</figcaption>
+        <figcaption>{'"' + title + '"'}{!props.public ? null : ` by `}<Link to={`/user/${userLinko}/9/1`} >{userNamo}</Link></figcaption>
         </div>
-        
-    </div>
+    </figure>
   );
 };
+
+
+

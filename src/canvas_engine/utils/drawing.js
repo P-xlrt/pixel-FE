@@ -1,3 +1,4 @@
+import { clearPreviewTiles, copyTiles, setPixelTiles } from "./canvas_client.js";
 import Colour from "./colour.js";
 import { setupNewHistory , addHistory, editCurrentHistory, backupHistory, restoreHistory } from "./history.js";
 import { applyResize } from "./view.js";
@@ -209,10 +210,12 @@ export const setPixel = (x, y, colour, overwrite = false, usingPreviewCtx = fals
     if(overwrite) canvas.clearRect(x, y, 1, 1); // Clears the pixel for completely overwriting pixel
     canvas.fillRect(x, y, 1, 1);
     currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
+    if(usingPreviewCtx) setPixelTiles(x, y, colour, overwrite);
 }
 
 export const clearPreviewCanvas = () => {
     previewCtx.clearRect(0, 0, imageSizeX, imageSizeY);
+    clearPreviewTiles();
 }
 
 const setupPixelData = () => {
@@ -222,6 +225,7 @@ const setupPixelData = () => {
 export const applyImageData = (data) => {
     drawingCtx.putImageData(data, 0, 0);
     currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
+    copyTiles(data);
 }
 
 const applyPixelData = (pixelArray, doFurtherOperations = false) => {
@@ -251,7 +255,6 @@ const applyPixelData = (pixelArray, doFurtherOperations = false) => {
 
 // Read the pixel array and apply every change.
 export const applyChanges = (pixelArray, clearPreview = true, doFurtherOperations = true) => {
-
     const [newData, furtherOperations] = applyPixelData(pixelArray, doFurtherOperations);
     drawingCtx.putImageData(newData, 0, 0);
 
@@ -268,6 +271,7 @@ export const applyChanges = (pixelArray, clearPreview = true, doFurtherOperation
     const data = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
     addHistory(data);
     currentImage = data
+    copyTiles(data);
 }
 
 export const applyChangesMove = (newData, xPos, yPos) => {
@@ -277,7 +281,7 @@ export const applyChangesMove = (newData, xPos, yPos) => {
     const data = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
     editCurrentHistory(data); // Current image data should be merged with the history of the delete selection operation that happened when move was started
     currentImage = data;
-    
+    copyTiles(data);
 }
 
 // Called when a new canvas is being created or when the window is being resized.
@@ -305,18 +309,19 @@ export const newImage = (xSize = 16, ySize = 16, resetHistory = true) => {
     const data = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY)
     if(resetHistory) setupNewHistory(data);
     currentImage = data;
+    copyTiles(data);
 }
 
 // xSize = true when changing X, xSize = false when changing Y
 export const changeImageSizeValue = (xSize, ySize) => {
     // Copy image
     const currentDrawingData = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
-
     newImage(xSize, ySize, false);
 
     // Paste
     drawingCtx.putImageData(currentDrawingData, 0, 0);
     currentImage = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
+    copyTiles(currentDrawingData);
 }
 
 const validateSelection = (x1, x2, y1, y2) => {
@@ -337,7 +342,7 @@ export const setCanvasArea = (selX, selY, sizeX, sizeY, colour, previewCanvas = 
 
 // Deletes everything that has been selected
 export const deleteSelection = (selX1, selY1, selX2, selY2) => {
-    if(!validateSelection(selX1, selX2, selY1, selY2)) return;
+    if(!validateSelection(selX1, selY1, selX2, selY2)) return;
     const xSize = selX2 - selX1 + 1;
     const ySize = selY2 - selY1 + 1;
 
@@ -349,6 +354,7 @@ export const deleteSelection = (selX1, selY1, selX2, selY2) => {
     const data = drawingCtx.getImageData(0, 0, imageSizeX, imageSizeY);
     addHistory(data);
     currentImage = data;
+    copyTiles(data);
 }
 
 export const getDataURL = () => {

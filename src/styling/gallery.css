@@ -9,10 +9,10 @@
 .galleryContainer {
     width: 90%;
     height: calc(100% - 100px);
-    display: flex;
+    /* display: flex;
     flex-direction: row;
     justify-content: space-around;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
     background-color: #fdfdfd;
     border-radius: 7px;
     overflow-x: hidden;
@@ -33,59 +33,72 @@
     height: fit-content;
     font-size: 0.85em;
     font-weight: 300;
-    color: #ff49a4;
+    color: #2f2f2f;
 }
 
-.ImgContainer {
-    overflow: hidden;
+/* Gallery and Image Container */
+.nk_gallery_wrap {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.nk_gallery_wrap figure {
+    width: 25%;
     height: 300px;
-    width: 24%;
-    text-align: center;
     margin-bottom: 1em;
     /* border: 1px solid #efefef; */
     border-radius: 4px;
-    /* padding: 0.45em; */
+    padding: 0.45em;
     background-color: #fdfdfd;
+    overflow: hidden;
 }
 
-.ImgContainer img {
+
+.nk_gallery_wrap figure img {
     width: 100%;
     max-height: 75%;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
-    object-fit: contain;
-    min-width:100%
+    display: block;
+    min-width:100%;
+    object-fit: contain; 
 
 }
 
 
-
-.ImgContainer button {
+.nk_gallery_wrap button {
     height: fit-content;
 }
 
 
-
-.ImgContainer figcaption {
+.nk_gallery_wrap figcaption {
     width: 70%;
-    margin: auto;
+    margin: 1em auto;
     text-align: center;
     height: -moz-fit-content;
     height: fit-content;
     text-transform: capitalize;
     font-size: 0.75em;
-    font-weight: 600;
+    font-weight: 400;
+}
+.nk_gallery_wrap figcaption a{
+    color: #ff49a4;
+    font-weight: 300;
+    font-size: 0.95em;
 }
 
-.ImgContainer figcaption::before {
+.nk_gallery_wrap  figcaption::after {
     font-family: 'Font Awesome 5 Free';
     content: '\f1fc';
-    margin-right: 0.5em;
+    scroll-margin-left: 0.5em;
     color: #2f2f2f;
-    font-size: 1.1em;
+    font-size: 1em;
     
 }
+
 
 
 
