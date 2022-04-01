@@ -11,6 +11,7 @@ import { Login } from "./Components/Login";
 import { Profile } from "./Components/Profile";
 import { Settings } from "./Components/Settings";
 import { Team } from "./Components/Team";
+import { UserGallery } from "./Components/UserGallery";
 
 // import { library } from "@fortawesome/fontawesome-svg-core";
 // import { fab } from "@fortawesome/free-brands-svg-icons";
@@ -47,6 +48,7 @@ const App = () => {
           <Route path='/settings' element={<Settings user={user}/>} />
           <Route path='/gallery' element={ <Gallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
           <Route path='/gallery/:amountOfItems/:page' element={ <Gallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
+          <Route path='/user/:user/:amountOfItems/:page' element={ <UserGallery public={true} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} /> } />
           <Route path='/create' element={
               <Canvas
                 imageURL={canvasImageURL}
@@ -63,7 +65,7 @@ const App = () => {
           <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} user={user} userImage={userImage} publicImageToggle={setPublicImage} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
           <Route path='/landing' element={<Landing />} />
           <Route path='/team' element={<Team />} />
-          <Route path='*' element={<Navigate to="/create"/>} />
+          <Route path='*' element={<Navigate to="/gallery"/>} />
         </Routes>
 
         <Footer />

@@ -44,10 +44,16 @@ export const ImgContainer = (props) => {
     alert("Image was made " + (e.target.checked ? "public." : "private."));
   }
 
+
+  const userNamo = User ? User.username : "[Unknown user]";
+  const userLinko = User ? User.username : "all" ;
+
+  
   return (
     <div className="ImgContainer">
-        <h2>{'"' + title + '"'}{props.public ? (" by " + (User ? User.username : "[Unknown user]")) : null}</h2>
-        
+
+
+        <h2>{'"' + title + '"'}{!props.public ? null : ` by `}<Link to={`/user/${userLinko}/9/1`} >{userNamo}</Link></h2>
         <img src={img} className="imgInBox"></img>
         {!props.public ? (<>
           <input type="checkbox" className="publicCheckbox" name="Public" onChange={handleCheckboxChange} defaultChecked={props.imgObj["public"]}/>
@@ -58,3 +64,6 @@ export const ImgContainer = (props) => {
     </div>
   );
 };
+
+
+
