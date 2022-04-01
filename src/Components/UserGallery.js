@@ -104,7 +104,28 @@ export const UserGallery = (props) => {
       {(currentPage != parseInt(page)) && <Navigate to={`/user/${user}/${itemsNeeded}/${currentPage}`} />}
 
       <h1>{user}'s Gallery</h1>
-      <label>Images per page: 
+
+
+
+      <section className="nk_gallery_wrap">
+
+
+
+        {images.map((imgObj) => {
+          return (
+            <> {/* Public determines whether to show save/load/delete or not */}
+              <ImgContainer currentCanvasImage={props.currentCanvasImage} public={props.public} key={`img_${imgObj.id}`} imgObj={imgObj} setRefreshNeeded={setRefreshNeeded} refreshNeeded={refreshNeeded} setCurrentImg={props.imageURLSetter} setCurrrentImgId={props.imageIDSetter}/>
+            </>
+          );
+        })}
+
+        </section>
+
+                {/* Labels */}
+
+                <section class="pagination">
+
+                <label>Images per page: 
       <select id="amountSelector" name="amountSelector" value={itemsNeeded} onChange={(e) => setItemsNeeded(parseInt(e.target.value))}>
           <option value="9" key="imgNeeds_9">9</option>
           <option value="12" key="imgNeeds_12">12</option>
@@ -125,13 +146,9 @@ export const UserGallery = (props) => {
         </select></label>
 
 
-        {images.map((imgObj) => {
-          return (
-            <> {/* Public determines whether to show save/load/delete or not */}
-              <ImgContainer currentCanvasImage={props.currentCanvasImage} public={props.public} key={`img_${imgObj.id}`} imgObj={imgObj} setRefreshNeeded={setRefreshNeeded} refreshNeeded={refreshNeeded} setCurrentImg={props.imageURLSetter} setCurrrentImgId={props.imageIDSetter}/>
-            </>
-          );
-        })}
+
+
+
         {/* <div id="pages">
         {pagesArray(pages).map((aPage) => {
             return (
@@ -141,6 +158,8 @@ export const UserGallery = (props) => {
                 </>
               )})}
         </div> */}
+              </section>
+
     </div>
   );
 };
