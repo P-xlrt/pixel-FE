@@ -58,9 +58,10 @@ export const ImgContainer = (props) => {
           <label><button className='button' onClick={() => saveAs(id)}>&#x1F4BE;</button>Save</label>
           <label><button className='button' onClick={() => deleteAndRefresh(id)}>&#x1F5D1;</button>Delete</label>
         </>) : null}
-        <div>
-        {'"' + title + '"'}{!props.public ? null : ` by `}<Link to={`/user/${userLinko}/9/1`} >{userNamo}</Link>
-        </div>
+        <figcaption>
+          {'"' + title + '"'}{!props.public ? null : ` by `}<Link to={`/user/${userLinko}/9/1`} >{userNamo}</Link>
+        </figcaption>    
+        
     </figure>
   );
 };

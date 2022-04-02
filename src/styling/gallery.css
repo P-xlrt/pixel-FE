@@ -108,7 +108,7 @@
 
 .nk_gallery_wrap  figcaption::after {
     font-family: 'Font Awesome 5 Free';
-    content: '\f1fc';
+    /* content: '\f1fc'; */
     scroll-margin-left: 0.5em;
     color: #2f2f2f;
     font-size: 1em;
