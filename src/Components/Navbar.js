@@ -42,17 +42,17 @@ export const Navbar = ({ user }) => {
           </li>
           <li className='nav-item'>
 
-          {(!user) && <Link to='/login' className='nav-links' onClick={closeMobileMenu}>Login/Sign-up</Link>}
+          {(!user) && <Link to='/login' className='nav-links login_text' onClick={closeMobileMenu}>Login/Sign-up</Link>}
             
           </li>
           <li
-            className='nav-item'
+            className='nav-item user_icon'
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             onClick={closeMobileMenu}
             id='nav-links'
           >
-            <i className='fas fa-cog'></i>
+            <i className="fas fa-user-cog"></i>
             {dropdown && <Dropdown />}
           </li>
         </ul>

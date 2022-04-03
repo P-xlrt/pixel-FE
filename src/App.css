@@ -7,6 +7,7 @@
   box-sizing: border-box;
   font-size: 16px;
   
+  
   /* background-color: #fdfdfd; */
 }
 body {
@@ -16,6 +17,7 @@ body {
 .app {
   width: 100vw;
   height: 100vh;
+  font-family: "Work Sans", sans-serif;
 }
 
 a {
@@ -34,50 +36,7 @@ h1 {
   color: #2f2f2f; 
 }
 
-/* ============================================================= */
-/* ========================= Navbar ============================ */
-/* ============================================================= */
 
-.navbar ul li a {
-  font-weight: 400;
-  font-size: 1em;
-  letter-spacing: -1px;
-}
-
-/* .navbar ul li a:hover {
-  color: #d3d3d3;
-  transition: all 300ms ease-in;
-} */
-
-.navbar-logo h1 {
-  font-family: "Pacifico", cursive;
-  font-size: 1.1em;
-  margin-right: 1.5em;
-}
-
-.navbar-logo h1 span {
-  color: #ff49a4;
-  font-size: 0.9em;
-  margin-left: 0.03em;
-  font-family: "Pacifico", cursive;
-}
-
-ul.nav_menu {
-  width: 80vw;
-}
-
-.create_link  {
-  background-color: #ff49a4;
-  border-radius: 4px;
-  color: white;
-}
-
-.create_link:hover {
-  background-color: rgba(255, 73, 164, 0.849);
-  color: white;
-  transition: all 300ms linear;
-
-}
 /* ============================================================= */
 /* ========================= Canvas ============================ */
 /* ============================================================= */
