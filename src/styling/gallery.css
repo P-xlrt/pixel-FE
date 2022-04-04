@@ -6,67 +6,132 @@
 } */
 
 
-div.galleryContainer {
+.galleryContainer {
     width: 100%;
     height: calc(100% - 100px);
-
-    display: flex;
+    /* display: flex;
     flex-direction: row;
     justify-content: space-around;
-    flex-wrap: wrap;
-
-    /* background-color: lightgrey; */
-
+    flex-wrap: wrap; */
+    background-color: #fdfdfd;
+    border-radius: 7px;
     overflow-x: hidden;
+    margin: 0 auto;
 }
 
-.ImgContainer {
-    overflow: hidden;
+.galleryContainer h1 {
+    width: 100%;
+    text-align: center;
+    height: fit-content;
+}
+/* Pagination */
+
+.pagination {
+    margin-bottom: 1em;
+    text-align: center;
+}
+.pagination label {
+    text-align: center;
+    height: -moz-fit-content;
+    height: fit-content;
+    font-size: 0.85em;
+    font-weight: 300;
+    color: #2f2f2f;
+    
+}
+
+.pagination select {
+    font-size: 0.85em;
+    border-radius: 50%;
+    margin: 0 0.5em;
+    /* color: #ff49a4; */
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    border: 1px solid #d2d3d3;
+}
+
+
+
+
+/* Gallery and Image Container */
+.nk_gallery_wrap {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 40%;
+}
+
+.nk_gallery_wrap figure {
+    width: 25%;
     height: 300px;
-    width: 30%;
-    text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 1em;
+    /* border: 1px solid #efefef; */
+    border-radius: 4px;
+    padding: 0.45em;
+    background-color: #fdfdfd;
+    overflow: hidden;
 }
 
-label {
-    width: 100%;
-    text-align: center;
-    height: fit-content;
-
-}
-
-div.ImgContainer button {
-    height: fit-content;
+@media screen and (max-width: 768px) {
+    .nk_gallery_wrap figure {
+        width: 100%
+    }
 }
 
 
-
-div.ImgContainer h2 {
-    width: 100%;
-    text-align: center;
-    height: fit-content;
-}
-
-div.ImgContainer img {
+.nk_gallery_wrap figure img {
     width: 100%;
     max-height: 75%;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
-
-
-    
-    object-fit: contain;
+    display: block;
+    min-width:100%;
+    object-fit: contain; 
 
 }
 
 
-
-div.galleryContainer h1 {
-    width: 100%;
-    text-align: center;
+.nk_gallery_wrap button {
     height: fit-content;
 }
+
+
+.nk_gallery_wrap figcaption {
+    width: 70%;
+    margin: 1em auto;
+    text-align: center;
+    color: hsl(0deg 0% 18% / 49%);
+    height: -moz-fit-content;
+    height: fit-content;
+    text-transform: capitalize;
+    font-size: 0.75em;
+    font-weight: 400;
+}
+.nk_gallery_wrap figcaption a{
+    color: #ff49a4;
+    font-weight: 300;
+    font-size: 0.95em;
+}
+
+.nk_gallery_wrap  figcaption::before {
+    font-family: 'Font Awesome 5 Free' !important;
+    /* content: '\f1fc'; */
+    content: '\f303';
+    /* scroll-margin-left: 0.5em; */
+    color: hsl(0deg 0% 18% / 49%);
+    font-size: 1em;
+    font-weight: 900;
+    margin-right: 1em;
+    
+}
+
+
+
+
+
+
 
 
 /* #galleryImage {

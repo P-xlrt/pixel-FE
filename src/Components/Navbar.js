@@ -36,29 +36,29 @@ export const Navbar = ({ user }) => {
         </div>
         <ul className={click ? "nav-menu active" : "nav-menu"}>
           <li className='nav-item'>
-            <Link to='/create' className='nav-links' onClick={closeMobileMenu}>
+            <Link to='/create' className='nav-links create_link' onClick={closeMobileMenu}>
               Create
             </Link>
           </li>
           <li className='nav-item'>
 
-          {(!user) && <Link to='/login' className='nav-links' onClick={closeMobileMenu}>Login/Sign-up</Link>}
+          {(!user) && <Link to='/login' className='nav-links login_text' onClick={closeMobileMenu}>Login/Sign-up</Link>}
             
           </li>
           <li
-            className='nav-item'
+            className='nav-item user_icon'
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             onClick={closeMobileMenu}
             id='nav-links'
           >
-            <i className='fas fa-cog'></i>
+            <i className="fas fa-user-cog"></i>
             {dropdown && <Dropdown />}
           </li>
         </ul>
         {/* <Link to='/create'>Create</Link>
         <Link to='/login'>Login</Link>
-        <Link to='/gallery'>Gallery</Link>
+        <Link to='/gallery'>Gallery</Link> 
         <Link to='/profile'>Profile</Link>
         <Link to='/settings'>Settings</Link>
         <Link to='/'>Log Out</Link> */}

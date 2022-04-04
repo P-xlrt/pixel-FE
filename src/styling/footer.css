@@ -1,6 +1,10 @@
 footer {
   width: 100%;
-  /* background-color: #000; */
+  background-color: #ff49a4;
+}
+
+footer a {
+  color: #fdfdfd;
 }
 .footer_wrap {
   margin-top: 2em;
@@ -38,7 +42,8 @@ footer {
   }
   .footer_item {
   width: 100%;
-  text-align: center;  
+  text-align: center;
+  color: #fdfdfd;  
   } 
 
   .footer_nav ul {
@@ -88,11 +93,12 @@ footer {
 }
 /* Copyright Notice */
 
-.footer_wrap .footer_item p {
+p.footer_item{
+    margin-right: 1em;
+    font-size: 0.7em;
+    font-weight: 300;
+    color: #fdfdfd; 
 
-  margin-right: 1em;
-  font-size: 0.9em;
-  font-weight: 300;
 }
 
 .footer_link:hover {

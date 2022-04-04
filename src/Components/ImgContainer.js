@@ -50,18 +50,18 @@ export const ImgContainer = (props) => {
 
   
   return (
-    <div className="ImgContainer">
-
-
-        <h2>{'"' + title + '"'}{!props.public ? null : ` by `}<Link to={`/user/${userLinko}/9/1`} >{userNamo}</Link></h2>
-        <img src={img} className="imgInBox"></img>
+    <figure>
+        <img src={img}></img>
         {!props.public ? (<>
           <input type="checkbox" className="publicCheckbox" name="Public" onChange={handleCheckboxChange} defaultChecked={props.imgObj["public"]}/>
           <label><button className='button' onClick={() => passToCanvas(id, img)}>&#128393;</button>Load</label>
           <label><button className='button' onClick={() => saveAs(id)}>&#x1F4BE;</button>Save</label>
           <label><button className='button' onClick={() => deleteAndRefresh(id)}>&#x1F5D1;</button>Delete</label>
         </>) : null}
-    </div>
+        <div>
+        <figcaption>{'"' + title + '"'}{!props.public ? null : ` by `}<Link to={`/user/${userLinko}/9/1`} >{userNamo}</Link></figcaption>
+        </div>
+    </figure>
   );
 };
 
