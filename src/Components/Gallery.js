@@ -119,7 +119,7 @@ export const Gallery = (props) => {
         </section>
 
         {/* Labels */}
-    <section class="pagination">
+    <section className="pagination">
       <label>Images per page: 
       <select id="amountSelector" name="amountSelector" value={itemsNeeded} onChange={(e) => setItemsNeeded(parseInt(e.target.value))}>
           <option value="9" key="imgNeeds_9">9</option>
