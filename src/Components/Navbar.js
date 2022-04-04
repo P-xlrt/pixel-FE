@@ -58,7 +58,7 @@ export const Navbar = ({ user }) => {
         </ul>
         {/* <Link to='/create'>Create</Link>
         <Link to='/login'>Login</Link>
-        <Link to='/gallery'>Gallery</Link>
+        <Link to='/gallery'>Gallery</Link> 
         <Link to='/profile'>Profile</Link>
         <Link to='/settings'>Settings</Link>
         <Link to='/'>Log Out</Link> */}
