@@ -1,7 +1,7 @@
 // Form which allows the user to login into the app
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { createUser, login, tokenLogin } from "../utils";
+import { createUser, login } from "../utils";
 import "../styling/login.css";
 
 export const Login = ({ user, setUser }) => {
@@ -10,21 +10,15 @@ export const Login = ({ user, setUser }) => {
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
   const [bool, setBool] = useState(false);
-  // const [loginMsg, setLoginMsg] = useState(
-  //   "Already have an account? (Sign-in)"
-  // );
 
-  useEffect(() => {
-    if (localStorage.key("myToken")) {
-      tokenLogin(setUser);
-    }
-  }, [setUser]);
 
   // Define handler
   const submitHandler = (e) => {
     e.preventDefault();
-    // setUser({ username: username, email: email, pass: pass });
-    if (bool) {
+    console.log("e.nati.submi ", e.nativeEvent.submitter.className);
+    if (e.nativeEvent.submitter.className == "signin_btn") {
+      // do nothing if using the login/sign-up switch
+    } else if (bool) {
       login(username, pass, setUser);
     } else if (email && email.includes("@")) {
       createUser(username, email, pass, setUser);
