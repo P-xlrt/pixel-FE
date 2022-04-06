@@ -15,7 +15,7 @@ export const Login = ({ user, setUser }) => {
   // Define handler
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("e.nati.submi ", e.nativeEvent.submitter.className);
+    // console.log("class of button clicked: ", e.nativeEvent.submitter.className);
     if (e.nativeEvent.submitter.className == "signin_btn") {
       // do nothing if using the login/sign-up switch
     } else if (bool) {
