@@ -1,16 +1,20 @@
 import { Navigate } from "react-router-dom";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 import { logout } from "../utils";
 import "../styling/login.css";
 
 export const Logout = ({ user, setUser }) => {
 
-  useEffect(() => {
-    if (localStorage.key("myToken")) {
-        logout(setUser);
-    }
-  });
+  // useEffect(() => {
+  //   if (localStorage.key("myToken")) {
+  //       logout(setUser);
+  //   }
+  // });
+
+  if (localStorage.key("myToken")) {
+    logout(setUser);
+  }
 
 
 
