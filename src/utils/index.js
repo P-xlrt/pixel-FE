@@ -127,3 +127,14 @@ return await response.json();
     console.log(error);
 }
 };
+
+export const logout = (setter) => {
+  try {
+    localStorage.clear();
+    setter();
+    window.location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
