@@ -1,4 +1,3 @@
-// Form which allows the user to login into the app
 import { Navigate } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -19,7 +18,7 @@ export const Logout = ({ user, setUser }) => {
   return (
     <div>
       {(!user) && <Navigate to='/gallery' />}
-      <h1>You're being logged out...</h1>
+      {(user) ?  <h1>${user} You're being logged out...</h1> : <h1>You've been logged out...</h1>}
     </div>
   );
 };
