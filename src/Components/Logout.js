@@ -17,9 +17,14 @@ export const Logout = ({ user, setUser }) => {
   
   return (
     <div>
-      <h1>hello ${user}</h1>
-      {/* {user ?  <h1>${user} You're being logged out...</h1> : <h1>You've been logged out...</h1>}
-      {!user && <Navigate to='/gallery' />} */}
+      {user ?  <h1>${user} You're being logged out...</h1> : <h1>You've been logged out...</h1>}
+      <Link to='/gallery'>Go back to the public gallery!</Link>
+      <Link to='/create'>Go create beautiful art!</Link>
+      <Link to='/login' >Go to the Login/Sign-up page!</Link>
+
+
+
+      {/* {!user && <Navigate to='/gallery' />} */}
 
     </div>
   );

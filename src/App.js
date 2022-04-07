@@ -66,7 +66,7 @@ const App = () => {
           <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} user={user} userImage={userImage} publicImageToggle={setPublicImage} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
           <Route path='/landing' element={<Landing />} />
           <Route path='/team' element={<Team />} />
-          <Route path='/logout' element={<Logout user={user} setUser={setUser} />} />
+          <Route path='/logout' element={ <Logout user={user} setUser={setUser} /> } />
           <Route path='*' element={<Navigate to="/gallery"/>} />
         </Routes>
 
