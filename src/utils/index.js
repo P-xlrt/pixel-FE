@@ -132,7 +132,7 @@ export const logout = (setter) => {
   try {
     localStorage.clear();
     setter();
-    // window.location.reload();
+    window.location.reload();
   } catch (error) {
     console.log(error);
   }
