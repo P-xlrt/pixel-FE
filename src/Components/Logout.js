@@ -19,7 +19,7 @@ export const Logout = ({ user, setUser }) => {
   return (
     <>
       {(!user) && <Navigate to='/gallery' />}
-      <h1>{user} You're being logged out...</h1>
+      <h1>You're being logged out...</h1>
     </>
   );
 };
