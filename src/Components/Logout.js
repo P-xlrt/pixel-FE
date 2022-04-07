@@ -10,7 +10,7 @@ export const Logout = ({ user, setUser }) => {
     if (localStorage.key("myToken")) {
         logout(setUser);
     }
-  }, [user]);
+  });
 
 
 
