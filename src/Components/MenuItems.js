@@ -16,7 +16,7 @@ export const MenuItems = [
     },
     {
         title: 'Log Out',
-        path: '/landing',
+        path: '/logout',
         cName: 'dropdown-link',
     },
 ]

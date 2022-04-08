@@ -12,6 +12,7 @@ import { Profile } from "./Components/Profile";
 import { Settings } from "./Components/Settings";
 import { Team } from "./Components/Team";
 import { UserGallery } from "./Components/UserGallery";
+import { Logout } from  "./Components/Logout";
 
 // import { library } from "@fortawesome/fontawesome-svg-core";
 // import { fab } from "@fortawesome/free-brands-svg-icons";
@@ -65,6 +66,7 @@ const App = () => {
           <Route path='/profile/:amountOfItems/:page' element={<Profile public={false} user={user} userImage={userImage} publicImageToggle={setPublicImage} currentCanvasImage={canvasImageURL} imageURLSetter={setCanvasImageURL} imageIDSetter={setCanvasImageID} imageNameSetter={setCanvasImageName}/>} />
           <Route path='/landing' element={<Landing />} />
           <Route path='/team' element={<Team />} />
+          <Route path='/logout' element={ <Logout user={user} setUser={setUser} /> } />
           <Route path='*' element={<Navigate to="/gallery"/>} />
         </Routes>
 
