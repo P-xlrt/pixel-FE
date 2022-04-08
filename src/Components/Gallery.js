@@ -35,7 +35,7 @@ export const Gallery = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   
   // this should be grabbed from/put in the url
-  const [itemsNeeded, setItemsNeeded] = useState(parseInt(amountOfItems));
+  const [itemsNeeded, setItemsNeeded] = useState(parseInt(9));
 
 
 
