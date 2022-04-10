@@ -40,9 +40,7 @@ export const UserGallery = (props) => {
 
   // calculates how many pages are available
   const setAmountOfPages = () => {
-    // console.log("entering setamountofpagees", totalImgQty);
-    // console.log("entering setamountofpagees", itemsNeeded);
-    if ((!totalImgQty) ||(parseInt(totalImgQty) < 1)) {
+    if ((!totalImgQty) || (parseInt(totalImgQty) < 1)) {
       setPages(1);
     } else {
       let pagesNeeded = Math.ceil(parseInt(totalImgQty) / parseInt(itemsNeeded));
@@ -81,7 +79,7 @@ export const UserGallery = (props) => {
       setCurrentPage(1);
     };
     grabImages(setImages, setTotalImgQty, itemsNeeded, currentPage, user);
-  }, [refreshNeeded, currentPage, itemsNeeded]);
+  }, [refreshNeeded, currentPage, itemsNeeded, user]);
 
   useEffect(() => {
     if (totalImgQty > 1) {
@@ -102,8 +100,12 @@ export const UserGallery = (props) => {
       {(!itemsNeeded) && <Navigate to={`/user/${user}/9/1`} />}
       {(itemsNeeded != parseInt(amountOfItems)) && <Navigate to={`/user/${user}/${itemsNeeded}/1`} />}
       {(currentPage != parseInt(page)) && <Navigate to={`/user/${user}/${itemsNeeded}/${currentPage}`} />}
+      {(currentPage != parseInt(page)) && <Navigate to={`/user/${user}/${itemsNeeded}/${currentPage}`} />}
 
-      <h1>{user}'s Gallery</h1>
+      {(user != "all") ? <h1>{user}'s Public Gallery</h1> : <h1>Gallery</h1>}
+      {/* {(user == currentUser) && <h1>It's you! Welcome home!</h1>} */}
+
+      
 
 
 
@@ -144,21 +146,7 @@ export const UserGallery = (props) => {
             )
           })}
         </select></label>
-
-
-
-
-
-        {/* <div id="pages">
-        {pagesArray(pages).map((aPage) => {
-            return (
-                <>
-
-                <Link to={`/user/${user}/${itemsNeeded}/${aPage}`} key={`pageArray_${aPage}`}>{aPage}</Link>
-                </>
-              )})}
-        </div> */}
-              </section>
+      </section>
 
     </div>
   );
