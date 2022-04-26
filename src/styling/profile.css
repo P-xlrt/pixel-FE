@@ -10,13 +10,38 @@
     width: 100%;
 }
 
-.profileData {
+.galleryContainer div.profileData {
+    width: 100%;
     display: flex;
     flex-direction: row;
-    width: 100%;
     height: 15vh;
     padding: 10px;
+
+    justify-content: center;
+    align-items: center;
+
+
 }
+
+.galleryContainer .ImgContainer {
+    width: 100%;
+    text-align: center;
+    height: fit-content;
+
+}
+
+figure {
+    text-align: center;
+
+
+}
+
+figure label {
+    margin: 5px;
+
+
+}
+
 
 .profileData img {
     height: 50px;

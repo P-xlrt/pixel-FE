@@ -1,4 +1,4 @@
-
+//@ts-check
 // on click on an image, make it full screen and show buttons if available
 // on delete, reload images
 // on click on edit open menu to update title and privacy of image or send it to the canvas with a redirect
@@ -81,32 +81,15 @@ export const Profile = (props) => {
           <img src={props.userImage}/>
           <h2>{props.user}</h2>
         </div>
+        {/* <div className="newSaveContainer" */}
 
-        <label>Images per page: 
-        <select id="amountSelector" name="amountSelector" value={itemsNeeded} onChange={(e) => setImgNeededAndRefresh(e.target.value)}>
-            <option value="9" key="imgNeeds_9">9</option>
-            <option value="12" key="imgNeeds_12">12</option>
-            <option value="18" key="imgNeeds_18">18</option>
-            <option value="60" key="imgNeeds_60">60</option>
-          </select></label>
+        <NewSaveContainer imageURL={props.currentCanvasImage} imageName={props.currentCanvasName}/>
 
-          <label>Page: 
-          <select id="pageSelector" name="pages" value={itemsNeeded} onChange={(e) => setPageAndRefresh(e.target.value)}>
-            <option value="1" key="page_9">1</option>
-            <option value="2" key="page_91">2</option>
-            <option value="3" key="jkks_18">3</option>
-            <option value="4" key="imgkjk0">4</option>
 
-            {/* {pagesArray(pages).map((aPage) => {
-              return (
-                <>
-                <option value={aPage} key={`pageArray_${aPage}`}>{aPage}</option>
-                </>
-              )
-            })
-            } */}
-          </select></label>
-          <NewSaveContainer imageURL={props.currentCanvasImage} imageName={props.currentCanvasName}/>
+
+          <section className="nk_gallery_wrap">
+
+
 
           {images.map((imgObj) => {
             return (
@@ -115,38 +98,33 @@ export const Profile = (props) => {
               </>
             );
           })}
+          </section>
+
+                  {/* Labels */}
+    <section className="pagination">
+      <label>Images per page: 
+      <select id="amountSelector" name="amountSelector" value={itemsNeeded} onChange={(e) => setItemsNeeded(parseInt(e.target.value))}>
+          <option value="9" key="imgNeeds_9">9</option>
+          <option value="12" key="imgNeeds_12">12</option>
+          <option value="18" key="imgNeeds_18">18</option>
+          <option value="60" key="imgNeeds_60">60</option>
+        </select></label>
+
+        <label>Page: 
+        <select id="pageSelector" name="pageSelect" value={currentPage} onChange={(e) => setCurrentPage(parseInt(e.target.value))}>
+          {pagesArray(pages).map((aPage) => {
+
+            return (
+              <>
+              <option value={aPage} key={`pageArray_${aPage}`}>{aPage}</option>
+              </>
+            )
+          })}
+        </select></label>
+      </section>
+
+
       </div>
     </>
   );
 };
-
-
-
-// // User proile page [displays personal gallery]
-// import "../styling/profile.css";
-
-// export const Profile = () => {
-//   return (
-//     <div className="profileContainer">
-//       <h1>Profile</h1>
-//       <div className="profileData">
-//         {/* <h2>{user.name}</h2> */}
-//         <div><h2>username</h2>
-//         <img scr="" alt="user profile image"/></div>
-//       </div>
-//       <div className="userGallery">
-//         <h2>usergallery</h2>
-//         {/* we will have to figure out how to flag images as public or private */}
-//         <div className="userImages">
-//           {/* {userImages.map((img, index) => {
-//             return (
-//               <div key={index}>
-//                 <img src={img.img.path} alt={img.img.name}/>
-//               </div>
-//             );
-//           })} */}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
